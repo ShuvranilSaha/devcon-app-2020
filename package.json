@@ -25,7 +25,6 @@
     "@ionic/angular": "^5.0.0",
     "@project-sunbird/content-player": "2.7.1-alpha-ea50f5d0.0",
     "cordova-android": "8.1.0",
-    "cordova-plugin-android-wifi-manager": "^1.2.1",
     "core-js": "^2.5.4",
     "rxjs": "~6.5.1",
     "rxjs-compat": "^6.5.4",
