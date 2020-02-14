@@ -1,17 +1,25 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>
+            Tab 1
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+    <ion-header collapse="condense">
+        <ion-toolbar>
+            <ion-title size="large">Tab 1</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <div text-ceter class="camera-icon" (click)="takePicture()" *ngIf="image === null">
+        <ion-icon name="camera-reverse-outline"></ion-icon>
+    </div>
+    <div text-center class="camera-icon" *ngIf="image !== null">
+        <img src="{{image}}" (click)="takePicture(true)" style="width: 3em; height: 3em; border-radius: 50%">
+    </div>
+    <div style="text-align: center">
+        <ion-button shape="round" fill="outline" (click)="onboarding()">Onboarding screens</ion-button>
+    </div>
+    <app-explore-container name="Tab 1 page"></app-explore-container>
 </ion-content>
