@@ -19,15 +19,21 @@
     "@ionic-native/app-preferences": "^5.0.0",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/device": "^5.0.0",
-    "@ionic-native/http": "^5.0.0-alpha.3",
+    "@ionic-native/file": "^5.21.5",
+    "@ionic-native/http": "^5.21.5",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^5.0.0",
     "@project-sunbird/content-player": "2.7.1-alpha-ea50f5d0.0",
     "cordova-android": "8.1.0",
+    "cordova-plugin-awesome-shared-preferences": "^0.1.0",
+    "cordova-plugin-inappbrowser": "^3.2.0",
     "core-js": "^2.5.4",
+    "jjdltc-cordova-plugin-zip": "git+https://github.com/swayangjit/jjdltc-cordova-plugin-zip.git",
     "rxjs": "~6.5.1",
     "rxjs-compat": "^6.5.4",
+    "sb-cordova-plugin-db": "git+https://github.com/Sunbird-Ed/sb-cordova-plugin-db.git",
+    "sb-cordova-plugin-utility": "git+https://github.com/Sunbird-Ed/sb-cordova-plugin-utility.git",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
   },
@@ -61,7 +67,8 @@
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
       "cordova-plugin-ionic-keyboard": {},
-      "cordova-plugin-android-wifi-manager": {}
+      "sb-cordova-plugin-db": {},
+      "sb-cordova-plugin-utility": {}
     },
     "platforms": [
       "android"
