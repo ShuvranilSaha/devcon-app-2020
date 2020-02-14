@@ -1,11 +1,11 @@
 import {Inject, Injectable} from '@angular/core';
 import {TelemetryService} from './telemetry-services';
-import {Device} from '@ionic-native/device';
+import {Device} from '@ionic-native/device/ngx';
 import {AttendanceTelemetry, BuyIdeaTelemetry, FeedbackTelemetry, RegisterTelemetry} from './telemetry-requests';
 import {AppConfig} from '../../config/AppConfig';
 import {Telemetry, Telemetry_IDs} from './base-telemetry';
 import {TelemetryApiHandlerService} from '../api/telemetry-api-handler-service';
-import {AppPreferences} from '@ionic-native/app-preferences';
+import {AppPreferences} from '@ionic-native/app-preferences/ngx';
 import {PreferenceKey} from '../../config/constants';
 
 @Injectable()
