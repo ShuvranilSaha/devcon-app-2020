@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiLogger} from './util/api-logger';
 import {ErrorHandler} from './util/error-handler';
-import {HTTP} from '@ionic-native/http';
+import {HTTP} from '@ionic-native/http/ngx';
 
 @Injectable()
 export class ApiHandlerService {

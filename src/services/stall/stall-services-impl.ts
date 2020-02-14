@@ -8,7 +8,7 @@ import {ApiHandlerService} from '../api/api-handler-service';
 import {BoughtIdea, BoughtIdeas} from './BoughtIdeas';
 import {PreferenceKey} from '../../config/constants';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {AppPreferences} from '@ionic-native/app-preferences';
+import {AppPreferences} from '@ionic-native/app-preferences/ngx';
 
 @Injectable()
 export class StallServicesImpl implements StallService {
