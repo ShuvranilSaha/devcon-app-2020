@@ -1,14 +1,14 @@
-import { NgModule, Provider, APP_INITIALIZER } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import {APP_INITIALIZER, NgModule, Provider} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {RouteReuseStrategy} from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
+import {SplashScreen} from '@ionic-native/splash-screen/ngx';
+import {StatusBar} from '@ionic-native/status-bar/ngx';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { SunbirdSdk } from '@project-sunbird/sunbird-sdk';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {SunbirdSdk} from '@project-sunbird/sunbird-sdk';
 
 export const authService = () => {
   return SunbirdSdk.instance.authService;
@@ -200,10 +200,15 @@ export const sunbirdSdkServicesProvidersFactory: () => Provider[] = sdkDriverFac
 export const sunbirdSdkFactory =
   () => {
     return async () => {
+      await new Promise((resolve) => {
+        document.addEventListener('deviceready', () => {
+          resolve();
+        });
+      });
+
       await SunbirdSdk.instance.init({
         platform: 'cordova',
-        fileConfig: {
-        },
+        fileConfig: {},
         apiConfig: {
           host: 'https://devcon.sunbirded.org',
           user_authentication: {
@@ -265,6 +270,7 @@ export const sunbirdSdkFactory =
           apiPath: '',
         },
         appConfig: {
+          buildConfigPackage: 'org.sunbird.app',
           maxCompatibilityLevel: 4,
           minCompatibilityLevel: 1
         },

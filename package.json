@@ -27,8 +27,10 @@
     "@project-sunbird/content-player": "2.7.1-alpha-ea50f5d0.0",
     "@project-sunbird/sunbird-sdk": "^2.8.5",
     "cordova-android": "8.1.0",
+    "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-awesome-shared-preferences": "^0.1.0",
     "cordova-plugin-inappbrowser": "^3.2.0",
+    "cordova-plugin-network-information": "^2.0.2",
     "core-js": "^2.5.4",
     "jjdltc-cordova-plugin-zip": "git+https://github.com/swayangjit/jjdltc-cordova-plugin-zip.git",
     "rxjs": "~6.5.1",
@@ -70,7 +72,9 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "sb-cordova-plugin-db": {},
-      "sb-cordova-plugin-utility": {}
+      "sb-cordova-plugin-utility": {},
+      "cordova-plugin-app-version": {},
+      "cordova-plugin-network-information": {}
     },
     "platforms": [
       "android"

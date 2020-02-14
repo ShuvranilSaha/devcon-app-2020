@@ -1,3 +1,10 @@
+android {
+    defaultConfig {
+        applicationId "in.devcon.app"
+        buildConfigField 'String', 'REAL_VERSION_NAME', "\"Devcon 2020\""
+    }
+}
+
 dependencies {
     compile 'com.android.support:support-v4:+'
 }
