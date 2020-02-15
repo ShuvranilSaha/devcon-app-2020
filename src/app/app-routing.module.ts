@@ -53,7 +53,7 @@ const routes: Routes = [
   {
     path: 'home',
     canLoad: [HasCompletedOnboardingGuard, HasCompletedWalkthroughGuard],
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () => import('./home/tabs/tabs.module').then(m => m.TabsPageModule)
   }
 ];
 @NgModule({

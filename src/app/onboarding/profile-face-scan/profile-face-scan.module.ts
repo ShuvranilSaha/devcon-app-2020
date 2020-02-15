@@ -7,13 +7,15 @@ import {IonicModule} from '@ionic/angular';
 import {ProfileFaceScanPageRoutingModule} from './profile-face-scan-routing.module';
 
 import {ProfileFaceScanPage} from './profile-face-scan.page';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProfileFaceScanPageRoutingModule
+    ProfileFaceScanPageRoutingModule,
+    FontAwesomeModule
   ],
   declarations: [ProfileFaceScanPage]
 })
