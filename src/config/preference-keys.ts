@@ -1,0 +1,13 @@
+enum Onboarding {
+  PROFILE_FACE_SCAN_COMPLETE = 'ONBOARDING_PROFILE_FACE_SCAN_COMPLETE',
+  PROFILE_DETAILS_COMPLETE = 'ONBOARDING_PROFILE_DETAILS_COMPLETE',
+}
+
+enum Walkthrough {
+  WALKTHROUGH_COMPLETE = 'WALKTHROUGH_COMPLETE'
+}
+
+export const PreferenceKeys = {
+  Onboarding,
+  Walkthrough
+};
