@@ -10,6 +10,12 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {SunbirdSdk} from '@project-sunbird/sunbird-sdk';
 
+declare global {
+  interface Window {
+    sunbird: SunbirdSdk;
+  }
+}
+
 export const authService = () => {
   return SunbirdSdk.instance.authService;
 };
@@ -321,7 +327,7 @@ export const sunbirdSdkFactory =
         }
       });
 
-      window['sunbird'] = SunbirdSdk.instance;
+      window.sunbird = SunbirdSdk.instance;
     };
   };
 
