@@ -28,6 +28,10 @@
                      mode="merge" target="/manifest/application">
             <application android:networkSecurityConfig="@xml/network_security_config"/>
         </edit-config>
+        <config-file xmlns:android="http://schemas.android.com/apk/res/android" parent="/manifest"
+                     target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.CAMERA"/>
+        </config-file>
         <resource-file src="resources/android/xml/network_security_config.xml"
                        target="app/src/main/res/xml/network_security_config.xml"/>
         <allow-intent href="market:*"/>
@@ -45,10 +49,10 @@
         <splash density="land-xxxhdpi" src="resources/android/splash/drawable-land-xxxhdpi-screen.png"/>
         <splash density="port-ldpi" src="resources/android/splash/drawable-port-ldpi-screen.png"/>
         <splash density="port-mdpi" src="resources/android/splash/drawable-port-mdpi-screen.png"/>
-        <splash density="port-hdpi" src="resources/android/splash/drawable-port-hdpi-screen.png" />
-        <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
-        <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
-        <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
+        <splash density="port-hdpi" src="resources/android/splash/drawable-port-hdpi-screen.png"/>
+        <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png"/>
+        <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png"/>
+        <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png"/>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -89,15 +93,15 @@
         <splash height="768" src="resources/ios/splash/Default-Landscape~ipad.png" width="1024" />
         <splash height="1125" src="resources/ios/splash/Default-Landscape-2436h.png" width="2436" />
         <splash height="1242" src="resources/ios/splash/Default-Landscape-736h.png" width="2208" />
-        <splash height="2048" src="resources/ios/splash/Default-Portrait@2x~ipad.png" width="1536" />
-        <splash height="1536" src="resources/ios/splash/Default-Landscape@2x~ipad.png" width="2048" />
-        <splash height="2732" src="resources/ios/splash/Default-Portrait@~ipadpro.png" width="2048" />
-        <splash height="2048" src="resources/ios/splash/Default-Landscape@~ipadpro.png" width="2732" />
-        <splash height="1136" src="resources/ios/splash/Default-568h@2x~iphone.png" width="640" />
-        <splash height="1334" src="resources/ios/splash/Default-667h.png" width="750" />
-        <splash height="2208" src="resources/ios/splash/Default-736h.png" width="1242" />
-        <splash height="2436" src="resources/ios/splash/Default-2436h.png" width="1125" />
-        <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
+        <splash height="2048" src="resources/ios/splash/Default-Portrait@2x~ipad.png" width="1536"/>
+        <splash height="1536" src="resources/ios/splash/Default-Landscape@2x~ipad.png" width="2048"/>
+        <splash height="2732" src="resources/ios/splash/Default-Portrait@~ipadpro.png" width="2048"/>
+        <splash height="2048" src="resources/ios/splash/Default-Landscape@~ipadpro.png" width="2732"/>
+        <splash height="1136" src="resources/ios/splash/Default-568h@2x~iphone.png" width="640"/>
+        <splash height="1334" src="resources/ios/splash/Default-667h.png" width="750"/>
+        <splash height="2208" src="resources/ios/splash/Default-736h.png" width="1242"/>
+        <splash height="2436" src="resources/ios/splash/Default-2436h.png" width="1125"/>
+        <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732"/>
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1.3.3"/>
     <plugin name="cordova-plugin-statusbar" spec="2.4.2"/>
@@ -110,5 +114,10 @@
     <plugin name="sb-cordova-plugin-utility" spec="git+https://github.com/Sunbird-Ed/sb-cordova-plugin-utility.git"/>
     <plugin name="cordova-plugin-app-version" spec="^0.1.9"/>
     <plugin name="cordova-plugin-network-information" spec="^2.0.2"/>
+    <plugin name="cordova-plugin-facedetection-lite" spec="^0.3.5"/>
+    <plugin name="cordova-plugin-android-permissions" spec="^1.0.2"/>
+    <plugin name="cordova.plugins.diagnostic" spec="^5.0.1">
+        <variable name="ANDROID_SUPPORT_VERSION" value="28.+"/>
+    </plugin>
     <engine name="android" spec="8.1.0"/>
 </widget>
