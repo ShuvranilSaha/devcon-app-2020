@@ -1,9 +1,57 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-title>profile-face-scan</ion-title>
-    </ion-toolbar>
-</ion-header>
+<div class="flex flex-col w-full h-full relative">
+    <div #pageBackgroundContainer [style.opacity]="faceCaptured ? 0 : 0.4"
+         class="absolute top-0 left-0 w-full h-full opacity-50 z-0"></div>
 
-<ion-content>
+    <div class="flex flex-grow flex-shrink-0 items-center justify-center relative z-10">
+        <div class="flex flex-col">
+            <div class="p-2 rounded-full border-dashed border-2 mb-2">
+                <div class="bg-blue-200 rounded-full overflow-hidden">
+                    <div class="flex items-center justify-center w-32 h-32">
+                        <fa-icon *ngIf="!faceCaptured" [icon]="faUser" size="3x" style="color: white"></fa-icon>
 
-</ion-content>
+                        <video #cameraPreviewRef height="480" playsinline=1
+                               style="width: 150px; height: inherit; display: none;" width="640"></video>
+                        <canvas #canvasPreviewRef style="width: 150px; height: inherit; display:none;"></canvas>
+                        <canvas #facePreviewRef [style.display]="faceCaptured ? 'block' : 'none'" height="130"
+                                style="width: 305px; height: inherit; display: none" width="130"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-sm text-center">
+                <ng-container *ngIf="cameraStarted">
+                    <p *ngIf="!faceCaptured">Scanning...</p>
+
+                    <ng-container *ngIf="faceCaptured">
+                        <div class="p-5"></div>
+
+                        <div class="p-5 rounded bg-red-500">
+                            <a (click)="resetFaceScan()" class="text-md text-white">Retry?</a>
+                        </div>
+
+                        <div class="p-5"></div>
+
+                        <div class="p-5 rounded bg-blue-500">
+                            <a (click)="resetFaceScan()" class="text-md text-white">Continue</a>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf="!cameraStarted">
+                    <p>Lorem Ipsum</p>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+
+    <div (click)="startFaceScan()" *ngIf="!cameraStarted" class="flex-shrink-0 p-10 relative z-10"
+         style="background-color: #FFDD75; border-radius: 20px 20px 0 0">
+        <div class="text-center">
+            <div>
+                <fa-icon [icon]="faSmile" size="2x"></fa-icon>
+            </div>
+            <a>
+                Scan to start
+            </a>
+        </div>
+    </div>
+</div>

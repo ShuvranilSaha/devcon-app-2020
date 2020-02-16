@@ -21,6 +21,11 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
+                "glob": "**/facefinder",
+                "input": "src/assets",
+                "output": "./"
+              },
+              {
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
