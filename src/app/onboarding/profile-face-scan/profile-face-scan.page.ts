@@ -1,7 +1,10 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {faSmile} from '@fortawesome/free-regular-svg-icons/faSmile';
 import {faUser} from '@fortawesome/free-regular-svg-icons/faUser';
 import {AndroidPermission, AndroidPermissionsService} from '../../services/android-permissions.service';
+import {LoadingController, NavController} from '@ionic/angular';
+import {SharedPreferences} from '@project-sunbird/sunbird-sdk';
+import {PreferenceKeys} from '../../../config/preference-keys';
 
 @Component({
   selector: 'app-profile-face-scan',
@@ -40,7 +43,10 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
   };
 
   constructor(
-    private androidPermissionsService: AndroidPermissionsService
+      @Inject('SHARED_PREFERENCES') private sharedPreferences: SharedPreferences,
+      private androidPermissionsService: AndroidPermissionsService,
+      private loadingCtrl: LoadingController,
+      private navCtrl: NavController
   ) {
   }
 
@@ -266,5 +272,18 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
     };
 
     requestAnimationFrame(loop);
+  }
+
+  private async faceUpload() {
+    const loader = await this.loadingCtrl.create({
+      showBackdrop: true,
+      duration: 2000,
+      spinner: 'dots'
+    });
+    await loader.present();
+    await this.sharedPreferences.putBoolean(PreferenceKeys.Onboarding.PROFILE_FACE_SCAN_COMPLETE, true).toPromise();
+    // todo subranil: save image metadata into device navigate to upload-user-name page
+    await loader.dismiss();
+    await this.navCtrl.navigateRoot('/onboarding/profile-details', {});
   }
 }
