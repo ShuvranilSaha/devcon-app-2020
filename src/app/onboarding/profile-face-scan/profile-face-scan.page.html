@@ -1,6 +1,7 @@
 <div class="flex flex-col w-full h-full relative">
-    <div #pageBackgroundContainer [style.opacity]="faceCaptured ? 0 : 0.4"
-         class="absolute top-0 left-0 w-full h-full opacity-50 z-0"></div>
+    <video #cameraPreviewRef [hidden]="!cameraStream"
+           class="absolute top-0 left-0 w-full h-full opacity-50 z-0 bg-blue-500"
+           playsinline=1></video>
 
     <div class="flex flex-grow flex-shrink-0 items-center justify-center relative z-10">
         <div class="flex flex-col">
@@ -9,8 +10,6 @@
                     <div class="flex items-center justify-center w-32 h-32">
                         <fa-icon *ngIf="!faceCaptured" [icon]="faUser" size="3x" style="color: white"></fa-icon>
 
-                        <video #cameraPreviewRef height="480" playsinline=1
-                               style="width: 150px; height: inherit; display: none;" width="640"></video>
                         <canvas #canvasPreviewRef style="width: 150px; height: inherit; display:none;"></canvas>
                         <canvas #facePreviewRef [style.display]="faceCaptured ? 'block' : 'none'" height="130"
                                 style="width: 305px; height: inherit; display: none" width="130"></canvas>
