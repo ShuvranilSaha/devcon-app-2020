@@ -10,6 +10,8 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {SunbirdSdk} from '@project-sunbird/sunbird-sdk';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import { NotificationService } from './services/notification.service';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 declare global {
   interface Window {
@@ -345,6 +347,8 @@ export const sunbirdSdkFactory =
   providers: [
     StatusBar,
     SplashScreen,
+    LocalNotifications,
+    NotificationService,
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     ...sunbirdSdkServicesProvidersFactory(),
     {provide: APP_INITIALIZER, useFactory: sunbirdSdkFactory, deps: [], multi: true}
