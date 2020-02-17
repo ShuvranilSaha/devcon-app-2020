@@ -31,12 +31,12 @@
                         <div class="p-5"></div>
 
                         <div class="p-5 rounded bg-blue-500">
-                            <a (click)="resetFaceScan()" class="text-md text-white">Continue</a>
+                            <a (click)="faceUpload()" class="text-md text-white">Continue</a>
                         </div>
                     </ng-container>
                 </ng-container>
                 <ng-container *ngIf="!cameraStarted">
-                    <p>Lorem Ipsum</p>
+                    <p>Scan your face</p>
                 </ng-container>
             </div>
         </div>

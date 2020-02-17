@@ -1,9 +1,23 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-title>profile-details</ion-title>
-    </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-</ion-content>
+<div class="flex flex-col items-center justify-center h-full w-full" style="background-color: #7334F1">
+    <div class="registration-form bg-transparent">
+       <header>
+           <h1>Register your name</h1>
+       </header>
+        <form [formGroup]="profileDetailsForm">
+            <div class="input-section name">
+                <input [formControl]="nameControl" class="user-name" type="text" placeholder="Enter your name here">
+                <div class="animated-button" (click)="submitForm()">
+                    <span class="icon-lock" [class.next]="nameControl.valid">
+                        <fa-icon [icon]="faLock" size="2x"></fa-icon>
+                    </span>
+                    <span class="next-button">
+                        <fa-icon [icon]="faPaperPlane" size="2x"></fa-icon>
+                    </span>
+                </div>
+                <div class="success" [ngStyle]="{marginTop: (submitSuccess ? '0px' : '-75px')}">
+                    <p>SUCCESSFULLY REGISTERED</p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
