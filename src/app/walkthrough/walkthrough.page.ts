@@ -23,6 +23,6 @@ export class WalkthroughPage implements OnInit {
         // completed walkthrough screens
         await this.sharedPreferences.putBoolean(PreferenceKeys.Walkthrough.WALKTHROUGH_COMPLETE, true).toPromise();
         // navigate to home page
-        await this.navCtrl.navigateRoot('/home', {});
+        await this.navCtrl.navigateRoot('/home', {animated: true, animationDirection: 'forward'});
     }
 }

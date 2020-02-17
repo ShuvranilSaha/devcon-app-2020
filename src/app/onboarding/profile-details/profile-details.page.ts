@@ -39,7 +39,9 @@ export class ProfileDetailsPage implements OnInit {
     this.submitSuccess = true;
     // todo: call api
     await this.sharedPreferences.putBoolean(PreferenceKeys.Onboarding.PROFILE_DETAILS_COMPLETE, true).toPromise();
-    await this.navCtrl.navigateRoot('/walkthrough', {});
+    await this.navCtrl.navigateRoot('/walkthrough', {
+      animated: true, animationDirection: 'forward'
+    });
   }
 
 }
