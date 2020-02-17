@@ -28,7 +28,7 @@ const routes: Routes = [
         path: 'profile-face-scan',
         canLoad: [HasNotCompletedOnboardingGuard, HasNotCompletedProfileFaceScanGuard],
         data: {
-          hasCompletedOnboardingRedirect: 'walkthrough',
+          hasCompletedOnboardingRedirect: 'walk-through',
           hasCompletedProfileFaceScanRedirect: '/onboarding/profile-details'
         },
         loadChildren: () => import('./onboarding/profile-face-scan/profile-face-scan.module').then(m => m.ProfileFaceScanPageModule)
@@ -37,18 +37,18 @@ const routes: Routes = [
         path: 'profile-details',
         canLoad: [HasNotCompletedOnboardingGuard, HasCompletedProfileFaceScanGuard, HasNotCompletedProfileDetailsGuard],
         data: {
-          hasCompletedOnboardingRedirect: 'walkthrough',
-          hasCompletedProfileDetailsRedirect: '/walkthrough'
+          hasCompletedOnboardingRedirect: 'walk-through',
+          hasCompletedProfileDetailsRedirect: '/walk-through'
         },
         loadChildren: () => import('./onboarding/profile-details/profile-details.module').then(m => m.ProfileDetailsPageModule)
       },
     ]
   },
   {
-    path: 'walkthrough',
+    path: 'walk-through',
     canLoad: [HasNotCompletedWalkthroughGuard],
     data: {hasCompletedWalkthroughRedirect: '/home'},
-    loadChildren: () => import('./walkthrough/walkthrough.module').then(m => m.WalkthroughPageModule)
+    loadChildren: () => import('./walk-through/walkthrough.module').then(m => m.WalkthroughPageModule)
   },
   {
     path: 'home',

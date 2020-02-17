@@ -34,7 +34,7 @@ export class InitialRouteRedirectGuard implements CanLoad, CanActivate {
               if (hasCompletedWalkthrough) {
                 this.router.navigate(['/home'], {replaceUrl: true});
               } else {
-                this.router.navigate(['/walkthrough'], {replaceUrl: true});
+                this.router.navigate(['/walk-through'], {replaceUrl: true});
               }
 
               return NEVER;

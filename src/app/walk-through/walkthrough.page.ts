@@ -20,7 +20,7 @@ export class WalkthroughPage implements OnInit {
     }
 
     async continue() {
-        // completed walkthrough screens
+        // completed walk-through screens
         await this.sharedPreferences.putBoolean(PreferenceKeys.Walkthrough.WALKTHROUGH_COMPLETE, true).toPromise();
         // navigate to home page
         await this.navCtrl.navigateRoot('/home', {animated: true, animationDirection: 'forward'});
