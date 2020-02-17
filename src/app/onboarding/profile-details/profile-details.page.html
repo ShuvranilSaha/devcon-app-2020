@@ -6,7 +6,7 @@
         <form [formGroup]="profileDetailsForm">
             <div class="input-section name">
                 <input [formControl]="nameControl" class="user-name" type="text" placeholder="Enter your name here">
-                <div class="animated-button" (click)="submitForm()">
+                <div class="animated-button" (click)="profileDetailsForm.valid && submitForm()">
                     <span class="icon-lock" [class.next]="nameControl.valid">
                         <fa-icon [icon]="faLock" size="2x"></fa-icon>
                     </span>

@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {faLock} from '@fortawesome/free-solid-svg-icons/faLock';
 import {faPaperPlane} from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {SharedPreferences} from '@project-sunbird/sunbird-sdk';
+import {PreferenceKeys} from '../../../config/preference-keys';
+import {NavController} from '@ionic/angular';
 
 
 @Component({
@@ -22,14 +25,21 @@ export class ProfileDetailsPage implements OnInit {
     return this.profileDetailsForm.get('name') as FormControl;
   }
 
-  constructor() {
+  constructor(
+      @Inject('SHARED_PREFERENCES') private sharedPreferences: SharedPreferences,
+      private navCtrl: NavController
+
+  ) {
   }
 
   ngOnInit() {
   }
 
-  submitForm() {
+  async submitForm() {
     this.submitSuccess = true;
+    // todo: call api
+    await this.sharedPreferences.putBoolean(PreferenceKeys.Onboarding.PROFILE_DETAILS_COMPLETE, true).toPromise();
+    await this.navCtrl.navigateRoot('/walkthrough', {});
   }
 
 }
