@@ -6,8 +6,8 @@ import {HasCompletedProfileFaceScanGuard} from './guards/onboarding/has-complete
 import {HasNotCompletedProfileFaceScanGuard} from './guards/onboarding/has-not-completed-profile-face-scan-guard.service';
 import {HasNotCompletedProfileDetailsGuard} from './guards/onboarding/has-not-completed-profile-details-guard.service';
 import {HasNotCompletedOnboardingGuard} from './guards/onboarding/has-not-completed-onboarding-guard.service';
-import {HasNotCompletedWalkthroughGuard} from './guards/walhthough/has-not-completed-walkthrough-guard.service';
-import {HasCompletedWalkthroughGuard} from './guards/walhthough/has-completed-walkthrough-guard.service';
+import {HasNotCompletedWalkthroughGuard} from './guards/walkhthrough/has-not-completed-walkthrough-guard.service';
+import {HasCompletedWalkthroughGuard} from './guards/walkhthrough/has-completed-walkthrough-guard.service';
 
 const routes: Routes = [
   {
