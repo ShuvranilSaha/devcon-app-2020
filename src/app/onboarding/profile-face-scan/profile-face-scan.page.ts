@@ -12,7 +12,6 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
   readonly faSmile = faSmile;
   readonly faUser = faUser;
 
-  @ViewChild('pageBackgroundContainer', {static: false, read: ElementRef}) pageBackgroundContainer!: ElementRef;
   @ViewChild('cameraPreviewRef', {static: false, read: ElementRef}) cameraPreviewRef!: ElementRef;
   @ViewChild('canvasPreviewRef', {static: false, read: ElementRef}) canvasPreviewRef!: ElementRef;
   @ViewChild('facePreviewRef', {static: false, read: ElementRef}) facePreviewRef!: ElementRef;
@@ -51,6 +50,7 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.cameraStream) {
       this.cameraStream.getTracks().forEach((track) => track.stop());
+      this.cameraStream = undefined;
     }
   }
 
@@ -76,8 +76,8 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
 
     this.facePreviewCtx = (this.facePreviewRef.nativeElement as HTMLCanvasElement).getContext('2d', {alpha: false});
 
-    this.cameraPreview.style.width = '450px';
-    this.cameraPreview.style.height = 'inherit';
+    this.cameraPreview.style.minWidth = '100%';
+    this.cameraPreview.style.minHeight = '100%';
 
     this.canvasPreview.style.width = '450px';
     this.canvasPreview.style.height = 'inherit';
@@ -211,11 +211,6 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
             this.canvasPreviewCtx.stroke();
 
             const data = this.canvasPreview.toDataURL();
-            const containerElement = (this.pageBackgroundContainer.nativeElement as HTMLDivElement);
-            containerElement.style.backgroundRepeat = 'none';
-            containerElement.style.backgroundPosition = 'center';
-            containerElement.style.backgroundSize = 'cover';
-            containerElement.style.backgroundImage = `url(${data})`;
 
             this.faceBox = {
               x: box[1] - ((box[2] + 20) / 2),
