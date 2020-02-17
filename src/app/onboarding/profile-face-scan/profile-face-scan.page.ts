@@ -274,7 +274,7 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
     requestAnimationFrame(loop);
   }
 
-  private async faceUpload() {
+  async faceUpload() {
     const loader = await this.loadingCtrl.create({
       showBackdrop: true,
       duration: 2000,
@@ -284,6 +284,8 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
     await this.sharedPreferences.putBoolean(PreferenceKeys.Onboarding.PROFILE_FACE_SCAN_COMPLETE, true).toPromise();
     // todo subranil: save image metadata into device navigate to upload-user-name page
     await loader.dismiss();
-    await this.navCtrl.navigateRoot('/onboarding/profile-details', {});
+    await this.navCtrl.navigateRoot('/onboarding/profile-details', {
+      animated: true, animationDirection: 'forward'
+    });
   }
 }

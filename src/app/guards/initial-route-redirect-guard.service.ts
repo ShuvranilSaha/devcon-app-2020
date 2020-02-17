@@ -12,7 +12,7 @@ import {
 import {NEVER, Observable} from 'rxjs';
 import {HasCompletedOnboardingGuard} from './onboarding/has-completed-onboarding-guard.service';
 import {mergeMap} from 'rxjs/operators';
-import {HasCompletedWalkthroughGuard} from './walhthough/has-completed-walkthrough-guard.service';
+import {HasCompletedWalkthroughGuard} from './walkhthrough/has-completed-walkthrough-guard.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,7 @@ export class InitialRouteRedirectGuard implements CanLoad, CanActivate {
               if (hasCompletedWalkthrough) {
                 this.router.navigate(['/home'], {replaceUrl: true});
               } else {
-                this.router.navigate(['/walkthrough'], {replaceUrl: true});
+                this.router.navigate(['/walk-through'], {replaceUrl: true});
               }
 
               return NEVER;
