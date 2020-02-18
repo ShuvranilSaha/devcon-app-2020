@@ -124,15 +124,24 @@ export class ProfileServiceImpl {
         // @ts-ignore
         const ft = new FileTransfer();
         ft.upload(dataUri, encodeURI('https://devcon.sunbirded.org/api/content/v1/media/upload'), (r: {
-          result: {
-            url: string;
-          }
+          responseCode: number
+          response: string
         }) => {
-          if (r.result.url) {
-            resolve(r.result);
+          if (r.responseCode === 200) {
+            const result: {
+              url: string;
+            } = JSON.parse(r.response);
+
+            if (result.url) {
+              resolve(result);
+              return;
+            }
+
+            reject(new Error('UNEXPECTED_RESPONSE'));
+            return;
           }
 
-          reject(new Error('UNEXPECTED_RESPONSE'));
+          reject(r);
         }, (e: any) => {
           reject(e);
         }, options);
