@@ -2,7 +2,7 @@ import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angu
 import {faSmile} from '@fortawesome/free-regular-svg-icons/faSmile';
 import {faUser} from '@fortawesome/free-regular-svg-icons/faUser';
 import {AndroidPermission, AndroidPermissionsService} from '../../services/android-permissions.service';
-import {LoadingController, NavController} from '@ionic/angular';
+import {LoadingController, NavController, Platform} from '@ionic/angular';
 import {SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {PreferenceKeys} from '../../../config/preference-keys';
 
@@ -43,10 +43,11 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
   };
 
   constructor(
-      @Inject('SHARED_PREFERENCES') private sharedPreferences: SharedPreferences,
-      private androidPermissionsService: AndroidPermissionsService,
-      private loadingCtrl: LoadingController,
-      private navCtrl: NavController
+    @Inject('SHARED_PREFERENCES') private sharedPreferences: SharedPreferences,
+    private androidPermissionsService: AndroidPermissionsService,
+    private loadingCtrl: LoadingController,
+    private navCtrl: NavController,
+    private platform: Platform
   ) {
   }
 
@@ -65,13 +66,15 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
   }
 
   public async startFaceScan() {
-    const status = await this.androidPermissionsService.checkPermissions([AndroidPermission.CAMERA]).toPromise();
+    if (this.platform.is('android')) {
+      const status = await this.androidPermissionsService.checkPermissions([AndroidPermission.CAMERA]).toPromise();
 
-    if (!status[AndroidPermission.CAMERA] || !status[AndroidPermission.CAMERA].hasPermission) {
-      const requestStatus = await this.androidPermissionsService.requestPermission(AndroidPermission.CAMERA).toPromise();
+      if (!status[AndroidPermission.CAMERA] || !status[AndroidPermission.CAMERA].hasPermission) {
+        const requestStatus = await this.androidPermissionsService.requestPermission(AndroidPermission.CAMERA).toPromise();
 
-      if (!requestStatus.hasPermission) {
-        return;
+        if (!requestStatus.hasPermission) {
+          return;
+        }
       }
     }
 
