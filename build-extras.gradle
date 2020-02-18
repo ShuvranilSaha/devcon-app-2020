@@ -7,4 +7,6 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4:+'
+    implementation "com.android.support:appcompat-v7:24.2.0"
+    implementation "com.android.support:recyclerview-v7:24.2.0"
 }
