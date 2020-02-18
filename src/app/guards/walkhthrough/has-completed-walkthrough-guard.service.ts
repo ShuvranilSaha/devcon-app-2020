@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {Route, Router} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {PreferenceKeys} from '../../../config/preference-keys';
 
@@ -16,6 +16,6 @@ export class HasCompletedWalkthroughGuard {
 
   canLoad(route: Route): Observable<boolean> {
     // return of(true);
-    return this.sharedPreferences.getBoolean(PreferenceKeys.Walkthrough.WALKTHROUGH_COMPLETE);
+    return of(!!window.localStorage.getItem(PreferenceKeys.Walkthrough.WALKTHROUGH_COMPLETE));
   }
 }

@@ -100,24 +100,27 @@
         <splash height="2436" src="resources/ios/splash/Default-2436h.png" width="1125" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
-    <plugin name="cordova-plugin-whitelist" spec="1.3.3" />
-    <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
-    <plugin name="cordova-plugin-device" spec="2.0.2" />
-    <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
-    <plugin name="cordova-plugin-ionic-webview" spec="^4.0.0" />
-    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
-    <plugin name="cordova-plugin-android-wifi-manager" spec="^1.2.1" />
-    <plugin name="sb-cordova-plugin-db" spec="git+https://github.com/Sunbird-Ed/sb-cordova-plugin-db.git" />
-    <plugin name="sb-cordova-plugin-utility" spec="git+https://github.com/Sunbird-Ed/sb-cordova-plugin-utility.git" />
-    <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
-    <plugin name="cordova-plugin-network-information" spec="^2.0.2" />
-    <plugin name="cordova-plugin-facedetection-lite" spec="^0.3.5" />
-    <plugin name="cordova-plugin-android-permissions" spec="^1.0.2" />
+    <plugin name="cordova-plugin-whitelist" spec="1.3.3"/>
+    <plugin name="cordova-plugin-statusbar" spec="2.4.2"/>
+    <plugin name="cordova-plugin-device" spec="2.0.2"/>
+    <plugin name="cordova-plugin-splashscreen" spec="5.0.2"/>
+    <plugin name="cordova-plugin-ionic-webview" spec="^4.0.0"/>
+    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5"/>
+    <plugin name="cordova-plugin-android-wifi-manager" spec="^1.2.1"/>
+    <plugin name="sb-cordova-plugin-db" spec="git+https://github.com/Sunbird-Ed/sb-cordova-plugin-db.git"/>
+    <plugin name="sb-cordova-plugin-utility" spec="git+https://github.com/Sunbird-Ed/sb-cordova-plugin-utility.git"/>
+    <plugin name="cordova-plugin-app-version" spec="^0.1.9"/>
+    <plugin name="cordova-plugin-network-information" spec="^2.0.2"/>
+    <plugin name="cordova-plugin-facedetection-lite" spec="^0.3.5"/>
+    <plugin name="cordova-plugin-android-permissions" spec="^1.0.2"/>
     <plugin name="cordova.plugins.diagnostic" spec="^5.0.1">
-        <variable name="ANDROID_SUPPORT_VERSION" value="28.+" />
+        <variable name="ANDROID_SUPPORT_VERSION" value="28.+"/>
     </plugin>
-    <plugin name="cordova-plugin-local-notification" spec="https://github.com/katzer/cordova-plugin-local-notifications.git">
-        <variable name="ANDROID_SUPPORT_V4_VERSION" value="26.+" />
+    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2">
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="26.+"/>
     </plugin>
-    <engine name="android" spec="8.1.0" />
+    <plugin name="onesignal-cordova-plugin" spec="2.8.3"/>
+    <plugin name="cordova-plugin-badge" spec="^0.8.8"/>
+    <engine name="android" spec="8.1.0"/>
+    <engine name="ios" spec="^5.1.1"/>
 </widget>

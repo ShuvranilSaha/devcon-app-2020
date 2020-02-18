@@ -21,7 +21,7 @@ export class WalkthroughPage implements OnInit {
 
     async continue() {
         // completed walk-through screens
-        await this.sharedPreferences.putBoolean(PreferenceKeys.Walkthrough.WALKTHROUGH_COMPLETE, true).toPromise();
+        window.localStorage.setItem(PreferenceKeys.Walkthrough.WALKTHROUGH_COMPLETE, 'true');
         // navigate to home page
         await this.navCtrl.navigateRoot('/home', {animated: true, animationDirection: 'forward'});
     }
