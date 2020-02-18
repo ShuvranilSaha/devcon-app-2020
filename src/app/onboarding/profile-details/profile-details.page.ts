@@ -38,10 +38,13 @@ export class ProfileDetailsPage implements OnInit {
   async submitForm() {
     this.submitSuccess = true;
     // todo: call api
-    await this.sharedPreferences.putBoolean(PreferenceKeys.Onboarding.PROFILE_DETAILS_COMPLETE, true).toPromise();
-    await this.navCtrl.navigateRoot('/walk-through', {
-      animated: true, animationDirection: 'forward'
-    });
+    window.localStorage.setItem(PreferenceKeys.Onboarding.PROFILE_DETAILS_COMPLETE, 'true');
+
+    setTimeout(async () => {
+      await this.navCtrl.navigateRoot('/onboarding/profile-face-scan', {
+        animated: true, animationDirection: 'forward'
+      });
+    }, 1000);
   }
 
 }

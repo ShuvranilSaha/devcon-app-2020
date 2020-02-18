@@ -281,10 +281,10 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
       spinner: 'dots'
     });
     await loader.present();
-    await this.sharedPreferences.putBoolean(PreferenceKeys.Onboarding.PROFILE_FACE_SCAN_COMPLETE, true).toPromise();
+    window.localStorage.setItem(PreferenceKeys.Onboarding.PROFILE_FACE_SCAN_COMPLETE, 'true');
     // todo subranil: save image metadata into device navigate to upload-user-name page
     await loader.dismiss();
-    await this.navCtrl.navigateRoot('/onboarding/profile-details', {
+    await this.navCtrl.navigateRoot('/walk-through', {
       animated: true, animationDirection: 'forward'
     });
   }
