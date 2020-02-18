@@ -1,0 +1,18 @@
+<div class="w-full h-full p-4">
+    <h1 class="text-lg font-bold">Is Wifi Enabled:</h1>
+    <h1 class="text-lg">{{isWifiEnabled}}</h1>
+    <hr>
+    <h1 class="text-lg font-bold">Scan Result:</h1>
+    <ng-container *ngIf="recognizedBSSIDResult">
+        <h1 class="text-lg">{{recognizedBSSIDResult.level}}</h1>
+    </ng-container>
+    <hr>
+    <ng-container *ngIf="!recognizedBSSIDResult">
+        Wifi not found
+    </ng-container>
+    <hr>
+    <ng-container *ngIf="!isWifiEnabled">
+        <h1 class="text-lg font-bold">Enable Wifi:</h1>
+        <button class="text-lg font-bold rounded border-2 bg-blue-400">Enable</button>
+    </ng-container>
+</div>

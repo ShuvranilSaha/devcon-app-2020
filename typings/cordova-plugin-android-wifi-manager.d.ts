@@ -11,6 +11,7 @@ interface CordovaPlugins {
     setWifiEnabled: (enabled: boolean, callback: (err: any, success: any) => void) => void;
     isWifiEnabled: (callback: (err: any, wifiEnabled: boolean) => void) => void;
     getScanResults: (callback: (err: any, scanResults: ScanResult[]) => void) => void;
+    startScan: (callback: (err: any, success: any) => void) => void;
   };
 }
 
@@ -25,3 +26,4 @@ interface ScanResult {
   level: number;
   timestamp: number;
 }
+

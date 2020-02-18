@@ -19,7 +19,7 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
-     <preference name="orientation" value="portrait" />
+    <preference name="orientation" value="portrait"/>
     <hook src="scripts/copyContentPlayer.js" type="before_build" />
     <hook src="scripts/copyContentPlayer.js" type="before_run" />
     <hook src="scripts/copyGradleFiles.js" type="before_build" />
@@ -81,16 +81,16 @@
         <icon height="144" src="resources/ios/icon/icon-72@2x.png" width="144" />
         <icon height="76" src="resources/ios/icon/icon-76.png" width="76" />
         <icon height="152" src="resources/ios/icon/icon-76@2x.png" width="152" />
-        <icon height="167" src="resources/ios/icon/icon-83.5@2x.png" width="167" />
-        <icon height="172" src="resources/ios/icon/icon-86@2x.png" width="172" />
-        <icon height="196" src="resources/ios/icon/icon-98@2x.png" width="196" />
-        <icon height="1024" src="resources/ios/icon/icon-1024.png" width="1024" />
-        <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
-        <splash height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640" />
-        <splash height="1024" src="resources/ios/splash/Default-Portrait~ipad.png" width="768" />
-        <splash height="768" src="resources/ios/splash/Default-Landscape~ipad.png" width="1024" />
-        <splash height="1125" src="resources/ios/splash/Default-Landscape-2436h.png" width="2436" />
-        <splash height="1242" src="resources/ios/splash/Default-Landscape-736h.png" width="2208" />
+        <icon height="167" src="resources/ios/icon/icon-83.5@2x.png" width="167"/>
+        <icon height="172" src="resources/ios/icon/icon-86@2x.png" width="172"/>
+        <icon height="196" src="resources/ios/icon/icon-98@2x.png" width="196"/>
+        <icon height="1024" src="resources/ios/icon/icon-1024.png" width="1024"/>
+        <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320"/>
+        <splash height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640"/>
+        <splash height="1024" src="resources/ios/splash/Default-Portrait~ipad.png" width="768"/>
+        <splash height="768" src="resources/ios/splash/Default-Landscape~ipad.png" width="1024"/>
+        <splash height="1125" src="resources/ios/splash/Default-Landscape-2436h.png" width="2436"/>
+        <splash height="1242" src="resources/ios/splash/Default-Landscape-736h.png" width="2208"/>
         <splash height="2048" src="resources/ios/splash/Default-Portrait@2x~ipad.png" width="1536"/>
         <splash height="1536" src="resources/ios/splash/Default-Landscape@2x~ipad.png" width="2048"/>
         <splash height="2732" src="resources/ios/splash/Default-Portrait@~ipadpro.png" width="2048"/>
