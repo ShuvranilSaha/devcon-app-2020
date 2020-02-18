@@ -32,6 +32,7 @@
     "@ionic/angular": "^5.0.0",
     "@project-sunbird/content-player": "2.7.1-alpha-ea50f5d0.0",
     "@project-sunbird/sunbird-sdk": "https://github.com/arfath-gwl/sunbird-mobile-sdk#devcon",
+    "com.virtuoworks.cordova-plugin-canvascamera": "git+https://github.com/VirtuoWorks/CanvasCameraPlugin.git",
     "cordova-android": "8.1.0",
     "cordova-ios": "^5.1.1",
     "cordova-plugin-advanced-http": "^2.4.0",
@@ -40,6 +41,7 @@
     "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-awesome-shared-preferences": "^0.1.0",
     "cordova-plugin-badge": "^0.8.8",
+    "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-chathead": "git+https://github.com/swayangjit/cordova-plugin-chathead.git",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-facedetection-lite": "^0.3.5",
@@ -114,7 +116,10 @@
         "OKHTTP_VERSION": "3.10.0"
       },
       "cordova-plugin-badge": {},
-      "cordova-plugin-android-wifi-manager": {}
+      "cordova-plugin-android-wifi-manager": {},
+      "com.virtuoworks.cordova-plugin-canvascamera": {
+        "CAMERA_USAGE_DESCRIPTION": "Display video preview"
+      }
     },
     "platforms": [
       "android",
