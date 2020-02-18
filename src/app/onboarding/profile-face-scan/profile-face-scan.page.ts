@@ -16,12 +16,14 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
   readonly faUser = faUser;
 
   @ViewChild('cameraPreviewRef', {static: false, read: ElementRef}) cameraPreviewRef!: ElementRef;
+  @ViewChild('cameraIosPreviewRef', {static: false, read: ElementRef}) cameraIosPreviewRef!: ElementRef;
   @ViewChild('canvasPreviewRef', {static: false, read: ElementRef}) canvasPreviewRef!: ElementRef;
   @ViewChild('facePreviewRef', {static: false, read: ElementRef}) facePreviewRef!: ElementRef;
   cameraStarted = false;
   faceCaptured = false;
   private cameraStream?: MediaStream;
   private cameraPreview!: HTMLVideoElement;
+  private cameraIosPreview!: HTMLCanvasElement;
   private canvasPreview!: HTMLCanvasElement;
   private cameraWidth!: number;
   private cameraHeight!: number;
@@ -78,6 +80,7 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
       }
     }
 
+    this.cameraIosPreview = this.cameraIosPreviewRef.nativeElement as HTMLCanvasElement;
     this.cameraPreview = this.cameraPreviewRef.nativeElement as HTMLVideoElement;
     this.canvasPreview = this.canvasPreviewRef.nativeElement as HTMLCanvasElement;
 
@@ -85,8 +88,13 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
 
     this.facePreviewCtx = (this.facePreviewRef.nativeElement as HTMLCanvasElement).getContext('2d', {alpha: false});
 
-    this.cameraPreview.style.minWidth = '100%';
-    this.cameraPreview.style.minHeight = '100%';
+    if (this.platform.is('ios')) {
+      // @ts-ignore
+      window.plugin.CanvasCamera.initialize(this.cameraIosPreview);
+      this.cameraIosPreview.style.minHeight = '100%';
+    } else {
+      this.cameraPreview.style.minHeight = '100%';
+    }
 
     this.canvasPreview.style.width = '450px';
     this.canvasPreview.style.height = 'inherit';
@@ -108,7 +116,24 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
 
 
   openCamera() {
-    if (navigator.mediaDevices !== undefined) {
+    if (this.platform.is('ios')) {
+      const self = this;
+      // tslint:disable-next-line:only-arrow-functions
+      const onAfterDraw = function () {
+        self.cameraStarted = true;
+        self.handleCameraSize();
+      };
+      const options = {
+        use: 'file',
+        fps: 15,
+        hasThumbnail: false,
+        cameraFacing: 'front',
+        onAfterDraw
+      };
+
+      // @ts-ignore
+      window.plugin.CanvasCamera.start(options);
+    } else if (navigator.mediaDevices !== undefined) {
       const videoObj = {
         audio: false,
         video: {
@@ -158,14 +183,19 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
   }
 
   private handleCameraSize() {
-    if (!this.cameraPreview) {
-      this.cameraPreview = this.cameraPreviewRef.nativeElement as HTMLVideoElement;
-      this.canvasPreview = this.canvasPreviewRef.nativeElement as HTMLCanvasElement;
-      this.canvasPreviewCtx = this.canvasPreview.getContext('2d', {alpha: false});
-    }
+    if (this.platform.is('ios')) {
+      this.cameraWidth = this.cameraIosPreview.width;
+      this.cameraHeight = this.cameraIosPreview.height;
+    } else {
+      if (!this.cameraPreview) {
+        this.cameraPreview = this.cameraPreviewRef.nativeElement as HTMLVideoElement;
+        this.canvasPreview = this.canvasPreviewRef.nativeElement as HTMLCanvasElement;
+        this.canvasPreviewCtx = this.canvasPreview.getContext('2d', {alpha: false});
+      }
 
-    this.cameraWidth = this.cameraPreview.videoWidth;
-    this.cameraHeight = this.cameraPreview.videoHeight;
+      this.cameraWidth = this.cameraPreview.videoWidth;
+      this.cameraHeight = this.cameraPreview.videoHeight;
+    }
 
     const maxSize = Math.max(this.cameraWidth, this.cameraHeight);
     const cameraScaleTemp = 95 / maxSize;
@@ -184,7 +214,7 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
       this.handleCameraSize();
     } else {
       this.canvasPreviewCtx.drawImage(
-        this.cameraPreview,
+        this.platform.is('ios') ? this.cameraIosPreview : this.cameraPreview,
         0, 0, this.cameraWidth, this.cameraHeight,
         0, 0, this.cameraMiniWidth, this.cameraMiniHeight
       );
@@ -247,7 +277,7 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
         let faceSizeOriginalCtx = faceSizeOriginal.getContext('2d', {alpha: false});
 
         faceSizeOriginalCtx!.drawImage(
-          this.cameraPreview,
+          this.platform.is('ios') ? this.cameraIosPreview : this.cameraPreview,
           parseInt(this.faceBox.x / this.cameraScale as any, 10),
           parseInt(this.faceBox.y / this.cameraScale as any, 10),
           size, size,
