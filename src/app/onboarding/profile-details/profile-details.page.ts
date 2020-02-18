@@ -81,7 +81,7 @@ export class ProfileDetailsPage implements OnInit {
 
   async presentToast() {
     const toast = await this.toastController.create({
-      message: 'Something Wrong!',
+      message: 'Something went Wrong!',
       duration: 2000
     });
     toast.present();
