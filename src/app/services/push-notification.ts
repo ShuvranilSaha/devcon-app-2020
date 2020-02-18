@@ -24,32 +24,30 @@ export class PushNotificationService {
       const msg = data.payload.body;
       const title = data.payload.title;
       const additionalData = data.payload.additionalData;
-      this.showAlert(title, msg, additionalData.task);
+      this.openClassAssignment();
     });
 
     this.oneSignal.handleNotificationOpened().subscribe((data: any) => {
 
       const additionalData = data.notification.payload.additionalData;
 
-      this.showAlert('Notification opened', 'You already read this before', additionalData.task);
+      this.openClassAssignment();
     });
 
     this.oneSignal.endInit();
   }
 
-  async showAlert(title: string, msg: string, task: any) {
-    const alert = await this.alertCtrl.create({
-      header: title,
-      subHeader: msg,
-      buttons: [
-        {
-          text: `Action: ${task}`,
-          handler: () => {
+  openClassAssignment() {
+    (window as any).chathead.showChatHead('do_12', 'did_123', 'profile_123', 'student_123',
+        'stall_123', 'idea_123', 'sid_123', () => {
+        }, () => {
+        });
+  }
 
-          }
-        }
-      ]
-    });
-    alert.present();
+  openHomeAssignment() {
+    (window as any).chathead.showChatHead('do_12', 'did_123', 'profile_123', 'student_123',
+        'stall_123', 'idea_123', 'sid_123', () => {
+        }, () => {
+        });
   }
 }
