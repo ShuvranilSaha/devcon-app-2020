@@ -5,6 +5,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {PreferenceKeys} from '../../../config/preference-keys';
 import {NavController} from '@ionic/angular';
+import {ProfileServiceImpl} from '../../services/profile/profile-service-impl';
 
 
 @Component({
@@ -26,9 +27,9 @@ export class ProfileDetailsPage implements OnInit {
   }
 
   constructor(
-      @Inject('SHARED_PREFERENCES') private sharedPreferences: SharedPreferences,
-      private navCtrl: NavController
-
+    @Inject('SHARED_PREFERENCES') private sharedPreferences: SharedPreferences,
+    private navCtrl: NavController,
+    private profileService: ProfileServiceImpl
   ) {
   }
 
@@ -37,7 +38,16 @@ export class ProfileDetailsPage implements OnInit {
 
   async submitForm() {
     this.submitSuccess = true;
-    // todo: call api
+
+    const name = this.nameControl.value;
+    const {osid} = await this.profileService.registerName(name);
+
+    localStorage.setItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE, name);
+    localStorage.setItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE, osid);
+
+    const {code} = await this.profileService.getProfile(osid);
+
+    localStorage.setItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE, code);
     window.localStorage.setItem(PreferenceKeys.Onboarding.PROFILE_DETAILS_COMPLETE, 'true');
 
     setTimeout(async () => {
