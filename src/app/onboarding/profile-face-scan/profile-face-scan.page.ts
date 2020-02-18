@@ -15,6 +15,10 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
   readonly faSmile = faSmile;
   readonly faUser = faUser;
 
+  get isPlatformIos() {
+    return this.platform.is('ios');
+  }
+
   @ViewChild('cameraPreviewRef', {static: false, read: ElementRef}) cameraPreviewRef!: ElementRef;
   @ViewChild('cameraIosPreviewRef', {static: false, read: ElementRef}) cameraIosPreviewRef!: ElementRef;
   @ViewChild('canvasPreviewRef', {static: false, read: ElementRef}) canvasPreviewRef!: ElementRef;

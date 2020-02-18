@@ -1,8 +1,8 @@
 <div class="flex flex-col w-full h-full relative">
-    <canvas #cameraIosPreviewRef
+    <canvas #cameraIosPreviewRef [hidden]="!isPlatformIos"
             class="absolute top-0 left-0 h-full w-full opacity-50 z-0 bg-blue-500">
     </canvas>
-    <video #cameraPreviewRef [hidden]="!cameraStream"
+    <video #cameraPreviewRef [hidden]="!cameraStream || isPlatformIos"
            class="absolute top-0 left-0 h-full w-full opacity-50 z-0 bg-blue-500"
            playsinline=1>
     </video>
