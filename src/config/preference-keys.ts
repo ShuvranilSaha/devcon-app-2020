@@ -1,3 +1,9 @@
+enum ProfileAttributes {
+  NAME_ATTRIBUTE = 'NAME_ATTRIBUTE',
+  OSID_ATTRIBUTE = 'OSID_ATTRIBUTE',
+  CODE_ATTRIBUTE = 'CODE_ATTRIBUTE'
+}
+
 enum Onboarding {
   PROFILE_FACE_SCAN_COMPLETE = 'ONBOARDING_PROFILE_FACE_SCAN_COMPLETE',
   PROFILE_DETAILS_COMPLETE = 'ONBOARDING_PROFILE_DETAILS_COMPLETE',
@@ -8,6 +14,7 @@ enum Walkthrough {
 }
 
 export const PreferenceKeys = {
+  ProfileAttributes,
   Onboarding,
   Walkthrough
 };

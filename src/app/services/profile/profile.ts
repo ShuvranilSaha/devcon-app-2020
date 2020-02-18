@@ -1,14 +1,15 @@
+import {PreferenceKeys} from '../../../config/preference-keys';
+
 export class Profile {
-  private static INSTANCE?: Profile;
+  get name(): string | null {
+    return localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE);
+  }
 
-  static instance: Profile = (() => {
-    if (!Profile.INSTANCE) {
-      Profile.INSTANCE = new Profile();
-    }
+  get osid(): string | null {
+    return localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE);
+  }
 
-    return Profile.INSTANCE;
-  })();
-
-  osid?: string;
-  name?: string;
+  get code(): string | null {
+    return localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE);
+  }
 }
