@@ -59,6 +59,10 @@ const routes: Routes = [
     path: 'tabs',
     loadChildren: () => import('./home/tabs/tabs.module').then( m => m.TabsPageModule)
   },
+  {
+    path: 'offline-register',
+    loadChildren: () => import('./offline-register/offline-register.module').then( m => m.OfflineRegisterPageModule)
+  },
 ];
 @NgModule({
   imports: [

@@ -87,4 +87,7 @@ export class ProfileDetailsPage implements OnInit {
     toast.present();
   }
 
+  async navigateToRegisterOfflineUser() {
+    await this.navCtrl.navigateRoot('/offline-register', {});
+  }
 }
