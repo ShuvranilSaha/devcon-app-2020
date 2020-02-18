@@ -130,7 +130,7 @@ export class ProfileServiceImpl {
           if (r.responseCode === 200) {
             const result: {
               url: string;
-            } = JSON.parse(r.response);
+            } = JSON.parse(r.response).result;
 
             if (result.url) {
               resolve(result);
