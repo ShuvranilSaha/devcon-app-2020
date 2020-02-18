@@ -6,6 +6,8 @@ import {SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {PreferenceKeys} from '../../../config/preference-keys';
 import {NavController} from '@ionic/angular';
 import {ProfileServiceImpl} from '../../services/profile/profile-service-impl';
+import {ToastController} from '@ionic/angular';
+import {LoadingController} from '@ionic/angular';
 
 
 @Component({
@@ -29,7 +31,9 @@ export class ProfileDetailsPage implements OnInit {
   constructor(
     @Inject('SHARED_PREFERENCES') private sharedPreferences: SharedPreferences,
     private navCtrl: NavController,
-    private profileService: ProfileServiceImpl
+    private profileService: ProfileServiceImpl,
+    public toastController: ToastController,
+    public loadingCtrl: LoadingController
   ) {
   }
 
@@ -37,24 +41,50 @@ export class ProfileDetailsPage implements OnInit {
   }
 
   async submitForm() {
-    this.submitSuccess = true;
-
     const name = this.nameControl.value;
-    const {osid} = await this.profileService.registerName(name);
+    // loader
+    const loader = await this.loadingCtrl.create({
+      showBackdrop: true,
+      duration: 2000,
+      spinner: 'dots'
+    });
+    await loader.present();
+    try {
+      const {osid} = await this.profileService.registerName(name);
+      localStorage.setItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE, name);
+      localStorage.setItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE, osid);
 
-    localStorage.setItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE, name);
-    localStorage.setItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE, osid);
+      const {code} = await this.profileService.getProfile(osid);
 
-    const {code} = await this.profileService.getProfile(osid);
+      localStorage.setItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE, code);
+      window.localStorage.setItem(PreferenceKeys.Onboarding.PROFILE_DETAILS_COMPLETE, 'true');
 
-    localStorage.setItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE, code);
-    window.localStorage.setItem(PreferenceKeys.Onboarding.PROFILE_DETAILS_COMPLETE, 'true');
+      this.submitSuccess = true;
 
-    setTimeout(async () => {
-      await this.navCtrl.navigateRoot('/onboarding/profile-face-scan', {
-        animated: true, animationDirection: 'forward'
-      });
-    }, 1000);
+      setTimeout(async () => {
+        await this.navCtrl.navigateRoot('/onboarding/profile-face-scan', {
+          animated: true, animationDirection: 'forward'
+        });
+      }, 1000);
+    } catch (e) {
+      console.log(e);
+      this.presentToast();
+      localStorage.setItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE, '');
+      localStorage.setItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE, '');
+      localStorage.setItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE, '');
+      window.localStorage.setItem(PreferenceKeys.Onboarding.PROFILE_DETAILS_COMPLETE, '');
+    } finally {
+      // dissmiss loader
+      this.loadingCtrl.dismiss();
+    }
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Something Wrong!',
+      duration: 2000
+    });
+    toast.present();
   }
 
 }
