@@ -1,31 +1,43 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { NotificationService as LocalNotification } from './services/notification.service';
 import { PushNotificationService } from './services/push-notification';
+import {NavigationEnd, Router} from '@angular/router';
+import {filter, take, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private notificationSrc: LocalNotification,
-    private pushNotificationService: PushNotificationService
+    private pushNotificationService: PushNotificationService,
+    private router: Router
   ) {
+  }
+
+  ngOnInit(): void {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.router.events.pipe(
+          filter((e) => e instanceof NavigationEnd),
+          take(1),
+          tap(() => {
+            this.splashScreen.hide();
+          })
+      ).subscribe();
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
     });
 
     this.notificationSrc.setupLocalNotification();
