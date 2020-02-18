@@ -55,6 +55,10 @@ const routes: Routes = [
     canLoad: [HasCompletedOnboardingGuard, HasCompletedWalkthroughGuard],
     loadChildren: () => import('./home/tabs/tabs.module').then(m => m.TabsPageModule)
   },
+  {
+    path: 'tab3',
+    loadChildren: () => import('./home/tab3/tab3.module').then( m => m.Tab3PageModule)
+  },
 ];
 @NgModule({
   imports: [
