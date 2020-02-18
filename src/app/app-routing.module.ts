@@ -52,8 +52,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    canLoad: [HasCompletedOnboardingGuard, HasCompletedWalkthroughGuard],
-    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
+    loadChildren: () => import('./home/tabs/tabs.module').then( m => m.TabsPageModule)
   },
   {
     path: 'tabs',
