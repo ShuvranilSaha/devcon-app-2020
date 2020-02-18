@@ -5,6 +5,7 @@ import {AndroidPermission, AndroidPermissionsService} from '../../services/andro
 import {LoadingController, NavController, Platform} from '@ionic/angular';
 import {SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {PreferenceKeys} from '../../../config/preference-keys';
+import {ProfileServiceImpl} from '../../services/profile/profile-service-impl';
 
 @Component({
   selector: 'app-profile-face-scan',
@@ -53,7 +54,8 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
     private androidPermissionsService: AndroidPermissionsService,
     private loadingCtrl: LoadingController,
     private navCtrl: NavController,
-    private platform: Platform
+    private platform: Platform,
+    private profileService: ProfileServiceImpl
   ) {
   }
 
@@ -318,8 +320,16 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
       spinner: 'dots'
     });
     await loader.present();
+
+    const imageBlob = await new Promise<Blob>((resolve) => {
+      (this.facePreviewRef.nativeElement as HTMLCanvasElement).toBlob((b) => resolve(b as Blob), 'image/png');
+    });
+
+    const {url} = await this.profileService.registerPhoto(imageBlob);
+
+    window.localStorage.setItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE, url);
     window.localStorage.setItem(PreferenceKeys.Onboarding.PROFILE_FACE_SCAN_COMPLETE, 'true');
-    // todo subranil: save image metadata into device navigate to upload-user-name page
+
     await loader.dismiss();
     await this.navCtrl.navigateRoot('/walk-through', {
       animated: true, animationDirection: 'forward'

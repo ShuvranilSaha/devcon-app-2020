@@ -1,5 +1,5 @@
 import {Request, Response} from '@project-sunbird/sunbird-sdk';
-import {ApiService, HttpRequestType} from '@project-sunbird/sunbird-sdk/dist';
+import {ApiService, HttpRequestType, SharedPreferences} from '@project-sunbird/sunbird-sdk/dist';
 import {Inject, Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 
@@ -8,7 +8,8 @@ import {map} from 'rxjs/operators';
 })
 export class ProfileServiceImpl {
   constructor(
-    @Inject('API_SERVICE') private apiService: ApiService
+    @Inject('API_SERVICE') private apiService: ApiService,
+    @Inject('SHARED_PREFERENCES') private sharedPreferences: SharedPreferences
   ) {
   }
 
@@ -94,5 +95,48 @@ export class ProfileServiceImpl {
         return r.result!.Visitor;
       }),
     ).toPromise();
+  }
+
+  public async registerPhoto(imageBlob: Blob): Promise<{ url: string }> {
+    const bearerToken = await this.sharedPreferences.getString('api_bearer_token').toPromise();
+
+    // @ts-ignore
+    const options = new FileUploadOptions();
+    options.fileKey = 'file';
+    options.fileName = 'some_file.png';
+    options.mimeType = 'image/png';
+    options.httpMethod = 'POST';
+    options.headers = {
+      Authorization: `Bearer ${bearerToken}`
+    };
+    options.params = {container: 'user/profile'};
+
+    const blobToDataURL = (b: Blob, callback: (dataUri: any) => void) => {
+      const a = new FileReader();
+      a.onload = (e) => {
+        callback((e.target as any).result);
+      };
+      a.readAsDataURL(b);
+    };
+
+    return new Promise<{ url: string }>((resolve, reject) => {
+      blobToDataURL(imageBlob, (dataUri) => {
+        // @ts-ignore
+        const ft = new FileTransfer();
+        ft.upload(dataUri, encodeURI('https://devcon.sunbirded.org/api/content/v1/media/upload'), (r: {
+          result: {
+            url: string;
+          }
+        }) => {
+          if (r.result.url) {
+            resolve(r.result);
+          }
+
+          reject(new Error('UNEXPECTED_RESPONSE'));
+        }, (e: any) => {
+          reject(e);
+        }, options);
+      });
+    });
   }
 }
