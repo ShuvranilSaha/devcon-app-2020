@@ -97,7 +97,7 @@ export class ProfileServiceImpl {
     ).toPromise();
   }
 
-  public async registerPhoto(imageBlob: Blob): Promise<{ url: string }> {
+  public async registerPhoto(osid: string, imageBlob: Blob): Promise<{ url: string }> {
     const bearerToken = await this.sharedPreferences.getString('api_bearer_token').toPromise();
 
     // @ts-ignore
@@ -119,7 +119,7 @@ export class ProfileServiceImpl {
       a.readAsDataURL(b);
     };
 
-    return new Promise<{ url: string }>((resolve, reject) => {
+    const {url} = await new Promise<{ url: string }>((resolve, reject) => {
       blobToDataURL(imageBlob, (dataUri) => {
         // @ts-ignore
         const ft = new FileTransfer();
@@ -147,5 +147,30 @@ export class ProfileServiceImpl {
         }, options);
       });
     });
+
+    const request = new Request.Builder()
+      .withType(HttpRequestType.POST)
+      .withPath('/api/regutil/visitor/new')
+      .withApiToken(true)
+      .withBody({
+        request: {
+          osid,
+          photoUrl: url
+        }
+      })
+      .build();
+
+    return this.apiService.fetch(request).pipe(
+      map((r: Response<any>) => {
+        return r.body;
+      }),
+      map((r) => {
+        if (r.params.status !== 'SUCCESSFUL') {
+          throw new Error('UNEXPECTED_RESPONSE');
+        }
+
+        return {url};
+      }),
+    ).toPromise();
   }
 }
