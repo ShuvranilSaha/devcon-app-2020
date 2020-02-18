@@ -325,7 +325,8 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
       (this.facePreviewRef.nativeElement as HTMLCanvasElement).toBlob((b) => resolve(b as Blob), 'image/png');
     });
 
-    const {url} = await this.profileService.registerPhoto(imageBlob);
+    const osid = window.localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)!;
+    const {url} = await this.profileService.registerPhoto(osid, imageBlob);
 
     window.localStorage.setItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE, url);
     window.localStorage.setItem(PreferenceKeys.Onboarding.PROFILE_FACE_SCAN_COMPLETE, 'true');
