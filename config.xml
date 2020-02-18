@@ -19,6 +19,7 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
+     <preference name="orientation" value="portrait" />
     <hook src="scripts/copyContentPlayer.js" type="before_build" />
     <hook src="scripts/copyContentPlayer.js" type="before_run" />
     <hook src="scripts/copyGradleFiles.js" type="before_build" />
