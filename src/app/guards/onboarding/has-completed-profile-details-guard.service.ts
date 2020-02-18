@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {CanLoad, Route, Router} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {PreferenceKeys} from '../../../config/preference-keys';
 import {SharedPreferences} from '@project-sunbird/sunbird-sdk';
 
@@ -16,6 +16,6 @@ export class HasCompletedProfileDetailsGuard implements CanLoad {
 
   canLoad(route: Route): Observable<boolean> {
     // return of(true);
-    return this.sharedPreferences.getBoolean(PreferenceKeys.Onboarding.PROFILE_DETAILS_COMPLETE);
+    return of(!!window.localStorage.getItem(PreferenceKeys.Onboarding.PROFILE_DETAILS_COMPLETE));
   }
 }
