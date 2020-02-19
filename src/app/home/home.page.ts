@@ -5,6 +5,8 @@ import {StallServiceImpl} from '../services/stall/stall-service-impl';
 import { SessionPopupComponent } from '../components/session-popup/session-popup.component';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { QrcodeDetailsComponent } from '../components/qrcode-details/qrcode-details.component';
+import { Observable } from 'rxjs';
+import { ProfileServiceImpl, Certificate } from '../services/profile/profile-service-impl';
 
 interface Stall {
   code: string;
@@ -32,18 +34,32 @@ interface Idea {
 })
 export class HomePage implements OnInit {
 
+  certificateNameMap = {
+    'Super Reader': 'Super Reader',
+    'Contributor': 'Contributor',
+    'Winner': 'Winner',
+    'Participation certificate': 'Participation',
+    'Default': ''
+  };
+
   public stallList: Stall[] = [];
 
   qrcodeDataURL?: string;
   public readonly profilePicURL = localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE)!;
   public readonly profileName = localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE)!;
 
+  getUserAwardedPoints$: Observable<number>;
+  getProfileCertificates$: Observable<Certificate[]>;
+
   constructor(
     private qrcodeService: QrCodeServiceImpl,
     private stallService: StallServiceImpl,
     private popCtrl: PopoverController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private profileService: ProfileServiceImpl
   ) {
+    this.getUserAwardedPoints$ = this.stallService.getUserAwardedPoints();
+    this.getProfileCertificates$ = this.profileService.getProfileCertificates();
   }
 
   async ngOnInit() {
