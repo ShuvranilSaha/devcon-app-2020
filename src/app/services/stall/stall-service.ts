@@ -19,15 +19,27 @@ export interface Idea {
     stallCode: string;
 }
 
+export interface VisitorActivity {
+    osCreatedAt: string;
+    '@type': string;
+    rating: number;
+    comment: string;
+    osid: string;
+    visitorCode: string;
+    ideaCode: string;
+    timestamp: string;
+    points: number;
+}
+
 export interface StallService {
     getStallList(): Promise<Stall[]>;
 
     getIdeaList(): Promise<Idea[]>;
 
-    getUserAwardedPoints(eq: string): Observable<number>;
+    getUserAwardedPoints(): Observable<number>;
 
-    getUserAwardedCertifications(): Observable<undefined>;
+    // getUserAwardedCertifications(): Observable<undefined>;
 
-    postUserFeedback(request: { rating: 20 | 40 | 60 | 80 | 100, comment: string }): Observable<undefined>;
+    // postUserFeedback(request: { points: 20 | 40 | 60 | 80 | 100, comment: string,  ideaCode: string}): Observable<string>;
 }
 
