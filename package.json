@@ -74,7 +74,9 @@
     "tslib": "^1.9.0",
     "uuid": "^3.4.0",
     "x2js": "^3.3.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "com.virtuoworks.cordova-plugin-canvascamera": "https://github.com/VirtuoWorks/CanvasCameraPlugin.git",
+    "com.jjdltc.cordova.plugin.zip": "https://github.com/swayangjit/jjdltc-cordova-plugin-zip.git"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.20",
@@ -134,11 +136,14 @@
       "com.jjdltc.cordova.plugin.zip": {},
       "sb-cordova-plugin-utility": {},
       "cordova-plugin-background-mode": {},
-      "cordova-plugin-screen-orientation": {}
+      "cordova-plugin-screen-orientation": {},
+      "com.virtuoworks.cordova-plugin-canvascamera": {
+        "CAMERA_USAGE_DESCRIPTION": "Display video preview"
+      }
     },
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

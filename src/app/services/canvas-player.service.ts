@@ -10,7 +10,9 @@ declare global {
     }
 }
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class CanvasPlayerService {
 
     REQUIRED_FIELDS = [

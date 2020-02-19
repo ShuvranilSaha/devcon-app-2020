@@ -121,6 +121,6 @@
     <plugin name="com.jjdltc.cordova.plugin.zip" spec="https://github.com/swayangjit/jjdltc-cordova-plugin-zip.git" />
     <plugin name="sb-cordova-plugin-utility" spec="https://github.com/AmiableAnil/sb-cordova-plugin-utility.git#release-2.8.0" />
     <plugin name="cordova-plugin-screen-orientation" spec="3.0.2" />
-    <engine name="android" spec="8.1.0" />
     <engine name="ios" spec="^5.1.1" />
+    <engine name="android" spec="8.1.0" />
 </widget>

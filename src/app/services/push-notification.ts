@@ -2,7 +2,6 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { Request, Response, DeviceInfo, ApiService, HttpRequestType } from '@project-sunbird/sunbird-sdk';
 import { Inject, Injectable } from '@angular/core';
 import { map, catchError } from 'rxjs/operators';
-import * as uuidv4 from 'uuid/v4';
 import { PreferenceKeys } from 'src/config/preference-keys';
 
 @Injectable({
