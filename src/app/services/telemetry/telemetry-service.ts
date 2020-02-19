@@ -82,7 +82,7 @@ export class TelemetryService {
 
     generateAttendanceTelemetry(stallId: string, ideaId: string, sid: string): Promise<undefined> {
         const telemetryRequest: AttendanceTelemetryRequest = {
-            eid: 'DC_ATTEND',
+            eid: 'DC_ATTENDANCE',
             mid: uuidv4(),
             ets: Date.now(),
             did: this.deviceInfo.getDeviceID(),

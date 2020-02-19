@@ -10,7 +10,8 @@ import {Certificate, ProfileServiceImpl} from '../services/profile/profile-servi
 import {faStar as faRegularStar} from '@fortawesome/free-regular-svg-icons/faStar';
 import {faStar as faSolidStar} from '@fortawesome/free-solid-svg-icons/faStar';
 import {TelemetryService} from '../services/telemetry/telemetry-service';
-
+import { PushNotificationService } from '../services/push-notification';
+import { DcPopupComponent } from '../components/dc-popup/dc-popup.component';
 
 interface Stall {
   code: string;
@@ -40,6 +41,16 @@ export class HomePage implements OnInit {
   public faRegularStar = faRegularStar;
   public faSolidStar = faSolidStar;
 
+  private isSchoolTapCount = 0;
+  private isHomeTapCount = 0;
+  private stallList: Stall[] = [];
+
+  qrcodeDataURL?: string;
+  public readonly profilePicURL = localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE)!;
+  public readonly profileName = localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE)!;
+  savedClassDate: any;
+  savedHomeDate: any;
+
   constructor(
     private qrcodeService: QrCodeServiceImpl,
     private stallService: StallServiceImpl,
@@ -47,8 +58,8 @@ export class HomePage implements OnInit {
     private modalCtrl: ModalController,
     private profileService: ProfileServiceImpl,
     private loadingCtrl: LoadingController,
-    private telemetryService: TelemetryService
-
+    private telemetryService: TelemetryService,
+    private pushNotificationService: PushNotificationService
   ) {
     this.getUserAwardedPoints$ = this.stallService.getUserAwardedPoints();
     this.getProfileCertificates$ = this.profileService.getProfileCertificates();
@@ -70,12 +81,6 @@ export class HomePage implements OnInit {
     return this.stallService.feedbackCommentsMap;
   }
 
-  public stallList: Stall[] = [];
-
-  qrcodeDataURL?: string;
-  public readonly profilePicURL = localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE)!;
-  public readonly profileName = localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE)!;
-
   getUserAwardedPoints$: Observable<number>;
   getProfileCertificates$: Observable<Certificate[]>;
 
@@ -95,18 +100,48 @@ export class HomePage implements OnInit {
     }
 
   async openSessionPopup(stallName: string) {
-    if (stallName !== 'School') {
-      return;
+    if (stallName === 'Creation') {
+      const options = {
+        component: SessionPopupComponent,
+        componentProps: {},
+        showBackdrop: true,
+        backdropDismiss: true,
+        cssClass: 'popup-w100'
+      };
+      const sessionPopup = await this.popCtrl.create(options);
+      await sessionPopup.present();
     }
-    const options = {
-      component: SessionPopupComponent,
-      componentProps: {},
-      showBackdrop: true,
-      backdropDismiss: true,
-      cssClass: 'popup-w100'
-    };
-    const sessionPopup = await this.popCtrl.create(options);
-    await sessionPopup.present();
+  }
+
+  async openHomePopup(ideaName: string) {
+    if (ideaName === 'Home assessment') {
+      const options = {
+        component: DcPopupComponent,
+        componentProps: {},
+        showBackdrop: true,
+        backdropDismiss: true,
+        cssClass: 'popup-w100'
+      };
+      const homePopup = await this.popCtrl.create(options);
+      await homePopup.present();
+      const { data } = await homePopup.onDidDismiss();
+
+      if (data && data.acceptHomeNotification) {
+        this.pushNotificationService.assignHomeNotificationTags();
+      }
+    }
+
+    if (ideaName === 'Class assessment') {
+      const options = {
+        component: SessionPopupComponent,
+        componentProps: {},
+        showBackdrop: true,
+        backdropDismiss: true,
+        cssClass: 'popup-w100'
+      };
+      const sessionPopup = await this.popCtrl.create(options);
+      await sessionPopup.present();
+    }
   }
 
   async expandQrCode() {
@@ -160,4 +195,76 @@ export class HomePage implements OnInit {
       code,
     });
   }
+
+  generateTimeCheckDiffClass() {
+    const presentDate = new Date();
+    if (this.savedClassDate && this.checkSecondsDiffClass(presentDate)) {
+      return true;
+    } else {
+      this.savedClassDate = presentDate;
+      return false;
+    }
+  }
+
+  checkSecondsDiffClass(presentDate: any) {
+    const diff = presentDate.getTime() - this.savedClassDate.getTime();
+    console.log(diff);
+    if (diff / 1000 < 2) {
+      return true;
+    }
+    this.isSchoolTapCount = 0;
+    return false;
+  }
+
+  openHomeAssessment(ideaName: string) {
+    if (ideaName === 'Home assessment') {
+      if (this.generateTimeCheckDiffHome()) {
+        if (this.isHomeTapCount === 1) {
+          this.savedHomeDate = null;
+          this.isHomeTapCount = 0;
+          this.pushNotificationService.openHomeAssignment();
+        } else {
+          this.isHomeTapCount++;
+        }
+      }
+    } else {
+      this.isHomeTapCount = 0;
+    }
+
+    if (ideaName === 'Class assessment') {
+      if (this.generateTimeCheckDiffClass()) {
+        if (this.isSchoolTapCount === 1) {
+          this.savedClassDate = null;
+          this.isSchoolTapCount = 0;
+          this.pushNotificationService.openClassAssignment();
+        } else {
+          this.isSchoolTapCount++;
+        }
+      }
+    } else {
+      this.isSchoolTapCount = 0;
+    }
+
+  }
+
+  generateTimeCheckDiffHome() {
+    const presentDate = new Date();
+    if (this.savedHomeDate && this.checkSecondsDiffHome(presentDate)) {
+      return true;
+    } else {
+      this.savedHomeDate = presentDate;
+      return false;
+    }
+  }
+
+  checkSecondsDiffHome(presentDate: any) {
+    const diff = presentDate.getTime() - this.savedHomeDate.getTime();
+    console.log(diff);
+    if (diff / 1000 < 2) {
+      return true;
+    }
+    this.isHomeTapCount = 0;
+    return false;
+  }
+
 }

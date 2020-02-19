@@ -9,6 +9,7 @@ import { PreferenceKeys } from 'src/config/preference-keys';
 })
 export class PushNotificationService {
   sessionId = '';
+  osid = '';
   constructor(
     @Inject('API_SERVICE') private apiService: ApiService,
     @Inject('DEVICE_INFO') private deviceInfo: DeviceInfo,
@@ -21,13 +22,25 @@ export class PushNotificationService {
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
 
     this.oneSignal.handleNotificationReceived().subscribe((data: any) => {
-      console.log(data);
-      this.openClassAssignment();
+      if (data && data.payload && data.payload.additionalData) {
+        if (data.payload.additionalData.sessionId) {
+          this.openClassAssignment();
+        }
+        if (data.payload.additionalData.home) {
+          this.openHomeAssignment();
+        }
+      }
     });
 
     this.oneSignal.handleNotificationOpened().subscribe((data: any) => {
-
-      this.openClassAssignment();
+      if (data && data.notification && data.notification.payload && data.notification.payload.additionalData) {
+        if (data.notification.payload.additionalData.sessionId) {
+          this.openClassAssignment();
+        }
+        if (data.notification.payload.additionalData.home) {
+          this.openHomeAssignment();
+        }
+      }
     });
 
     this.oneSignal.endInit();
@@ -38,7 +51,7 @@ export class PushNotificationService {
     const name = localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE);
     const url = localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE);
     (window as any).chathead.showChatHead('', deviceId, this.getOsid(), '',
-      'STA2', 'IDE9', this.sessionId, 'class', url, name, () => {
+      'STA2', 'IDE38', this.sessionId, 'class', url, name, () => {
       }, () => {
       });
   }
@@ -48,7 +61,7 @@ export class PushNotificationService {
     const name = localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE);
     const url = localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE);
     (window as any).chathead.showChatHead('', deviceId, this.getOsid(), '',
-      'STA2', 'IDE9', this.sessionId, 'home', url, name, () => {
+      'STA2', 'IDE19', 'HOME', 'home', url, name, () => {
       }, () => {
       });
   }
@@ -131,11 +144,31 @@ export class PushNotificationService {
     this.sessionId = '';
   }
 
+  assignHomeNotificationTags() {
+    this.oneSignal.sendTag('home', this.sessionId);
+    setTimeout(() => {
+      this.initiatePushNotification('home', this.sessionId);
+    }, 5000);
+  }
+
   getDeviceId(): string {
     return this.deviceInfo.getDeviceID();
   }
 
   getOsid() {
     return localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE);
+  }
+
+  generateSessionId() {
+    const classId = '090220';
+    const todayDate = new Date();
+
+    let time = String(todayDate.getHours());
+    if (time.length === 1) {
+      time = '0' + time;
+    }
+
+    const sessionId = classId + time;
+    return sessionId;
   }
 }
