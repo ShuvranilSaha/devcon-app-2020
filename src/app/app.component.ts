@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -15,7 +15,7 @@ import { TelemetryAutoSyncService, TelemetryService } from '@project-sunbird/sun
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
 
   private telemetryAutoSync: TelemetryAutoSyncService;
 
@@ -34,6 +34,16 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeApp();
+  }
+
+  ngAfterViewInit(): void {
+    this.platform.resume.subscribe(() => {
+      this.notificationSrc.handleNotification();
+    });
+
+    // this.platform.pause.subscribe(() => {
+    //   this.telemetryGeneratorService.generateInterruptTelemetry('background', '');
+    // });
   }
 
   initializeApp() {
