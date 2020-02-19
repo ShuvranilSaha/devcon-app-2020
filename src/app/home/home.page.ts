@@ -3,7 +3,8 @@ import {PreferenceKeys} from '../../config/preference-keys';
 import {QrCodeServiceImpl} from '../services/qr-code.service';
 import {StallServiceImpl} from '../services/stall/stall-service-impl';
 import { SessionPopupComponent } from '../components/session-popup/session-popup.component';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, ModalController } from '@ionic/angular';
+import { QrcodeDetailsComponent } from '../components/qrcode-details/qrcode-details.component';
 
 interface Stall {
   code: string;
@@ -40,13 +41,14 @@ export class HomePage implements OnInit {
   constructor(
     private qrcodeService: QrCodeServiceImpl,
     private stallService: StallServiceImpl,
-    private popCtrl: PopoverController
+    private popCtrl: PopoverController,
+    private modalCtrl: ModalController
   ) {
   }
 
   async ngOnInit() {
     this.qrcodeDataURL = await this.qrcodeService.generateDataUrl(
-      localStorage.getItem(PreferenceKeys.ProfileAttributes.QR_CODE_DATA_ATTRIBUTE)!
+      localStorage.getItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE)!
     );
 
     this.stallList = await this.stallService.getStallList();
@@ -66,6 +68,18 @@ export class HomePage implements OnInit {
     };
     const sessionPopup = await this.popCtrl.create(options);
     await sessionPopup.present();
+  }
+
+  async expandQrCode() {
+    const param = {
+      qrImageUrl: this.qrcodeDataURL,
+      qrCode: localStorage.getItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE)
+    };
+    const modal = await this.modalCtrl.create({
+      component: QrcodeDetailsComponent,
+      componentProps: param
+    });
+    modal.present();
   }
 
 }

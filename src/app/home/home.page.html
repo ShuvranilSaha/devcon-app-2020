@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div *ngIf="qrcodeDataURL" class="border-dashed border-2 p-1 rounded">
+    <div *ngIf="qrcodeDataURL" class="border-dashed border-2 p-1 rounded" (click)="expandQrCode()">
       <img [src]="qrcodeDataURL" class="w-20 h-20">
     </div>
   </div>
