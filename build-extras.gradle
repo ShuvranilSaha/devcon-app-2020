@@ -1,7 +1,27 @@
+ext {
+    // To make minimum SDK as 21
+    // cdvMinSdkVersion = null
+    cdvVersionCode=Integer.parseInt('' + "1")
+}
 android {
     defaultConfig {
+        minSdkVersion 19
         // applicationId "in.devcon.app"
+        multiDexEnabled true
         buildConfigField 'String', 'REAL_VERSION_NAME', "\"Devcon 2020\""
+    }
+
+    signingConfigs {
+        release {
+
+        }
+    }
+
+    buildTypes {
+        release {
+            // minifyEnabled false
+            // debuggable true
+        }
     }
 
     task copyDirEcar(type: Copy,overwrite: true) {
@@ -33,7 +53,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:+'
+    implementation 'com.android.support:support-v4:+'
     implementation "com.android.support:appcompat-v7:24.2.0"
     implementation "com.android.support:recyclerview-v7:24.2.0"
+    implementation 'com.android.support:multidex:1.0.3'
 }

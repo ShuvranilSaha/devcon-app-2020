@@ -54,7 +54,7 @@ export class HomePage implements OnInit {
     this.getProfileCertificates$ = this.profileService.getProfileCertificates();
   }
   qrCode?: string;
-  certificateNameMap = {
+  certificateNameMap: {[key: string]: string} = {
     'Super Reader': 'Super Reader',
     Contributor: 'Contributor',
     Winner: 'Winner',
