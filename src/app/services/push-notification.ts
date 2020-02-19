@@ -2,7 +2,6 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { Request, Response, DeviceInfo, ApiService, HttpRequestType } from '@project-sunbird/sunbird-sdk';
 import { Inject, Injectable } from '@angular/core';
 import { map, catchError } from 'rxjs/operators';
-import * as uuidv4 from 'uuid/v4';
 import { PreferenceKeys } from 'src/config/preference-keys';
 
 @Injectable({
@@ -36,16 +35,20 @@ export class PushNotificationService {
 
   openClassAssignment() {
     const deviceId = this.getDeviceId();
+    const name = localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE);
+    const url = localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE);
     (window as any).chathead.showChatHead('', deviceId, this.getOsid(), '',
-      'STA2', 'IDE9', this.sessionId, () => {
+      'STA2', 'IDE9', this.sessionId, 'class', url, name, () => {
       }, () => {
       });
   }
 
   openHomeAssignment() {
     const deviceId = this.getDeviceId();
+    const name = localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE);
+    const url = localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE);
     (window as any).chathead.showChatHead('', deviceId, this.getOsid(), '',
-      'STA2', 'IDE9', this.sessionId, () => {
+      'STA2', 'IDE9', this.sessionId, 'home', url, name, () => {
       }, () => {
       });
   }
@@ -119,7 +122,7 @@ export class PushNotificationService {
     this.oneSignal.sendTag('sessionId', sessionId);
     setTimeout(() => {
       this.initiatePushNotification('sessionId', sessionId);
-    }, 3000);
+    }, 5000);
     this.sessionId = sessionId;
   }
 
