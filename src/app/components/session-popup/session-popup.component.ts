@@ -41,13 +41,14 @@ export class SessionPopupComponent implements OnInit {
   private generateSessionIdTelemetry(sessionId: string) {
     const deviceId = this.pushNotificationService.getDeviceId();
     const uuid = this.pushNotificationService.getUuid();
+    const osid = this.pushNotificationService.getOsid();
 
     const payload = {
       eid: 'DC_VISIT',
       mid: uuid,
       ets: Date.now(),
       did: deviceId,
-      profileId: '',
+      profileId: osid,
       teacherId: '',
       studentId: '',
       stallId: 'STALL_ID_1',

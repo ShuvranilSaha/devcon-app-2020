@@ -4,6 +4,7 @@ import { ApiService, HttpRequestType } from '@project-sunbird/sunbird-sdk/dist';
 import { Inject, Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import * as uuidv4 from 'uuid/v4';
+import { PreferenceKeys } from 'src/config/preference-keys';
 
 @Injectable({
   providedIn: 'root'
@@ -115,6 +116,11 @@ export class PushNotificationService {
 
   getUuid() {
     return uuidv4();
+  }
+
+  getOsid() {
+    const osid = localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)
+    return osid;
   }
 
 }
