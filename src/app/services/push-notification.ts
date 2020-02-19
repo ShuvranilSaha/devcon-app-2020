@@ -1,14 +1,19 @@
-import { Injectable } from '@angular/core';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
-import { AlertController } from '@ionic/angular';
+import { Request, Response, DeviceInfo } from '@project-sunbird/sunbird-sdk';
+import { ApiService, HttpRequestType } from '@project-sunbird/sunbird-sdk/dist';
+import { Inject, Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
+import * as uuidv4 from 'uuid/v4';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PushNotificationService {
+  sessionId = '';
   constructor(
-    private oneSignal: OneSignal,
-    private alertCtrl: AlertController
+    @Inject('API_SERVICE') private apiService: ApiService,
+    @Inject('DEVICE_INFO') private deviceInfo: DeviceInfo,
+    private oneSignal: OneSignal
   ) { }
 
   setupPush() {
@@ -17,19 +22,20 @@ export class PushNotificationService {
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
 
     // Way to add tags for the segments
-    // this.oneSignal.sendTags({ all: 'true', teachers: 'true'});
+    this.oneSignal.sendTags({ all: 'true', teachers: 'true' });
+    // this.oneSignal.sendTag("sessionId", "id_swayangjit");
 
     this.oneSignal.handleNotificationReceived().subscribe((data: any) => {
       console.log(data);
-      const msg = data.payload.body;
-      const title = data.payload.title;
-      const additionalData = data.payload.additionalData;
+      // const msg = data.payload.body;
+      // const title = data.payload.title;
+      // const additionalData = data.payload.additionalData;
       this.openClassAssignment();
     });
 
     this.oneSignal.handleNotificationOpened().subscribe((data: any) => {
 
-      const additionalData = data.notification.payload.additionalData;
+      // const additionalData = data.notification.payload.additionalData;
 
       this.openClassAssignment();
     });
@@ -38,16 +44,77 @@ export class PushNotificationService {
   }
 
   openClassAssignment() {
-    (window as any).chathead.showChatHead('do_12', 'did_123', 'profile_123', 'student_123',
-        'stall_123', 'idea_123', 'sid_123', () => {
-        }, () => {
-        });
+    const deviceId = this.getDeviceId();
+    (window as any).chathead.showChatHead('', deviceId, '', '',
+      'STALL_ID_1', 'IDEA_ID_1', this.sessionId, () => {
+      }, () => {
+      });
   }
 
   openHomeAssignment() {
-    (window as any).chathead.showChatHead('do_12', 'did_123', 'profile_123', 'student_123',
-        'stall_123', 'idea_123', 'sid_123', () => {
-        }, () => {
-        });
+    const deviceId = this.getDeviceId();
+    (window as any).chathead.showChatHead('', deviceId, '', '',
+      'STALL_ID_1', 'IDEA_ID_1', this.sessionId, () => {
+      }, () => {
+      });
   }
+
+  sendSessionId(sessionId: string) {
+    const request = new Request.Builder()
+      .withType(HttpRequestType.POST)
+      .withPath('/action/composite/v3/search')
+      .withApiToken(true)
+      .withBody({
+        request: {
+          filters: {
+            objectType: 'Period',
+            sessionId,
+            status: []
+          },
+          limit: 1
+        }
+      })
+      .build();
+
+    return this.apiService.fetch(request).pipe(
+      map((r: Response<{
+        params: {
+          status: 'successful' | 'unsuccessful'
+        },
+        result: {
+          count: number,
+          Period: []
+        } | undefined,
+      }>) => {
+        return r.body;
+      }),
+      map((r) => {
+        console.log(r);
+        if (r.params.status !== 'successful') {
+          throw new Error('UNEXPECTED_RESPONSE');
+        }
+
+        return r.result!.count;
+      }),
+    ).toPromise();
+  }
+
+  assignNotificationTags(sessionId: string) {
+    this.oneSignal.sendTag('sessionId', sessionId);
+    this.sessionId = sessionId;
+  }
+
+  removeNotificationTags() {
+    this.oneSignal.sendTag('sessionId', '');
+    this.sessionId = '';
+  }
+
+  getDeviceId(): string {
+    return this.deviceInfo.getDeviceID();
+  }
+
+  getUuid() {
+    return uuidv4();
+  }
+
 }

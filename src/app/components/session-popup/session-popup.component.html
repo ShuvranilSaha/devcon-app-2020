@@ -1,0 +1,14 @@
+<div>
+
+  <div class="dc-text-center dc-pt-pb-10">
+    <img class="dc-session-img" src="assets/user.svg" alt="session-lock-img">
+    <p class="dc-session-title">Session locked</p>
+    <p class="dc-session-message">Please enter session id to continue next class</p>
+    <input class="dc-session-input" type="text" (input)="resetIncorrectFlag()" [(ngModel)]="sessionId" placeholder="Enter session ID">
+    <p class="dc-red-text" *ngIf="incorrectSessionId">*You have entered a wrong session id</p>
+    <div>
+      <button class="dc-btn-outline" [disabled]="!sessionId.trim().length" (click)="submitSessionId()">CONFIRM</button>
+    </div>
+  </div>
+
+</div>

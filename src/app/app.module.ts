@@ -13,6 +13,8 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import { NotificationService } from './services/notification.service';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { ComponentsModule } from './components/components.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 declare global {
   interface Window {
@@ -343,7 +345,10 @@ export const sunbirdSdkFactory =
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ComponentsModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     StatusBar,
