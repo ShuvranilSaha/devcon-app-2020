@@ -2,11 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {PreferenceKeys} from '../../config/preference-keys';
 import {QrCodeServiceImpl} from '../services/qr-code.service';
 import {StallServiceImpl} from '../services/stall/stall-service-impl';
-import { SessionPopupComponent } from '../components/session-popup/session-popup.component';
-import { PopoverController, ModalController } from '@ionic/angular';
-import { QrcodeDetailsComponent } from '../components/qrcode-details/qrcode-details.component';
-import { Observable } from 'rxjs';
-import { ProfileServiceImpl, Certificate } from '../services/profile/profile-service-impl';
+import {SessionPopupComponent} from '../components/session-popup/session-popup.component';
+import {LoadingController, ModalController, PopoverController} from '@ionic/angular';
+import {QrcodeDetailsComponent} from '../components/qrcode-details/qrcode-details.component';
+import {Observable} from 'rxjs';
+import {Certificate, ProfileServiceImpl} from '../services/profile/profile-service-impl';
+import {faStar as faRegularStar} from '@fortawesome/free-regular-svg-icons/faStar';
+import {faStar as faSolidStar} from '@fortawesome/free-solid-svg-icons/faStar';
 
 interface Stall {
   code: string;
@@ -33,6 +35,20 @@ interface Idea {
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  public faRegularStar = faRegularStar;
+  public faSolidStar = faSolidStar;
+
+  constructor(
+    private qrcodeService: QrCodeServiceImpl,
+    private stallService: StallServiceImpl,
+    private popCtrl: PopoverController,
+    private modalCtrl: ModalController,
+    private profileService: ProfileServiceImpl,
+    private loadingCtrl: LoadingController
+  ) {
+    this.getUserAwardedPoints$ = this.stallService.getUserAwardedPoints();
+    this.getProfileCertificates$ = this.profileService.getProfileCertificates();
+  }
 
   certificateNameMap = {
     'Super Reader': 'Super Reader',
@@ -41,6 +57,14 @@ export class HomePage implements OnInit {
     'Participation certificate': 'Participation',
     'Default': ''
   };
+
+  get ratingsMap() {
+    return this.stallService.feedbackRatingsMap;
+  }
+
+  get commentsMap() {
+    return this.stallService.feedbackCommentsMap;
+  }
 
   public stallList: Stall[] = [];
 
@@ -51,15 +75,8 @@ export class HomePage implements OnInit {
   getUserAwardedPoints$: Observable<number>;
   getProfileCertificates$: Observable<Certificate[]>;
 
-  constructor(
-    private qrcodeService: QrCodeServiceImpl,
-    private stallService: StallServiceImpl,
-    private popCtrl: PopoverController,
-    private modalCtrl: ModalController,
-    private profileService: ProfileServiceImpl
-  ) {
-    this.getUserAwardedPoints$ = this.stallService.getUserAwardedPoints();
-    this.getProfileCertificates$ = this.profileService.getProfileCertificates();
+  arrayGen(size: number): any[] {
+    return Array(size);
   }
 
   async ngOnInit() {
@@ -98,4 +115,28 @@ export class HomePage implements OnInit {
     modal.present();
   }
 
+  async postFeedback(ratingIndex: number, ideaCode: string) {
+    const rating = ratingIndex * 20;
+
+    const loader = await this.loadingCtrl.create({
+      message: 'Loading...',
+      showBackdrop: true,
+      translucent: true,
+      spinner: 'crescent'
+    });
+
+    await loader.present();
+
+    return this.stallService.postUserFeedback({
+      visitorCode: '',
+      timestamp: '',
+      ideaCode,
+      rating: ratingIndex,
+      points: (rating as any)
+    }).then(() => {
+      loader.dismiss();
+    }).catch(() => {
+      loader.dismiss();
+    });
+  }
 }
