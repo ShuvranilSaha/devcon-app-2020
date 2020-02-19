@@ -80,6 +80,25 @@ export class TelemetryService {
         return this.invokeApi(telemetryRequest);
     }
 
+    generateAttendanceTelemetry(stallId: string, ideaId: string, sid: string): Promise<undefined> {
+        const telemetryRequest: AttendanceTelemetryRequest = {
+            eid: 'DC_ATTEND',
+            mid: uuidv4(),
+            ets: Date.now(),
+            did: this.deviceInfo.getDeviceID(),
+            profileId: localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)!,
+            stallId,
+            ideaId,
+            sid,
+            edata: {
+                profileUrl: localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE)!,
+                name: localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE)!,
+                osid: localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)!,
+              }
+        };
+        return this.invokeApi(telemetryRequest);
+    }
+
 
     private invokeApi(telemetryRequest: BaseTelemetryRequest): Promise<undefined> {
         const request = new Request.Builder()

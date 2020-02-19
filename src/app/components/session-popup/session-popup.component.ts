@@ -3,6 +3,7 @@ import { PushNotificationService } from 'src/app/services/push-notification';
 import { PopoverController } from '@ionic/angular';
 import { DeviceInfo } from '@project-sunbird/sunbird-sdk';
 import * as uuidv4 from 'uuid/v4';
+import { TelemetryService } from 'src/app/services/telemetry/telemetry-service';
 
 @Component({
   selector: 'app-session-popup',
@@ -15,7 +16,9 @@ export class SessionPopupComponent implements OnInit {
   incorrectSessionId = false;
   constructor(
     private pushNotificationService: PushNotificationService,
-    private popoverCtrl: PopoverController) { }
+    private popoverCtrl: PopoverController,
+    private telemetryService: TelemetryService
+  ) { }
 
   ngOnInit() { }
 
@@ -25,7 +28,7 @@ export class SessionPopupComponent implements OnInit {
       console.log(res);
       if (res === 1) {
         this.pushNotificationService.assignNotificationTags(sessionId);
-        this.generateSessionIdTelemetry(sessionId);
+        this.telemetryService.generateAttendanceTelemetry('STA2', 'IDE9', sessionId);
         this.popoverCtrl.dismiss();
       } else if (res === 0) {
         this.incorrectSessionId = true;
@@ -36,31 +39,6 @@ export class SessionPopupComponent implements OnInit {
 
   resetIncorrectFlag() {
     this.incorrectSessionId = false;
-  }
-
-  private generateSessionIdTelemetry(sessionId: string) {
-    const deviceId = this.pushNotificationService.getDeviceId();
-    const uuid = this.pushNotificationService.getUuid();
-    const osid = this.pushNotificationService.getOsid();
-
-    const payload = {
-      eid: 'DC_VISIT',
-      mid: uuid,
-      ets: Date.now(),
-      did: deviceId,
-      profileId: osid,
-      teacherId: '',
-      studentId: '',
-      stallId: 'STALL_ID_1',
-      ideaId: 'IDEA_ID_1',
-      sid: sessionId,
-      contentId: '',
-      contentType: '',
-      contentName: '',
-      edata: {}
-    };
-    console.log(payload);
-
   }
 
 }
