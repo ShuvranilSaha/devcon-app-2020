@@ -4,10 +4,8 @@ import {faPaperPlane} from '@fortawesome/free-solid-svg-icons/faPaperPlane';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {PreferenceKeys} from '../../../config/preference-keys';
-import {NavController} from '@ionic/angular';
+import {LoadingController, NavController, ToastController} from '@ionic/angular';
 import {ProfileServiceImpl} from '../../services/profile/profile-service-impl';
-import {ToastController} from '@ionic/angular';
-import {LoadingController} from '@ionic/angular';
 
 
 @Component({
@@ -18,6 +16,10 @@ import {LoadingController} from '@ionic/angular';
 export class ProfileDetailsPage implements OnInit {
   readonly faLock = faLock;
   readonly faPaperPlane = faPaperPlane;
+
+  private navigateToRegisterOfflineUserClickCounter = 0;
+  private navigateToLogStallAttendanceCounter = 0;
+
   public submitSuccess = false;
 
   public profileDetailsForm = new FormGroup({
@@ -79,6 +81,11 @@ export class ProfileDetailsPage implements OnInit {
     }
   }
 
+  ionViewWillLeave() {
+    this.navigateToRegisterOfflineUserClickCounter = 0;
+    this.navigateToLogStallAttendanceCounter = 0;
+  }
+
   async presentToast() {
     const toast = await this.toastController.create({
       message: 'Something went Wrong!',
@@ -88,6 +95,18 @@ export class ProfileDetailsPage implements OnInit {
   }
 
   async navigateToRegisterOfflineUser() {
-    await this.navCtrl.navigateRoot('/offline-register', {});
+    this.navigateToRegisterOfflineUserClickCounter++;
+
+    if (this.navigateToRegisterOfflineUserClickCounter === 15) {
+      await this.navCtrl.navigateForward('/offline-register', {});
+    }
+  }
+
+  async navigateToLogStallAttendance() {
+    this.navigateToLogStallAttendanceCounter++;
+
+    if (this.navigateToLogStallAttendanceCounter === 15) {
+      await this.navCtrl.navigateForward('/offline-register', {});
+    }
   }
 }

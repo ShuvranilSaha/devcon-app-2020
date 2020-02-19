@@ -1,27 +1,35 @@
 <div class="flex flex-col items-center justify-center h-full w-full" style="background-color: #7334F1">
-    <div class="registration-form bg-transparent w-9/12">
-        <header>
-            <h2 class="font-bold text-lg">Register your name:</h2>
-        </header>
-        <form [formGroup]="profileDetailsForm">
-            <div class="input-section name">
-                <input [formControl]="nameControl" class="user-name" type="text" placeholder="Enter your name here">
-                <div class="animated-button" (click)="profileDetailsForm.valid && submitForm()">
+    <div class="flex-shrink-0 flex-grow flex flex-col justify-center registration-form bg-transparent w-9/12">
+        <div>
+            <header>
+                <h2 class="font-bold text-lg">Register your name:</h2>
+            </header>
+            <form [formGroup]="profileDetailsForm">
+                <div class="input-section name">
+                    <input [formControl]="nameControl" class="user-name" placeholder="Enter your name here" type="text">
+                    <div (click)="profileDetailsForm.valid && submitForm()" class="animated-button">
                     <span class="icon-lock" [class.next]="nameControl.valid">
                         <fa-icon [icon]="faLock" size="1x"></fa-icon>
                     </span>
-                    <span class="next-button">
+                        <span class="next-button">
                         <fa-icon [icon]="faPaperPlane" size="1x"></fa-icon>
                     </span>
+                    </div>
+                    <div [ngStyle]="{marginTop: (submitSuccess ? '0px' : '-75px')}" class="success">
+                        <h2 class="font-bold text-lg">Successfully Registered</h2>
+                    </div>
                 </div>
-                <div class="success" [ngStyle]="{marginTop: (submitSuccess ? '0px' : '-75px')}">
-                    <p>SUCCESSFULLY REGISTERED</p>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
-    <div class="bg-orange-100 absolute bottom-0 left-0 p-5" (click)="navigateToRegisterOfflineUser()">
-        hidden
+    <div class="flex-shrink-0 flex flex-row justify-between w-full">
+        <div (click)="navigateToLogStallAttendance() " class="bg-orange-100 p-5">
+            Stall Attendance
+        </div>
+
+        <div (click)="navigateToRegisterOfflineUser()" class="bg-orange-100 p-5">
+            Register offline
+        </div>
     </div>
 </div>

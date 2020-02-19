@@ -1,48 +1,13 @@
-<!--<div class="flex flex-col items-center justify-center h-full w-full" style="background-color: #2FCBAA">-->
-<!--  <div class="registration-form bg-transparent w-9/12">-->
-<!--    <header>-->
-<!--      <h2 class="font-bold text-lg">Offline User Register</h2>-->
-<!--    </header>-->
-<!--    <form [formGroup]="offlineProfileDetailsForm">-->
-<!--      <div class="input-section name">-->
-<!--        <input [formControl]="nameControl" class="user-name" type="text" placeholder="Enter QR CODE">-->
-<!--        <div class="animated-button" (click)="offlineProfileDetailsForm.valid && submitForm()">-->
-<!--                    <span class="icon-lock" [class.next]="nameControl.valid">-->
-<!--                        <fa-icon [icon]="faLock" size="1x"></fa-icon>-->
-<!--                    </span>-->
-<!--          <span class="next-button">-->
-<!--                        <fa-icon [icon]="faPaperPlane" size="1x"></fa-icon>-->
-<!--                    </span>-->
-<!--        </div>-->
-<!--          <div class="input-section name">-->
-<!--              <input [formControl]="nameControl" class="user-name" type="text" placeholder="Enter Your Name">-->
-<!--              <div class="animated-button" (click)="offlineProfileDetailsForm.valid && submitForm()">-->
-<!--                    <span class="icon-lock" [class.next]="nameControl.valid">-->
-<!--                        <fa-icon [icon]="faLock" size="1x"></fa-icon>-->
-<!--                    </span>-->
-<!--                  <span class="next-button">-->
-<!--                        <fa-icon [icon]="faPaperPlane" size="1x"></fa-icon>-->
-<!--                    </span>-->
-<!--              </div>-->
-<!--          </div>-->
-<!--        <div class="success" [ngStyle]="{marginTop: (submitSuccess ? '0px' : '-75px')}">-->
-<!--          <p>SUCCESSFULLY REGISTERED</p>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </form>-->
-<!--  </div>-->
-<!--</div>-->
-
-<div>
+<div class="flex flex-col items-center justify-center h-full w-full p-5 text-white" style="background-color: #7334F1">
     <form [formGroup]="offlineProfileDetailsForm" (submit)="submitForm()">
-        <label>vcode</label>
-        <hr>
+        <label class="my-2 block">vcode</label>
         <input class="border border-2 rounded" type="text" [formControl]="vcodeControl">
-        <hr>
-        <label>name</label>
-        <hr>
+        <hr class="my-2">
+        <label class="my-2 block">name</label>
         <input class="border border-2 rounded" type="text" [formControl]="nameControl">
-        <hr>
-        <button type="submit" [disabled]="offlineProfileDetailsForm.invalid">Submit</button>
+        <hr class="my-2">
+        <button [disabled]="offlineProfileDetailsForm.invalid" class="rounded p-3 bg-green-500 my-2 w-100 text-center"
+                type="submit">Submit
+        </button>
     </form>
 </div>
