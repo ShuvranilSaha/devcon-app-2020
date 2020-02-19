@@ -200,4 +200,22 @@ export class ProfileServiceImpl {
         }),
     ).toPromise();
   }
+
+  public exitRegisteredUser(osid: string, visitorCode: string): Promise<string> {
+    const request = new Request.Builder()
+    .withType(HttpRequestType.POST)
+    .withPath('/api/regutil/visitor/exit')
+    .withApiToken(true)
+    .withBody({
+      request: {
+       osid,
+       visitorCode
+      }
+    }).build();
+    return this.apiService.fetch(request).pipe(
+      map((r: Response) => {
+        return r.body.responseCode;
+      })
+    ).toPromise();
+  }
 }

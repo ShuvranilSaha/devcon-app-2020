@@ -4,7 +4,7 @@
       <img [src]="profilePicURL" class="flex-grow-0 flex-shrink-0 rounded-full w-20 h-20 mr-5">
       <div>
         <p class="flex-grow-0 flex-shrink-0 block font-bold text-lg">{{profileName}}</p>
-        <p class="text-red-500 font-bold">3000</p>
+        <p class="text-red-500 font-bold">{{ getUserAwardedPoints$ | async }}</p>
       </div>
     </div>
 

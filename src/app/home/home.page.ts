@@ -5,6 +5,7 @@ import {StallServiceImpl} from '../services/stall/stall-service-impl';
 import { SessionPopupComponent } from '../components/session-popup/session-popup.component';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { QrcodeDetailsComponent } from '../components/qrcode-details/qrcode-details.component';
+import { Observable } from 'rxjs';
 
 interface Stall {
   code: string;
@@ -38,12 +39,15 @@ export class HomePage implements OnInit {
   public readonly profilePicURL = localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE)!;
   public readonly profileName = localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE)!;
 
+  getUserAwardedPoints$: Observable<number>;
+
   constructor(
     private qrcodeService: QrCodeServiceImpl,
     private stallService: StallServiceImpl,
     private popCtrl: PopoverController,
     private modalCtrl: ModalController
   ) {
+    this.getUserAwardedPoints$ = this.stallService.getUserAwardedPoints();
   }
 
   async ngOnInit() {
