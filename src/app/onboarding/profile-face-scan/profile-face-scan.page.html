@@ -28,14 +28,14 @@
                     <ng-container *ngIf="faceCaptured">
                         <div class="p-5"></div>
 
-                        <div class="p-5 rounded bg-red-500">
-                            <a (click)="resetFaceScan()" class="text-md text-white">Retry?</a>
+                        <div (click)="resetFaceScan()" class="p-5 rounded bg-red-500">
+                            <a class="text-md text-white">Retry?</a>
                         </div>
 
                         <div class="p-5"></div>
 
-                        <div class="p-5 rounded bg-blue-500">
-                            <a (click)="faceUpload()" class="text-md text-white">Continue</a>
+                        <div (click)="faceUpload()" class="p-5 rounded bg-blue-500">
+                            <a class="text-md text-white">Continue</a>
                         </div>
                     </ng-container>
                 </ng-container>

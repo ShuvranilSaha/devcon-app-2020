@@ -44,11 +44,11 @@ export class ProfileDetailsPage implements OnInit {
 
   async submitForm() {
     const name = this.nameControl.value;
-    // loader
     const loader = await this.loadingCtrl.create({
+      message: 'Loading...',
       showBackdrop: true,
-      duration: 2000,
-      spinner: 'dots'
+      translucent: true,
+      spinner: 'crescent'
     });
     await loader.present();
     try {
