@@ -1,10 +1,10 @@
 import * as QRCode from 'qrcode';
+import {Injectable} from '@angular/core';
 
-export interface QrCodeService {
-  generateDataUrl(data: string): Promise<string>;
-}
-
-export class QrCodeServiceImpl implements QrCodeService {
+@Injectable({
+  providedIn: 'root'
+})
+export class QrCodeServiceImpl {
   generateDataUrl(data: string): Promise<string> {
     return QRCode.toDataURL(data);
   }

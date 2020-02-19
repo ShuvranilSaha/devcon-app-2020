@@ -1,9 +1,63 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>home</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="overflow-y-scroll w-full h-full">
+  <div class="flex justify-between mb-5 p-5">
+    <div class="flex flex-row justify-center items-center">
+      <img [src]="profilePicURL" class="flex-grow-0 flex-shrink-0 rounded-full w-20 h-20 mr-5">
+      <div>
+        <p class="flex-grow-0 flex-shrink-0 block font-bold text-lg">{{profileName}}</p>
+        <p class="text-red-500 font-bold">3000</p>
+      </div>
+    </div>
 
-<ion-content>
+    <div *ngIf="qrcodeDataURL" class="border-dashed border-2 p-1 rounded">
+      <img [src]="qrcodeDataURL" class="w-20 h-20">
+    </div>
+  </div>
 
-</ion-content>
+  <div class="mb-5 p-5 pr-0 pl-0">
+    <h1 class="font-bold text-md mb-5 ml-5">Badges</h1>
+    <div class="overflow-x-scroll whitespace-no-wrap h-16">
+      <div class="inline-block rounded-full w-16 h-16 bg-blue-400 mx-3">
+      </div>
+      <div class="inline-block rounded-full w-16 h-16 bg-blue-400 mx-3">
+      </div>
+      <div class="inline-block rounded-full w-16 h-16 bg-blue-400 mx-3">
+      </div>
+      <div class="inline-block rounded-full w-16 h-16 bg-blue-400 mx-3">
+      </div>
+      <div class="inline-block rounded-full w-16 h-16 bg-blue-400 mx-3">
+      </div>
+      <div class="inline-block rounded-full w-16 h-16 bg-blue-400 mx-3">
+      </div>
+    </div>
+  </div>
+
+  <div *ngFor="let stall of stallList; let stallIndex = index" class="stall-container rounded mb-5 p-5">
+    <h1 class="text-lg font-bold mb-5" style="font-size: 24px">{{stall.name}}</h1>
+    <div>
+      <div>
+        <div class='app_inner'>
+          <ng-container *ngFor="let idea of stall.ideas; let ideaIndex = index">
+            <input [id]="'tab-' + stallIndex + '-' + ideaIndex" checked='' name='buttons' type='radio'>
+            <label [for]="'tab-' + stallIndex + '-' + ideaIndex">
+              <div class='app_inner__tab'>
+                <h2 class="text-white">
+                  {{idea.name}}
+                </h2>
+                <div class="tab_left">
+                  <h2 class="big text-white opacity-75 text-lg">{{idea.name[0]}}</h2>
+                  <div class='tab_left__image'>
+                    <h2 class="text-white text-lg">{{idea.name[0]}}</h2>
+                  </div>
+                </div>
+                <div class='tab_right'>
+                  <p class="text-white">{{idea.description}}</p>
+                  <button class="text-white">More</button>
+                </div>
+              </div>
+            </label>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
