@@ -4,7 +4,10 @@
       <img [src]="profilePicURL" class="flex-grow-0 flex-shrink-0 rounded-full w-20 h-20 mr-5">
       <div>
         <p class="flex-grow-0 flex-shrink-0 block font-bold text-lg">{{profileName}}</p>
-        <p class="text-red-500 font-bold">{{ getUserAwardedPoints$ | async }}</p>
+        <div class="flex flex-row">
+          <fa-icon class="justify-start items-start" [icon]="faRegularStar" size="1x"></fa-icon>
+          <p class="text-red-500 font-bold justify-end items-end" style="padding-left: 1rem;">{{ getUserAwardedPoints$ | async }}</p>
+        </div>
       </div>
     </div>
 
@@ -21,7 +24,7 @@
         <div class="inline-block flex flex-col items-center rounded-full w-16 h-16 mx-3">
           <ng-container *ngIf="certificateNameMap[badge._source.data.badge.name]">
             <img [src]="'/assets/badges/' + badge._source.data.badge.name + '.png'">
-            <p style="font-weight: bold">{{certificateNameMap[badge._source.data.badge.name]}}</p>
+            <p style="font-weight: bold; padding-left: 2px;">{{certificateNameMap[badge._source.data.badge.name]}}</p>
           </ng-container>
           <ng-container *ngIf="!certificateNameMap[badge._source.data.badge.name]">
             <img [src]="'/assets/badges/Default.png'">

@@ -92,14 +92,7 @@ export class HomePage implements OnInit {
 
     this.stallList = await this.stallService.getStallList();
     console.log('stallList', this.stallList);
-    this.generateStallVisitTelemetry();
-    this.generateUserPointsEarnTelemetry();
-    this.generateExitTelemetry();
     }
-
-    private generateExitTelemetry() {
-        this.telemetryService.getUserStallExitTelemetry('STA1', 'IDA3', {});
-  }
 
   async openSessionPopup(stallName: string) {
     if (stallName !== 'School') {
@@ -115,18 +108,6 @@ export class HomePage implements OnInit {
     const sessionPopup = await this.popCtrl.create(options);
     await sessionPopup.present();
   }
-
-    private generateUserPointsEarnTelemetry() {
-        this.telemetryService.getUserPointsEarnTelemetry('STA1', 'IDA3', {
-            type: 'Visitor',
-            points: 30,
-            badges: ['participation', 'GoodListener']
-        });
-    }
-
-    private generateStallVisitTelemetry() {
-        this.telemetryService.getStallVisitTelemetry('STA1', 'IDA3', {});
-    }
 
   async expandQrCode() {
     const param = {
