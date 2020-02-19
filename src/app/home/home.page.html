@@ -52,7 +52,7 @@
                 <div class='tab_right'>
                   <p class="text-white">{{idea.description}}</p>
                   <div *ngIf="ratingsMap[idea.code]">
-                    <fa-icon *ngFor="let i of arrayGen(ratingsMap[idea.code] / 20)" [icon]="faRegularStar"
+                    <fa-icon *ngFor="let i of arrayGen(ratingsMap[idea.code] / 20)" [icon]="faSolidStar"
                              size="2x"></fa-icon>
                   </div>
                   <div *ngIf="!ratingsMap[idea.code]">

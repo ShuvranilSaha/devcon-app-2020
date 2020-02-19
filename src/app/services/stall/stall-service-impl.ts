@@ -214,8 +214,8 @@ export class StallServiceImpl {
         return r.body;
       }),
       tap(() => {
-        if (vote.rating) {
-          this.feedbackRatingsMap[vote.ideaCode] = vote.rating;
+        if (vote.points) {
+          this.feedbackRatingsMap[vote.ideaCode] = vote.points;
         }
 
         if (vote.comment) {
