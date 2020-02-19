@@ -32,7 +32,7 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^5.0.0",
     "@project-sunbird/content-player": "2.7.1-alpha-ea50f5d0.0",
-    "@project-sunbird/sunbird-sdk": "https://github.com/arfath-gwl/sunbird-mobile-sdk#devcon",
+    "@project-sunbird/sunbird-sdk": "2.8.4",
     "com.virtuoworks.cordova-plugin-canvascamera": "git+https://github.com/VirtuoWorks/CanvasCameraPlugin.git",
     "cordova-android": "8.1.0",
     "cordova-ios": "^5.1.1",
@@ -58,6 +58,7 @@
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-plugin-statusbar": "2.4.2",
     "cordova-plugin-whitelist": "1.3.3",
+    "cordova-zip-plugin": "git+https://github.com/swayangjit/jjdltc-cordova-plugin-zip.git",
     "cordova.plugins.diagnostic": "^5.0.1",
     "core-js": "^2.5.4",
     "jjdltc-cordova-plugin-zip": "git+https://github.com/swayangjit/jjdltc-cordova-plugin-zip.git",
@@ -66,7 +67,7 @@
     "rxjs": "~6.5.1",
     "rxjs-compat": "^6.5.4",
     "sb-cordova-plugin-db": "git+https://github.com/Sunbird-Ed/sb-cordova-plugin-db.git",
-    "sb-cordova-plugin-utility": "git+https://github.com/Sunbird-Ed/sb-cordova-plugin-utility.git",
+    "sb-cordova-plugin-utility": "git+https://github.com/AmiableAnil/sb-cordova-plugin-utility.git#release-2.8.0",
     "tslib": "^1.9.0",
     "uuid": "^3.4.0",
     "zone.js": "~0.9.1"
@@ -105,7 +106,6 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "sb-cordova-plugin-db": {},
-      "sb-cordova-plugin-utility": {},
       "cordova-plugin-app-version": {},
       "cordova-plugin-network-information": {},
       "cordova-plugin-facedetection-lite": {},
@@ -132,7 +132,9 @@
       },
       "cordova-plugin-camera": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      }
+      },
+      "com.jjdltc.cordova.plugin.zip": {},
+      "sb-cordova-plugin-utility": {}
     },
     "platforms": [
       "android",

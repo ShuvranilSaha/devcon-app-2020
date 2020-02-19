@@ -15,6 +15,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { ComponentsModule } from './components/components.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ContentUtil } from './services/content.service';
 
 declare global {
   interface Window {
@@ -355,6 +356,7 @@ export const sunbirdSdkFactory =
     SplashScreen,
     LocalNotifications,
     NotificationService,
+    ContentUtil,
     OneSignal,
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     ...sunbirdSdkServicesProvidersFactory(),

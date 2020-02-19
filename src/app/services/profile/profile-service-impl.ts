@@ -1,5 +1,4 @@
-import {Request, Response} from '@project-sunbird/sunbird-sdk';
-import {ApiService, HttpRequestType, SharedPreferences} from '@project-sunbird/sunbird-sdk/dist';
+import {Request, Response, ApiService, HttpRequestType, SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {Inject, Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 

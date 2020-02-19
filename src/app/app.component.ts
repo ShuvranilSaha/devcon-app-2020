@@ -7,6 +7,7 @@ import { NotificationService as LocalNotification } from './services/notificatio
 import { PushNotificationService } from './services/push-notification';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter, take, tap} from 'rxjs/operators';
+import { ContentUtil } from './services/content.service';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     private notificationSrc: LocalNotification,
     private pushNotificationService: PushNotificationService,
+    private conettnUtil: ContentUtil,
     private router: Router
   ) {
   }
@@ -38,6 +40,7 @@ export class AppComponent implements OnInit {
           })
       ).subscribe();
       this.statusBar.styleDefault();
+      this.conettnUtil.importContent();
     });
 
     this.notificationSrc.setupLocalNotification();

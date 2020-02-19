@@ -8,11 +8,11 @@ android {
         if (System.properties['os.name'].toLowerCase().contains('windows')){
             from "$rootDir\\app\\src\\main\\assets\\www\\assets\\ecar"
             into "$rootDir\\app\\src\\main\\assets"
-            println "inside copydir faq windows OS"
+            println "inside copydir ecar windows OS"
         } else {
             from "$rootDir/app/src/main/assets/www/assets/ecar"
             into "$rootDir/app/src/main/assets"
-            println "inside copydir faq linux OS"
+            println "inside copydir ecar linux OS"
         }
     }
 
