@@ -328,6 +328,7 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
     const osid = window.localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)!;
     const {url} = await this.profileService.registerPhoto(osid, imageBlob);
 
+    window.localStorage.setItem(PreferenceKeys.ProfileAttributes.QR_CODE_DATA_ATTRIBUTE, `https://devcon.sunbirded.org/api/reg/Visitor/${osid}`);
     window.localStorage.setItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE, url);
     window.localStorage.setItem(PreferenceKeys.Onboarding.PROFILE_FACE_SCAN_COMPLETE, 'true');
 
