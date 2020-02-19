@@ -173,4 +173,31 @@ export class ProfileServiceImpl {
       }),
     ).toPromise();
   }
+
+  public registerOfflineUser(code: string, name: string): Promise <{Visitor: {osid: string}}> {
+    const request = new Request.Builder()
+        .withType(HttpRequestType.POST)
+        .withPath('/api/reg/add')
+        .withApiToken(true)
+        .withBody({
+          request: {
+            Visitor: {
+              code,
+              name
+            }
+          }
+        }).build();
+
+    return this.apiService.fetch(request).pipe(
+        map((r: Response) => {
+          return r.body;
+        }),
+        map((r) => {
+          if (r.params.status !== 'SUCCESSFUL') {
+            throw new Error('UNEXPECTED RESPONSE');
+          }
+          return r.result!.Visitor;
+        }),
+    ).toPromise();
+  }
 }
