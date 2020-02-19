@@ -51,7 +51,17 @@
                 </div>
                 <div class='tab_right'>
                   <p class="text-white">{{idea.description}}</p>
-                  <button class="text-white">More</button>
+                  <div *ngIf="ratingsMap[idea.code]">
+                    <fa-icon *ngFor="let i of arrayGen(ratingsMap[idea.code] / 20)" [icon]="faRegularStar"
+                             size="2x"></fa-icon>
+                  </div>
+                  <div *ngIf="!ratingsMap[idea.code]">
+                    <fa-icon (click)="postFeedback(1, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
+                    <fa-icon (click)="postFeedback(2, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
+                    <fa-icon (click)="postFeedback(3, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
+                    <fa-icon (click)="postFeedback(4, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
+                    <fa-icon (click)="postFeedback(5, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
+                  </div>
                 </div>
               </div>
             </label>

@@ -1,17 +1,17 @@
-import {Request, Response, ApiService, HttpRequestType, SharedPreferences} from '@project-sunbird/sunbird-sdk';
+import {ApiService, HttpRequestType, Request, Response, SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {Inject, Injectable} from '@angular/core';
 import {map, mergeMap} from 'rxjs/operators';
-import { PreferenceKeys } from 'src/config/preference-keys';
-import { Observable, interval } from 'rxjs';
+import {PreferenceKeys} from 'src/config/preference-keys';
+import {interval, Observable} from 'rxjs';
 
 export interface Certificate {
   _source: {
-      data: {
-          badge: {
-              name: string;
-          };
-      }
-      pdfUrl: string;
+    data: {
+      badge: {
+        name: string;
+      };
+    }
+    pdfUrl: string;
   };
 }
 
@@ -124,7 +124,7 @@ export class ProfileServiceImpl {
     // @ts-ignore
     const options = new FileUploadOptions();
     options.fileKey = 'file';
-    options.fileName = 'some_file.png';
+    options.fileName = `${osid}_${(name || '').split(' ').join('-')}.png`;
     options.mimeType = 'image/png';
     options.httpMethod = 'POST';
     options.headers = {
