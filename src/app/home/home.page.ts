@@ -32,7 +32,7 @@ interface Idea {
 })
 export class HomePage implements OnInit {
 
-  private stallList: Stall[] = [];
+  public stallList: Stall[] = [];
 
   qrcodeDataURL?: string;
   public readonly profilePicURL = localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE)!;
