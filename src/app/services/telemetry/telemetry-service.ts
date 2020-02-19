@@ -91,8 +91,8 @@ export class TelemetryService {
             ideaId,
             sid,
             edata: {
-                profileUrl: localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)!,
-                name: localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)!,
+                profileUrl: localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE)!,
+                name: localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE)!,
                 osid: localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)!,
               }
         };
