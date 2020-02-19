@@ -1,6 +1,28 @@
-import {Request, Response, ApiService, HttpRequestType, SharedPreferences} from '@project-sunbird/sunbird-sdk';
+import {ApiService, HttpRequestType, Request, Response, SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {Inject, Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
+import {map, mergeMap} from 'rxjs/operators';
+import {PreferenceKeys} from 'src/config/preference-keys';
+import {interval, Observable} from 'rxjs';
+
+export interface Certificate {
+  _source: {
+    data: {
+      badge: {
+        name: string;
+      };
+    }
+    pdfUrl: string;
+  };
+}
+
+interface Profile {
+  osUpdatedAt: string;
+  code: string;
+  osCreatedAt: string;
+  '@type': string;
+  name: string;
+  osid: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -102,7 +124,7 @@ export class ProfileServiceImpl {
     // @ts-ignore
     const options = new FileUploadOptions();
     options.fileKey = 'file';
-    options.fileName = 'some_file.png';
+    options.fileName = `${osid}_${(name || '').split(' ').join('-')}.png`;
     options.mimeType = 'image/png';
     options.httpMethod = 'POST';
     options.headers = {
@@ -174,30 +196,169 @@ export class ProfileServiceImpl {
     ).toPromise();
   }
 
-  public registerOfflineUser(code: string, name: string): Promise <{Visitor: {osid: string}}> {
+  public async registerOfflineUser(
+    image: Blob,
+    vcode: string,
+    name: string
+  ): Promise<undefined> {
+    const profile = await this.getProfileByVcode(vcode);
+
+    if (!profile) {
+      throw new Error('PROFILE_NOT_FOUND');
+    }
+
+    const { url } = await this.registerPhoto(profile.osid, image, name);
+
+    await this.updateProfile({
+      code: vcode,
+      name,
+      photo: url,
+      osid: profile.osid
+    });
+
+    return;
+  }
+
+  private getProfileByVcode(vcode: string): Promise<Profile | undefined> {
     const request = new Request.Builder()
-        .withType(HttpRequestType.POST)
-        .withPath('/api/reg/add')
-        .withApiToken(true)
-        .withBody({
-          request: {
-            Visitor: {
-              code,
-              name
+      .withType(HttpRequestType.POST)
+      .withPath('/api/reg/search')
+      .withApiToken(true)
+      .withBody({
+        request: {
+          entityType: ['Visitor'],
+          filters: {
+            code: {
+              eq: vcode
             }
           }
-        }).build();
+        }
+      })
+      .build();
 
     return this.apiService.fetch(request).pipe(
-        map((r: Response) => {
+        map((r: Response<{
+          params: {
+            status: 'SUCCESSFUL' | 'UNSUCCESSFUL'
+          },
+          result: {
+            Visitor: Profile[]
+          }
+        }>) => {
           return r.body;
         }),
         map((r) => {
           if (r.params.status !== 'SUCCESSFUL') {
             throw new Error('UNEXPECTED RESPONSE');
           }
-          return r.result!.Visitor;
+
+          return r.result!.Visitor[0];
         }),
     ).toPromise();
+  }
+
+  public exitRegisteredUser(osid: string, visitorCode: string): Promise<string> {
+    const request = new Request.Builder()
+    .withType(HttpRequestType.POST)
+    .withPath('/api/regutil/visitor/exit')
+    .withApiToken(true)
+    .withBody({
+      request: {
+       osid,
+       visitorCode
+      }
+    }).build();
+    return this.apiService.fetch(request).pipe(
+      map((r: Response) => {
+        return r.body.responseCode;
+      })
+    ).toPromise();
+  }
+
+  public updateProfile(request: {
+    code: string;
+    name: string;
+    photo: string;
+    osid: string;
+  }): Promise<undefined> {
+    const apiRequest = new Request.Builder()
+      .withType(HttpRequestType.POST)
+      .withPath('/api/reg/update')
+      .withApiToken(true)
+      .withBody({
+        request: {
+          Visitor: request
+        }
+      })
+      .build();
+
+    return this.apiService.fetch(apiRequest).pipe(
+      map((r: Response<{
+        params: {
+          status: 'SUCCESSFUL' | 'UNSUCCESSFUL'
+        },
+        result: {
+          Visitor: {
+            osUpdatedAt: string;
+            code: string;
+            osCreatedAt: string;
+            name: string;
+            osid: string;
+          }
+        } | undefined,
+      }>) => {
+        return r.body;
+      }),
+      map((r) => {
+        if (r.params.status !== 'SUCCESSFUL') {
+          console.error('UNEXPECTED_RESPONSE', r, apiRequest);
+          throw new Error('UNEXPECTED_RESPONSE');
+        }
+
+        return undefined;
+      }),
+    ).toPromise();
+  }
+
+
+  public getProfileCertificates(): Observable<Certificate[]> {
+    return interval(10 * 1000).pipe(
+      mergeMap(() => {
+        const request = new Request.Builder()
+          .withType(HttpRequestType.POST)
+          .withPath('/api/certreg/v1/certs/search')
+          .withApiToken(true)
+          .withBody({
+            request: {
+                query: {
+                    match_phrase: {
+                        'recipient.id': localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)
+                    }
+                }
+            }
+          })
+          .build();
+
+        return this.apiService.fetch(request).pipe(
+          map((r: Response<{
+            result: {
+                response: {
+                    hits: Certificate[]
+                };
+            }
+          }>) => {
+            return r.body;
+          }),
+          map((r) => {
+            if (r.result && r.result.response && r.result.response.hits) {
+              return r.result.response.hits;
+            }
+
+            console.error('UNEXPECTED_RESPONSE', r, request);
+            throw new Error('UNEXPECTED_RESPONSE');
+          }),
+        );
+      })
+    );
   }
 }

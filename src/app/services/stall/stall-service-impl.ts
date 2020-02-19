@@ -1,32 +1,76 @@
-import { ApiService, HttpRequestType } from '@project-sunbird/sunbird-sdk';
-import { Request, Response } from '@project-sunbird/sunbird-sdk';
-import { Inject, Injectable } from '@angular/core';
-import { Stall, Idea } from './stall-service';
-import { map, mergeMap } from 'rxjs/operators';
-import { Observable, interval } from 'rxjs';
-import { PreferenceKeys } from 'src/config/preference-keys';
-import {VisitorActivity} from './stall-service';
+import {ApiService, HttpRequestType, Request, Response} from '@project-sunbird/sunbird-sdk';
+import {Inject, Injectable} from '@angular/core';
+import {Idea, Stall, VisitorActivity} from './stall-service';
+import {map, mergeMap, tap} from 'rxjs/operators';
+import {interval, Observable} from 'rxjs';
+import {PreferenceKeys} from 'src/config/preference-keys';
 
+export interface Vote {
+  ideaCode: string;
+  visitorCode: string;
+  rating: number;
+  comment?: string;
+  timestamp: string;
+  points?: 20 | 40 | 60 | 80 | 100;
+}
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class StallServiceImpl {
 
-    constructor(
-        @Inject('API_SERVICE') private apiService: ApiService
-    ) {
+  constructor(
+    @Inject('API_SERVICE') private apiService: ApiService
+  ) {
+    const persistedRatingsMap = localStorage.getItem(PreferenceKeys.ProfileFeedback.RATINGS_MAP);
+    const persistedCommentsMap = localStorage.getItem(PreferenceKeys.ProfileFeedback.COMMENTS_MAP);
+
+    if (persistedRatingsMap) {
+      this.feedbackRatingsMap = JSON.parse(persistedRatingsMap);
     }
 
-    public async getStallList(): Promise<Stall[]> {
-        const request = new Request.Builder()
-            .withType(HttpRequestType.POST)
-            .withPath('/api/reg/search')
-            .withApiToken(true)
-            .withBody({
-                request: {
-                    entityType: ['Stall'],
-                    filters: {}
+    if (persistedCommentsMap) {
+      this.feedbackCommentsMap = JSON.parse(persistedCommentsMap);
+    }
+  }
+
+  private _feedbackRatingsMap: {
+    [ideaCode: string]: number
+  } = {};
+
+  get feedbackRatingsMap(): { [p: string]: number } {
+    return this._feedbackRatingsMap;
+  }
+
+  set feedbackRatingsMap(value: { [p: string]: number }) {
+    this._feedbackRatingsMap = value;
+
+    localStorage.setItem(PreferenceKeys.ProfileFeedback.RATINGS_MAP, JSON.stringify(value));
+  }
+
+  private _feedbackCommentsMap: {
+    [ideaCode: string]: string
+  } = {};
+
+  get feedbackCommentsMap(): { [p: string]: string } {
+    return this._feedbackCommentsMap;
+  }
+
+  set feedbackCommentsMap(value: { [p: string]: string }) {
+    this._feedbackCommentsMap = value;
+
+    localStorage.setItem(PreferenceKeys.ProfileFeedback.COMMENTS_MAP, JSON.stringify(value));
+  }
+
+  public async getStallList(): Promise<Stall[]> {
+    const request = new Request.Builder()
+      .withType(HttpRequestType.POST)
+      .withPath('/api/reg/search')
+      .withApiToken(true)
+      .withBody({
+        request: {
+          entityType: ['Stall'],
+          filters: {}
                 }
             })
             .build();
@@ -130,46 +174,61 @@ export class StallServiceImpl {
                             throw new Error('UNEXPECTED_RESPONSE');
                         }
 
-                        return r.result.VisitorActivity.reduce((acc, i) => {
-                            acc += i.points;
-                            return acc;
-                        }, 0);
+                      return r.result.VisitorActivity.reduce((acc, i) => {
+                        acc += i.points;
+                        return acc;
+                      }, 0);
                     }),
                 );
             })
         );
     }
 
-    // public postUserFeedback(Vote: { points?: 20 | 40 | 60 | 80 | 100, comment?: string,
-    //      ideaCode: string, visitorCode: string }): Promise<string> {
-    //     const request = new Request.Builder()
-    //         .withType(HttpRequestType.POST)
-    //         .withPath('/api/reg/add')
-    //         .withApiToken(true)
-    //         .withBody({
-    //             request: {
-    //                 Vote
-    //             }
-    //         })
-    //         .build();
-    //     return this.apiService.fetch(request).pipe(
-    //         map((r: Response<{
-    //             params: {
-    //                 status: 'SUCCESSFUL' | 'UNSUCCESSFUL'
-    //             },
-    //             result: {
-    //                 osid: string
-    //             },
-    //         }>) => {
-    //             return r.body;
-    //         }),
-    //         map((r) => {
-    //             if (r.params.status !== 'SUCCESSFUL') {
-    //                 throw new Error('UNEXPECTED_RESPONSE');
-    //             }
+  public postUserFeedback(vote: Exclude<Vote, 'visitorCode' | 'timestamp'>): Promise<undefined> {
+    const votePatched: Vote = {
+      ...vote,
+      visitorCode: localStorage.getItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE)!,
+      timestamp: Date.now() + ''
+    };
 
-    //             return r.params.status;
-    //         }),
-    //     ).toPromise();
-    // }
+    const request = new Request.Builder()
+      .withType(HttpRequestType.POST)
+      .withPath('/api/reg/add')
+      .withApiToken(true)
+      .withBody({
+        request: {
+          Vote: votePatched
+        }
+      })
+      .build();
+
+    return this.apiService.fetch(request).pipe(
+      map((r: Response<{
+        params: {
+          status: 'SUCCESSFUL' | 'UNSUCCESSFUL'
+        },
+        result: {
+          osid: string
+        },
+      }>) => {
+        return r.body;
+      }),
+      tap(() => {
+        if (vote.points) {
+          this.feedbackRatingsMap[vote.ideaCode] = vote.points;
+        }
+
+        if (vote.comment) {
+          this.feedbackCommentsMap[vote.ideaCode] = vote.comment;
+        }
+      }),
+      map((r) => {
+        if (r.params.status !== 'SUCCESSFUL') {
+          throw new Error('UNEXPECTED_RESPONSE');
+        }
+
+        return undefined;
+      }),
+    ).toPromise();
+  }
 }

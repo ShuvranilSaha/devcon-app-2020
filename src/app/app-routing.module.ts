@@ -67,6 +67,10 @@ const routes: Routes = [
     path: 'stall-attendance',
     loadChildren: () => import('./stall-attendance/stall-attendance.module').then(m => m.StallAttendancePageModule)
   },
+  {
+    path: 'player',
+    loadChildren: () => import('./player/player.module').then(m => m.PlayerPageModule)
+  },
 ];
 @NgModule({
   imports: [

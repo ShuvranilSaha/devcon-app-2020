@@ -14,8 +14,14 @@ enum Walkthrough {
   WALKTHROUGH_COMPLETE = 'WALKTHROUGH_COMPLETE'
 }
 
+enum ProfileFeedback {
+  RATINGS_MAP = 'RATINGS_MAP',
+  COMMENTS_MAP = 'COMMENTS_MAP'
+}
+
 export const PreferenceKeys = {
   ProfileAttributes,
   Onboarding,
-  Walkthrough
+  Walkthrough,
+  ProfileFeedback
 };

@@ -106,7 +106,7 @@
           }
 
           .tab_right {
-            width: 60%;
+            width: 100%;
             float: right;
             position: relative;
             top: 200px;
@@ -149,7 +149,7 @@
           }
 
           .tab_left {
-            width: 30%;
+            width: 0;
             float: left;
             position: relative;
 
@@ -167,7 +167,7 @@
               top: -100px;
               text-align: center;
               background: white;
-              left: 47px;
+              left: 15px;
               border-radius: 20px;
               width: 80px;
               height: 80px;
@@ -264,4 +264,28 @@ a.follow {
     color: #41EFB6;
     border-color: #41EFB6;
   }
+}
+.myButton {
+	box-shadow: -4px -3px 21px -7px #276873;
+	background:linear-gradient(to bottom, #599bb3 5%, #80989c 100%);
+	background-color:#599bb3;
+	border-radius:18px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	font-weight:bold;
+	padding:14px 67px;
+	text-decoration:none;
+  text-shadow:0px 1px 0px #3d768a;
+  margin-left: 32%;
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #80989c 5%, #599bb3 100%);
+	background-color:#80989c;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
 }

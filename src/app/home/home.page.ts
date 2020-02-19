@@ -2,9 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {PreferenceKeys} from '../../config/preference-keys';
 import {QrCodeServiceImpl} from '../services/qr-code.service';
 import {StallServiceImpl} from '../services/stall/stall-service-impl';
-import { SessionPopupComponent } from '../components/session-popup/session-popup.component';
-import { PopoverController, ModalController } from '@ionic/angular';
-import { QrcodeDetailsComponent } from '../components/qrcode-details/qrcode-details.component';
+import {SessionPopupComponent} from '../components/session-popup/session-popup.component';
+import {LoadingController, ModalController, PopoverController} from '@ionic/angular';
+import {QrcodeDetailsComponent} from '../components/qrcode-details/qrcode-details.component';
+import {Observable} from 'rxjs';
+import {Certificate, ProfileServiceImpl} from '../services/profile/profile-service-impl';
+import {faStar as faRegularStar} from '@fortawesome/free-regular-svg-icons/faStar';
+import {faStar as faSolidStar} from '@fortawesome/free-solid-svg-icons/faStar';
+import {TelemetryService} from '../services/telemetry/telemetry-service';
+
 
 interface Stall {
   code: string;
@@ -31,29 +37,62 @@ interface Idea {
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-
-  private stallList: Stall[] = [];
-
-  qrcodeDataURL?: string;
-  public readonly profilePicURL = localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE)!;
-  public readonly profileName = localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE)!;
+  public faRegularStar = faRegularStar;
+  public faSolidStar = faSolidStar;
 
   constructor(
     private qrcodeService: QrCodeServiceImpl,
     private stallService: StallServiceImpl,
     private popCtrl: PopoverController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private profileService: ProfileServiceImpl,
+    private loadingCtrl: LoadingController,
+    private telemetryService: TelemetryService
+
   ) {
+    this.getUserAwardedPoints$ = this.stallService.getUserAwardedPoints();
+    this.getProfileCertificates$ = this.profileService.getProfileCertificates();
+  }
+  qrCode?: string;
+  certificateNameMap: {[key: string]: string} = {
+    'Super Reader': 'Super Reader',
+    Contributor: 'Contributor',
+    Winner: 'Winner',
+    'Participation certificate': 'Participation',
+    Default: ''
+  };
+
+  get ratingsMap() {
+    return this.stallService.feedbackRatingsMap;
+  }
+
+  get commentsMap() {
+    return this.stallService.feedbackCommentsMap;
+  }
+
+  public stallList: Stall[] = [];
+
+  qrcodeDataURL?: string;
+  public readonly profilePicURL = localStorage.getItem(PreferenceKeys.ProfileAttributes.URL_ATTRIBUTE)!;
+  public readonly profileName = localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE)!;
+
+  getUserAwardedPoints$: Observable<number>;
+  getProfileCertificates$: Observable<Certificate[]>;
+
+  arrayGen(size: number): any[] {
+    return Array(size);
   }
 
   async ngOnInit() {
     this.qrcodeDataURL = await this.qrcodeService.generateDataUrl(
       localStorage.getItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE)!
     );
+    this.qrCode = localStorage.getItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE)!;
+
 
     this.stallList = await this.stallService.getStallList();
     console.log('stallList', this.stallList);
-  }
+    }
 
   async openSessionPopup(stallName: string) {
     if (stallName !== 'School') {
@@ -82,4 +121,43 @@ export class HomePage implements OnInit {
     modal.present();
   }
 
+  async postFeedback(ratingIndex: number, ideaCode: string) {
+    const rating = ratingIndex * 20;
+
+    const loader = await this.loadingCtrl.create({
+      message: 'Loading...',
+      showBackdrop: true,
+      translucent: true,
+      spinner: 'crescent'
+    });
+
+    await loader.present();
+
+    return this.stallService.postUserFeedback({
+      visitorCode: '',
+      timestamp: '',
+      ideaCode,
+      rating: ratingIndex,
+      points: (rating as any)
+    }).then(() => {
+      loader.dismiss();
+    }).catch(() => {
+      loader.dismiss();
+    });
+  }
+
+  async exit() {
+    const osid = localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)!;
+    const code = localStorage.getItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE)!;
+    await this.profileService.exitRegisteredUser(osid, code).then((data) => {
+     console.log('exit', data);
+    }).catch((e) => {
+      console.error(e);
+    });
+    this.telemetryService.getUserStallExitTelemetry('', '', {
+      type: 'VISITOR_EXIT',
+      osid,
+      code,
+    });
+  }
 }

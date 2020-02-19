@@ -26,7 +26,7 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
   @ViewChild('facePreviewRef', {static: false, read: ElementRef}) facePreviewRef!: ElementRef;
   cameraStarted = false;
   faceCaptured = false;
-  private cameraStream?: MediaStream;
+  public cameraStream?: MediaStream;
   private cameraPreview!: HTMLVideoElement;
   private cameraIosPreview!: HTMLCanvasElement;
   private canvasPreview!: HTMLCanvasElement;
@@ -50,12 +50,12 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
   };
 
   constructor(
-    @Inject('SHARED_PREFERENCES') private sharedPreferences: SharedPreferences,
-    private androidPermissionsService: AndroidPermissionsService,
-    private loadingCtrl: LoadingController,
-    private navCtrl: NavController,
-    private platform: Platform,
-    private profileService: ProfileServiceImpl
+    @Inject('SHARED_PREFERENCES') protected sharedPreferences: SharedPreferences,
+    protected androidPermissionsService: AndroidPermissionsService,
+    protected loadingCtrl: LoadingController,
+    protected navCtrl: NavController,
+    protected platform: Platform,
+    protected profileService: ProfileServiceImpl
   ) {
   }
 
@@ -74,6 +74,11 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
   }
 
   public async startFaceScan() {
+    if (this.faceCaptured) {
+      this.faceCaptured = false;
+      return;
+    }
+
     if (this.platform.is('android')) {
       const status = await this.androidPermissionsService.checkPermissions([AndroidPermission.CAMERA]).toPromise();
 
@@ -109,7 +114,7 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
     this.initFaceDetection();
   }
 
-  initFaceDetection() {
+  private initFaceDetection() {
     const sizeFrameMemory = 30;
     window.facedetection.initFaceDetection(
       sizeFrameMemory,
@@ -120,8 +125,7 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
       });
   }
 
-
-  openCamera() {
+  private openCamera() {
     if (this.platform.is('ios')) {
       const self = this;
       // tslint:disable-next-line:only-arrow-functions
@@ -302,7 +306,7 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
         if (JSON.stringify(this.prevFaceBox) !== JSON.stringify(this.faceBox)) {
           this.prevFaceBox = {...this.faceBox};
           setTimeout(() => {
-            this.faceCaptured = true;
+            this.onFaceCaptured();
           }, 500);
         }
       }
@@ -337,5 +341,9 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
     await this.navCtrl.navigateRoot('/walk-through', {
       animated: true, animationDirection: 'forward'
     });
+  }
+
+  onFaceCaptured() {
+    this.faceCaptured = true;
   }
 }
