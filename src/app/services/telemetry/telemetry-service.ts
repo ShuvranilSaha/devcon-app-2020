@@ -86,11 +86,21 @@ export class TelemetryService {
             .withType(HttpRequestType.POST)
             .withPath('/content/data/v1/telemetry')
             .withApiToken(true)
-            .withBody({telemetryRequest})
+            .withBody({
+                id: 'api.sunbird.telemetry',
+                ver: '3.0',
+                params: {
+                    msgid: uuidv4(),
+                },
+                ets: Date.now(),
+                events: [
+                    telemetryRequest
+                ] as BaseTelemetryRequest[]
+            })
             .build();
         return this.apiService.fetch(request).pipe(
             mapTo(undefined),
-            tap(() => console.log('telemetry logged:', telemetryRequest)),
+            tap(() => console.log('telemetry logged:', request._body)),
             catchError((e) => {
                 console.error(e);
                 throw e;
