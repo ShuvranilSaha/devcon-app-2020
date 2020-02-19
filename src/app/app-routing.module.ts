@@ -57,11 +57,15 @@ const routes: Routes = [
   },
   {
     path: 'tabs',
-    loadChildren: () => import('./home/tabs/tabs.module').then( m => m.TabsPageModule)
+    loadChildren: () => import('./home/tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
     path: 'offline-register',
-    loadChildren: () => import('./offline-register/offline-register.module').then( m => m.OfflineRegisterPageModule)
+    loadChildren: () => import('./offline-register/offline-register.module').then(m => m.OfflineRegisterPageModule)
+  },
+  {
+    path: 'stall-attendance',
+    loadChildren: () => import('./stall-attendance/stall-attendance.module').then(m => m.StallAttendancePageModule)
   },
 ];
 @NgModule({

@@ -4,7 +4,11 @@
     <hr>
     <h1 class="text-lg font-bold">Scan Result:</h1>
     <ng-container *ngIf="recognizedBSSIDResult">
-        <h1 class="text-lg">{{recognizedBSSIDResult.level}}</h1>
+        <h1 class="text-lg">{{recognizedBSSIDResult.SSID}}: {{recognizedBSSIDResult.level}}</h1>
+    </ng-container>
+    <hr>
+    <ng-container *ngIf="recognizedBSSIDResult2">
+        <h1 class="text-lg">{{recognizedBSSIDResult2.SSID}}: {{recognizedBSSIDResult2.level}}</h1>
     </ng-container>
     <hr>
     <ng-container *ngIf="!recognizedBSSIDResult">
