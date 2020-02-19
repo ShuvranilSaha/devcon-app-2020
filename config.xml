@@ -3,7 +3,7 @@
     <name>Devcon 2020</name>
     <description>Application for Ekstep DevCon 2020.</description>
     <author email="devcon@ekstep.org" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100"/>
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -130,6 +130,7 @@
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
     </plugin>
     <plugin name="cordova-plugin-chathead" spec="git+https://github.com/swayangjit/cordova-plugin-chathead.git" />
+    <allow-navigation href="http://localhost:8100" sessionid="8da32f68"/>
     <engine name="android" spec="8.1.0" />
     <engine name="ios" spec="^5.1.1" />
 </widget>

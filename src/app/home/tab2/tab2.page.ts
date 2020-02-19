@@ -8,8 +8,10 @@ import {Component} from '@angular/core';
 export class Tab2Page {
   public isWifiEnabled = false;
   public recognizedBSSIDResult?: ScanResult;
+  public recognizedBSSIDResult2?: ScanResult;
   public readonly JSON = JSON;
-  private readonly ourSSID = 'Devcon_2020';
+  private readonly ourSSID = 'devcon_tracker1';
+  private readonly ourSSID2 = 'ehashed';
   private wifiManager = window.cordova.plugins.WifiManager;
   private intervalRef?: any;
 
@@ -37,6 +39,7 @@ export class Tab2Page {
         if (enabled) {
           this.wifiManager.getScanResults((_, scanResults) => {
             this.recognizedBSSIDResult = scanResults.find((r) => r.SSID === this.ourSSID);
+            this.recognizedBSSIDResult2 = scanResults.find((r) => r.SSID === this.ourSSID2);
             this.wifiManager.startScan(() => {
             });
           });
