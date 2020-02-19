@@ -164,4 +164,19 @@ export class HomePage implements OnInit {
       loader.dismiss();
     });
   }
+
+  async exit() {
+    const osid = localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)!;
+    const code = localStorage.getItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE)!;
+    await this.profileService.exitRegisteredUser(osid, code).then((data) => {
+     console.log('exit', data);
+    }).catch((e) => {
+      console.error(e);
+    });
+    this.telemetryService.getUserStallExitTelemetry('', '', {
+      type: 'VISITOR_EXIT',
+      osid,
+      code,
+    });
+  }
 }
