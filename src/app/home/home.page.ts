@@ -9,6 +9,8 @@ import {Observable} from 'rxjs';
 import {Certificate, ProfileServiceImpl} from '../services/profile/profile-service-impl';
 import {faStar as faRegularStar} from '@fortawesome/free-regular-svg-icons/faStar';
 import {faStar as faSolidStar} from '@fortawesome/free-solid-svg-icons/faStar';
+import {TelemetryService} from '../services/telemetry/telemetry-service';
+
 
 interface Stall {
   code: string;
@@ -44,18 +46,20 @@ export class HomePage implements OnInit {
     private popCtrl: PopoverController,
     private modalCtrl: ModalController,
     private profileService: ProfileServiceImpl,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private telemetryService: TelemetryService
+
   ) {
     this.getUserAwardedPoints$ = this.stallService.getUserAwardedPoints();
     this.getProfileCertificates$ = this.profileService.getProfileCertificates();
   }
-
+  qrCode?: string;
   certificateNameMap = {
     'Super Reader': 'Super Reader',
-    'Contributor': 'Contributor',
-    'Winner': 'Winner',
+    Contributor: 'Contributor',
+    Winner: 'Winner',
     'Participation certificate': 'Participation',
-    'Default': ''
+    Default: ''
   };
 
   get ratingsMap() {
@@ -83,9 +87,18 @@ export class HomePage implements OnInit {
     this.qrcodeDataURL = await this.qrcodeService.generateDataUrl(
       localStorage.getItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE)!
     );
+    this.qrCode = localStorage.getItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE)!;
+
 
     this.stallList = await this.stallService.getStallList();
     console.log('stallList', this.stallList);
+    this.generateStallVisitTelemetry();
+    this.generateUserPointsEarnTelemetry();
+    this.generateExitTelemetry();
+    }
+
+    private generateExitTelemetry() {
+        this.telemetryService.getUserStallExitTelemetry('STA1', 'IDA3', {});
   }
 
   async openSessionPopup(stallName: string) {
@@ -102,6 +115,18 @@ export class HomePage implements OnInit {
     const sessionPopup = await this.popCtrl.create(options);
     await sessionPopup.present();
   }
+
+    private generateUserPointsEarnTelemetry() {
+        this.telemetryService.getUserPointsEarnTelemetry('STA1', 'IDA3', {
+            type: 'Visitor',
+            points: 30,
+            badges: ['participation', 'GoodListener']
+        });
+    }
+
+    private generateStallVisitTelemetry() {
+        this.telemetryService.getStallVisitTelemetry('STA1', 'IDA3', {});
+    }
 
   async expandQrCode() {
     const param = {

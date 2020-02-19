@@ -10,6 +10,7 @@
 
     <div *ngIf="qrcodeDataURL" class="border-dashed border-2 p-1 rounded" (click)="expandQrCode()">
       <img [src]="qrcodeDataURL" class="w-20 h-20">
+      <p style="text-align: center">{{qrCode}}</p>
     </div>
   </div>
 
@@ -17,10 +18,10 @@
     <h1 class="font-bold text-md mb-5 ml-5">Badges</h1>
     <div class="overflow-x-scroll overflow-y-hidden whitespace-no-wrap h-24">
       <div *ngFor="let badge of (getProfileCertificates$ | async)">
-        <div class="inline-block rounded-full w-16 h-16 mx-3">
+        <div class="inline-block flex flex-col items-center rounded-full w-16 h-16 mx-3">
           <ng-container *ngIf="certificateNameMap[badge._source.data.badge.name]">
             <img [src]="'/assets/badges/' + badge._source.data.badge.name + '.png'">
-            <p>{{certificateNameMap[badge._source.data.badge.name]}}</p>
+            <p style="font-weight: bold">{{certificateNameMap[badge._source.data.badge.name]}}</p>
           </ng-container>
           <ng-container *ngIf="!certificateNameMap[badge._source.data.badge.name]">
             <img [src]="'/assets/badges/Default.png'">
@@ -46,21 +47,21 @@
                 <div class="tab_left">
                   <h2 class="big text-white opacity-75 text-lg">{{idea.name[0]}}</h2>
                   <div class='tab_left__image'>
-                    <h2 class="text-white text-lg">{{idea.name[0]}}</h2>
+                    <h2 class="text-white text-lg" style="font-weight: bold; font-size: 3em; left: 0; right: 0">{{idea.name[0]}}</h2>
                   </div>
                 </div>
                 <div class='tab_right'>
-                  <p class="text-white">{{idea.description}}</p>
+                  <p class="text-white mb-2">{{idea.description}}</p>
                   <div *ngIf="ratingsMap[idea.code]">
-                    <fa-icon *ngFor="let i of arrayGen(ratingsMap[idea.code] / 20)" [icon]="faRegularStar"
+                    <fa-icon class="text-white" *ngFor="let i of arrayGen(ratingsMap[idea.code] / 20)" [icon]="faRegularStar"
                              size="2x"></fa-icon>
                   </div>
                   <div *ngIf="!ratingsMap[idea.code]">
-                    <fa-icon (click)="postFeedback(1, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
-                    <fa-icon (click)="postFeedback(2, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
-                    <fa-icon (click)="postFeedback(3, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
-                    <fa-icon (click)="postFeedback(4, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
-                    <fa-icon (click)="postFeedback(5, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
+                    <fa-icon class="text-white" (click)="postFeedback(1, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
+                    <fa-icon class="text-white" (click)="postFeedback(2, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
+                    <fa-icon class="text-white" (click)="postFeedback(3, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
+                    <fa-icon class="text-white" (click)="postFeedback(4, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
+                    <fa-icon class="text-white" (click)="postFeedback(5, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
                   </div>
                 </div>
               </div>
