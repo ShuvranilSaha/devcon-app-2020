@@ -3,15 +3,18 @@ import { CommonModule } from '@angular/common';
 import { SessionPopupComponent } from './session-popup/session-popup.component';
 import { FormsModule } from '@angular/forms';
 import { QrcodeDetailsComponent } from './qrcode-details/qrcode-details.component';
+import { DcPopupComponent } from './dc-popup/dc-popup.component';
 
 @NgModule({
   declarations: [
     SessionPopupComponent,
-    QrcodeDetailsComponent
+    QrcodeDetailsComponent,
+    DcPopupComponent
   ],
   entryComponents: [
     SessionPopupComponent,
-    QrcodeDetailsComponent
+    QrcodeDetailsComponent,
+    DcPopupComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +22,8 @@ import { QrcodeDetailsComponent } from './qrcode-details/qrcode-details.componen
   ],
   exports: [
     SessionPopupComponent,
-    QrcodeDetailsComponent
+    QrcodeDetailsComponent,
+    DcPopupComponent
   ]
 })
 export class ComponentsModule { }

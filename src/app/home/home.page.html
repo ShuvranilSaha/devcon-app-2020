@@ -44,12 +44,12 @@
             <input [id]="'tab-' + stallIndex + '-' + ideaIndex" checked='' name='buttons' type='radio'>
             <label [for]="'tab-' + stallIndex + '-' + ideaIndex">
               <div class='app_inner__tab'>
-                <h2 class="text-white">
+                <h2 class="text-white" (click)="openHomeAssessment(idea.name)">
                   {{idea.name}}
                 </h2>
                 <div class="tab_left">
                   <h2 class="big text-white opacity-75 text-lg">{{idea.name[0]}}</h2>
-                  <div class='tab_left__image'>
+                  <div class='tab_left__image z-10' (click)="openHomePopup(idea.name)">
                     <h2 class="text-white text-lg" style="font-weight: bold; font-size: 3em; left: 0; right: 0">{{idea.name[0]}}</h2>
                   </div>
                 </div>
