@@ -106,7 +106,7 @@ export class ProfileDetailsPage implements OnInit {
     this.navigateToLogStallAttendanceCounter++;
 
     if (this.navigateToLogStallAttendanceCounter === 15) {
-      await this.navCtrl.navigateForward('/offline-register', {});
+      await this.navCtrl.navigateForward('/stall-attendance', {});
     }
   }
 }

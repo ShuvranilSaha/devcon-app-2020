@@ -1,13 +1,26 @@
-<div class="flex flex-col items-center justify-center h-full w-full p-5 text-white" style="background-color: #7334F1">
-    <form [formGroup]="offlineProfileDetailsForm" (submit)="submitForm()">
-        <label class="my-2 block">vcode</label>
-        <input class="border border-2 rounded" type="text" [formControl]="vcodeControl">
-        <hr class="my-2">
-        <label class="my-2 block">name</label>
-        <input class="border border-2 rounded" type="text" [formControl]="nameControl">
-        <hr class="my-2">
-        <button [disabled]="offlineProfileDetailsForm.invalid" class="rounded p-3 bg-green-500 my-2 w-100 text-center"
-                type="submit">Submit
-        </button>
-    </form>
-</div>
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Offline Profile Registration</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="flex flex-col items-center justify-center h-full w-full p-5 text-white"
+         style="background-color: #7334F1">
+        <form (submit)="submitForm()" [formGroup]="offlineProfileDetailsForm">
+            <label class="my-2 block">vcode</label>
+            <input [formControl]="vcodeControl" class="border border-2 rounded" type="text">
+            <hr class="my-2">
+            <label class="my-2 block">name</label>
+            <input [formControl]="nameControl" class="border border-2 rounded" type="text">
+            <hr class="my-2">
+            <button [disabled]="offlineProfileDetailsForm.invalid"
+                    class="rounded p-3 bg-green-500 my-2 w-100 text-center"
+                    type="submit">Submit
+            </button>
+        </form>
+    </div>
+</ion-content>
