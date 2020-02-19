@@ -6,6 +6,7 @@ import { LoadingController, NavController, Platform, ToastController } from '@io
 import { AndroidPermissionsService } from '../services/android-permissions.service';
 import { ProfileFaceScanPage } from '../onboarding/profile-face-scan/profile-face-scan.page';
 import { SharedPreferences } from '@project-sunbird/sunbird-sdk';
+import {TelemetryService} from '../services/telemetry/telemetry-service';
 
 @Component({
   selector: 'app-offline-register',
@@ -45,7 +46,8 @@ export class OfflineRegisterPage extends ProfileFaceScanPage {
     protected navCtrl: NavController,
     protected platform: Platform,
     protected profileService: ProfileServiceImpl,
-    protected toastCtrl: ToastController
+    protected toastCtrl: ToastController,
+    protected telemetryService: TelemetryService
   ) {
     super(
       sharedPreferences,
@@ -73,6 +75,7 @@ export class OfflineRegisterPage extends ProfileFaceScanPage {
       this.nameControl.value
     ).then(async () => {
       await loader.dismiss();
+      await this.telemetryService.generateRegisterTelemetry({});
       const toast = await this.toastCtrl.create({
         message: 'success',
         duration: 2000
