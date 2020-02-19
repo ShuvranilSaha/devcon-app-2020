@@ -177,3 +177,18 @@
   }
 }
 @import "assets/tailwind.min.css";
+
+.popup-w100 {
+  --width: 100%;
+}
+.popup-w100.popoverPosition{
+  --width: 100%;
+  position: absolute;
+}
+.popup-w100 .popover-content.sc-ion-popover-md {
+  top: unset !important;
+  bottom: 0;
+  left: 0 !important;
+  transform-origin: left top;
+  transform: scale(1);
+}
