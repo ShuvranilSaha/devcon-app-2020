@@ -4,7 +4,7 @@
       <img [src]="profilePicURL" class="flex-grow-0 flex-shrink-0 rounded-full w-20 h-20 mr-5">
       <div>
         <p class="flex-grow-0 flex-shrink-0 block font-bold text-lg">{{profileName}}</p>
-        <p class="text-red-500 font-bold">3000</p>
+        <p class="text-red-500 font-bold">{{ getUserAwardedPoints$ | async }}</p>
       </div>
     </div>
 
@@ -15,18 +15,18 @@
 
   <div class="mb-5 p-5 pr-0 pl-0">
     <h1 class="font-bold text-md mb-5 ml-5">Badges</h1>
-    <div class="overflow-x-scroll whitespace-no-wrap h-16">
-      <div class="inline-block rounded-full w-16 h-16 bg-blue-400 mx-3">
-      </div>
-      <div class="inline-block rounded-full w-16 h-16 bg-blue-400 mx-3">
-      </div>
-      <div class="inline-block rounded-full w-16 h-16 bg-blue-400 mx-3">
-      </div>
-      <div class="inline-block rounded-full w-16 h-16 bg-blue-400 mx-3">
-      </div>
-      <div class="inline-block rounded-full w-16 h-16 bg-blue-400 mx-3">
-      </div>
-      <div class="inline-block rounded-full w-16 h-16 bg-blue-400 mx-3">
+    <div class="overflow-x-scroll overflow-y-hidden whitespace-no-wrap h-24">
+      <div *ngFor="let badge of (getProfileCertificates$ | async)">
+        <div class="inline-block rounded-full w-16 h-16 mx-3">
+          <ng-container *ngIf="certificateNameMap[badge._source.data.badge.name]">
+            <img [src]="'/assets/badges/' + badge._source.data.badge.name + '.png'">
+            <p>{{certificateNameMap[badge._source.data.badge.name]}}</p>
+          </ng-container>
+          <ng-container *ngIf="!certificateNameMap[badge._source.data.badge.name]">
+            <img [src]="'/assets/badges/Default.png'">
+            <p>''</p>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>

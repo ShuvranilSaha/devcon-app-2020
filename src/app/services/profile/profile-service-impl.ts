@@ -1,6 +1,19 @@
 import {Request, Response, ApiService, HttpRequestType, SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {Inject, Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
+import {map, mergeMap} from 'rxjs/operators';
+import { PreferenceKeys } from 'src/config/preference-keys';
+import { Observable, interval } from 'rxjs';
+
+export interface Certificate {
+  _source: {
+      data: {
+          badge: {
+              name: string;
+          };
+      }
+      pdfUrl: string;
+  };
+}
 
 interface Profile {
   osUpdatedAt: string;
@@ -244,6 +257,24 @@ export class ProfileServiceImpl {
     ).toPromise();
   }
 
+  public exitRegisteredUser(osid: string, visitorCode: string): Promise<string> {
+    const request = new Request.Builder()
+    .withType(HttpRequestType.POST)
+    .withPath('/api/regutil/visitor/exit')
+    .withApiToken(true)
+    .withBody({
+      request: {
+       osid,
+       visitorCode
+      }
+    }).build();
+    return this.apiService.fetch(request).pipe(
+      map((r: Response) => {
+        return r.body.responseCode;
+      })
+    ).toPromise();
+  }
+
   public updateProfile(request: {
     code: string;
     name: string;
@@ -287,5 +318,47 @@ export class ProfileServiceImpl {
         return undefined;
       }),
     ).toPromise();
+  }
+
+
+  public getProfileCertificates(): Observable<Certificate[]> {
+    return interval(10 * 1000).pipe(
+      mergeMap(() => {
+        const request = new Request.Builder()
+          .withType(HttpRequestType.POST)
+          .withPath('/api/certreg/v1/certs/search')
+          .withApiToken(true)
+          .withBody({
+            request: {
+                query: {
+                    match_phrase: {
+                        'recipient.id': localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)
+                    }
+                }
+            }
+          })
+          .build();
+
+        return this.apiService.fetch(request).pipe(
+          map((r: Response<{
+            result: {
+                response: {
+                    hits: Certificate[]
+                };
+            }
+          }>) => {
+            return r.body;
+          }),
+          map((r) => {
+            if (r.result && r.result.response && r.result.response.hits) {
+              return r.result.response.hits;
+            }
+
+            console.error('UNEXPECTED_RESPONSE', r, request);
+            throw new Error('UNEXPECTED_RESPONSE');
+          }),
+        );
+      })
+    );
   }
 }
