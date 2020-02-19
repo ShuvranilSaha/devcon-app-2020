@@ -6,6 +6,7 @@ import {SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {PreferenceKeys} from '../../../config/preference-keys';
 import {LoadingController, NavController, ToastController} from '@ionic/angular';
 import {ProfileServiceImpl} from '../../services/profile/profile-service-impl';
+import {TelemetryService} from '../../services/telemetry/telemetry-service';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class ProfileDetailsPage implements OnInit {
     private navCtrl: NavController,
     private profileService: ProfileServiceImpl,
     public toastController: ToastController,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    private telemetryService: TelemetryService
   ) {
   }
 
@@ -60,6 +62,7 @@ export class ProfileDetailsPage implements OnInit {
 
       localStorage.setItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE, code);
       window.localStorage.setItem(PreferenceKeys.Onboarding.PROFILE_DETAILS_COMPLETE, 'true');
+      await this.telemetryService.generateRegisterTelemetry({});
 
       this.submitSuccess = true;
 
