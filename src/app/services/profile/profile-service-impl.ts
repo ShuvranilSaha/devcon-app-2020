@@ -96,7 +96,7 @@ export class ProfileServiceImpl {
     ).toPromise();
   }
 
-  public async registerPhoto(osid: string, imageBlob: Blob): Promise<{ url: string }> {
+  public async registerPhoto(osid: string, imageBlob: Blob, name: string): Promise<{ url: string }> {
     const bearerToken = await this.sharedPreferences.getString('api_bearer_token').toPromise();
 
     // @ts-ignore
@@ -154,7 +154,8 @@ export class ProfileServiceImpl {
       .withBody({
         request: {
           osid,
-          photoUrl: url
+          photo: url,
+          name
         }
       })
       .build();
