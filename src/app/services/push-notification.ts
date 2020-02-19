@@ -2,7 +2,7 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { Request, Response, DeviceInfo } from '@project-sunbird/sunbird-sdk';
 import { ApiService, HttpRequestType } from '@project-sunbird/sunbird-sdk/dist';
 import { Inject, Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import * as uuidv4 from 'uuid/v4';
 import { PreferenceKeys } from 'src/config/preference-keys';
 
@@ -22,21 +22,12 @@ export class PushNotificationService {
 
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
 
-    // Way to add tags for the segments
-    this.oneSignal.sendTags({ all: 'true', teachers: 'true' });
-    // this.oneSignal.sendTag("sessionId", "id_swayangjit");
-
     this.oneSignal.handleNotificationReceived().subscribe((data: any) => {
       console.log(data);
-      // const msg = data.payload.body;
-      // const title = data.payload.title;
-      // const additionalData = data.payload.additionalData;
       this.openClassAssignment();
     });
 
     this.oneSignal.handleNotificationOpened().subscribe((data: any) => {
-
-      // const additionalData = data.notification.payload.additionalData;
 
       this.openClassAssignment();
     });
@@ -46,16 +37,16 @@ export class PushNotificationService {
 
   openClassAssignment() {
     const deviceId = this.getDeviceId();
-    (window as any).chathead.showChatHead('', deviceId, '', '',
-      'STALL_ID_1', 'IDEA_ID_1', this.sessionId, () => {
+    (window as any).chathead.showChatHead('', deviceId, this.getOsid(), '',
+      'STA2', 'IDE9', this.sessionId, () => {
       }, () => {
       });
   }
 
   openHomeAssignment() {
     const deviceId = this.getDeviceId();
-    (window as any).chathead.showChatHead('', deviceId, '', '',
-      'STALL_ID_1', 'IDEA_ID_1', this.sessionId, () => {
+    (window as any).chathead.showChatHead('', deviceId, this.getOsid(), '',
+      'STA2', 'IDE9', this.sessionId, () => {
       }, () => {
       });
   }
@@ -100,8 +91,36 @@ export class PushNotificationService {
     ).toPromise();
   }
 
+  initiatePushNotification(key: string, value: string) {
+    const request = new Request.Builder()
+      .withType(HttpRequestType.POST)
+      .withPath('/api/teacher/v3/notify/batch')
+      .withApiToken(true)
+      .withBody({
+        request: {
+          [key]: value
+        }
+      })
+      .build();
+
+    return this.apiService.fetch(request).pipe(
+      map((r: any) => {
+        console.log(r);
+        return r;
+      }),
+      catchError((e) => {
+        console.log(e);
+        throw e;
+
+      })
+    ).toPromise();
+  }
+
   assignNotificationTags(sessionId: string) {
     this.oneSignal.sendTag('sessionId', sessionId);
+    setTimeout(() => {
+      this.initiatePushNotification('sessionId', sessionId);
+    }, 3000);
     this.sessionId = sessionId;
   }
 
@@ -114,13 +133,7 @@ export class PushNotificationService {
     return this.deviceInfo.getDeviceID();
   }
 
-  getUuid() {
-    return uuidv4();
-  }
-
   getOsid() {
-    const osid = localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)
-    return osid;
+    return localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE);
   }
-
 }

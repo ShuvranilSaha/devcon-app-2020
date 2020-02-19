@@ -60,3 +60,16 @@ interface PointsEarnTelemetryRequest extends BaseTelemetryRequest {
         badges: Array<string>
     };
 }
+
+interface AttendanceTelemetryRequest extends BaseTelemetryRequest {
+    eid: string;
+    mid: string;
+    ets: number;
+    did: string;
+    profileId: string;
+    studentId?: string;
+    stallId: string;
+    ideaId: string;
+    sid: string;
+    edata: any;
+}

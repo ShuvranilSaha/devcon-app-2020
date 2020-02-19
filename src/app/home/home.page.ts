@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {PreferenceKeys} from '../../config/preference-keys';
 import {QrCodeServiceImpl} from '../services/qr-code.service';
 import {StallServiceImpl} from '../services/stall/stall-service-impl';
+import { SessionPopupComponent } from '../components/session-popup/session-popup.component';
+import { PopoverController } from '@ionic/angular';
 
 interface Stall {
   code: string;
@@ -37,7 +39,8 @@ export class HomePage implements OnInit {
 
   constructor(
     private qrcodeService: QrCodeServiceImpl,
-    private stallService: StallServiceImpl
+    private stallService: StallServiceImpl,
+    private popCtrl: PopoverController
   ) {
   }
 
@@ -48,6 +51,21 @@ export class HomePage implements OnInit {
 
     this.stallList = await this.stallService.getStallList();
     console.log('stallList', this.stallList);
+  }
+
+  async openSessionPopup(stallName: string) {
+    if (stallName !== 'School') {
+      return;
+    }
+    const options = {
+      component: SessionPopupComponent,
+      componentProps: {},
+      showBackdrop: true,
+      backdropDismiss: true,
+      cssClass: 'popup-w100'
+    };
+    const sessionPopup = await this.popCtrl.create(options);
+    await sessionPopup.present();
   }
 
 }
