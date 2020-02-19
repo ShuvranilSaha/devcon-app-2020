@@ -62,8 +62,8 @@ export class ProfileDetailsPage implements OnInit {
 
       localStorage.setItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE, code);
       window.localStorage.setItem(PreferenceKeys.Onboarding.PROFILE_DETAILS_COMPLETE, 'true');
-      await this.telemetryService.generateRegisterTelemetry({});
-
+      // await this.telemetryService.generateRegisterTelemetry({});
+      // todo: telemetry DC_REGISTER to call
       this.submitSuccess = true;
 
       setTimeout(async () => {
