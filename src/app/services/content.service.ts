@@ -25,7 +25,7 @@ export class ContentUtil {
     }
 
     public importContent() {
-        this.readFileFromAssets('quiz.ecar')
+        this.readFileFromAssets('quiz1_1582020994576_do_2129599000490065921103_1.0.ecar')
             .then((assetFilePath) => {
                 console.log('assetFilePath', assetFilePath);
                 const filePath = 'file://' + assetFilePath;

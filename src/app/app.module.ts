@@ -16,6 +16,10 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { ComponentsModule } from './components/components.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContentUtil } from './services/content.service';
+import { CanvasPlayerService } from './services/canvas-player.service';
+import { HttpClientModule } from '@angular/common/http';
+import { File } from '@ionic-native/file/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 declare global {
   interface Window {
@@ -349,7 +353,8 @@ export const sunbirdSdkFactory =
     FontAwesomeModule,
     ComponentsModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [
     StatusBar,
@@ -357,7 +362,10 @@ export const sunbirdSdkFactory =
     LocalNotifications,
     NotificationService,
     ContentUtil,
+    CanvasPlayerService,
     OneSignal,
+    File,
+    WebView,
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     ...sunbirdSdkServicesProvidersFactory(),
     {provide: APP_INITIALIZER, useFactory: sunbirdSdkFactory, deps: [], multi: true}
