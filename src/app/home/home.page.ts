@@ -99,20 +99,6 @@ export class HomePage implements OnInit {
     console.log('stallList', this.stallList);
     }
 
-  async openSessionPopup(stallName: string) {
-    if (stallName === 'Creation') {
-      const options = {
-        component: SessionPopupComponent,
-        componentProps: {},
-        showBackdrop: true,
-        backdropDismiss: true,
-        cssClass: 'popup-w100'
-      };
-      const sessionPopup = await this.popCtrl.create(options);
-      await sessionPopup.present();
-    }
-  }
-
   async openHomePopup(ideaName: string) {
     if (ideaName === 'Home assessment') {
       const options = {
