@@ -26,7 +26,7 @@ export class ProfileFaceScanPage implements OnInit, OnDestroy {
   @ViewChild('facePreviewRef', {static: false, read: ElementRef}) facePreviewRef!: ElementRef;
   cameraStarted = false;
   faceCaptured = false;
-  protected cameraStream?: MediaStream;
+  public cameraStream?: MediaStream;
   private cameraPreview!: HTMLVideoElement;
   private cameraIosPreview!: HTMLCanvasElement;
   private canvasPreview!: HTMLCanvasElement;
