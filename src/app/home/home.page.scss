@@ -1,5 +1,5 @@
 .stall-container {
-  $colors: (#424254, #638F89, #CC2B43, #361330);
+  $colors: (#381460, #b21f66, #ffbd69, #40e0d0, #424254, #638F89, #ffbd69, #381460);
   @for $i from 1 through length($colors) {
     &:nth-of-type(#{$i}) {
       $stallColor: nth($colors, $i);
