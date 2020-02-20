@@ -19,9 +19,12 @@ enum ProfileFeedback {
   COMMENTS_MAP = 'COMMENTS_MAP'
 }
 
+const EXIT_DETECTED = 'EXIT_DETECTED';
+
 export const PreferenceKeys = {
   ProfileAttributes,
   Onboarding,
   Walkthrough,
-  ProfileFeedback
+  ProfileFeedback,
+  EXIT_DETECTED
 };

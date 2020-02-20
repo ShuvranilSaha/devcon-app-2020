@@ -1,8 +1,9 @@
 import {ApiService, HttpRequestType, Request, Response, SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {Inject, Injectable} from '@angular/core';
-import {map, mergeMap} from 'rxjs/operators';
+import {map, mergeMap, tap} from 'rxjs/operators';
 import {PreferenceKeys} from 'src/config/preference-keys';
 import {interval, Observable} from 'rxjs';
+import {StallServiceImpl} from '../stall/stall-service-impl';
 
 export interface Certificate {
   _source: {
@@ -30,7 +31,8 @@ interface Profile {
 export class ProfileServiceImpl {
   constructor(
     @Inject('API_SERVICE') private apiService: ApiService,
-    @Inject('SHARED_PREFERENCES') private sharedPreferences: SharedPreferences
+    @Inject('SHARED_PREFERENCES') private sharedPreferences: SharedPreferences,
+    private stallService: StallServiceImpl
   ) {
   }
 
@@ -271,6 +273,9 @@ export class ProfileServiceImpl {
     return this.apiService.fetch(request).pipe(
       map((r: Response) => {
         return r.body.responseCode;
+      }),
+      tap(() => {
+        this.stallService.onExitDetected();
       })
     ).toPromise();
   }
