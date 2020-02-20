@@ -4,6 +4,7 @@ import {Idea, Stall, VisitorActivity} from './stall-service';
 import {map, mergeMap, tap} from 'rxjs/operators';
 import {BehaviorSubject, interval, Observable} from 'rxjs';
 import {PreferenceKeys} from 'src/config/preference-keys';
+import {ToastController} from '@ionic/angular';
 
 export interface Vote {
   ideaCode: string;
@@ -24,7 +25,8 @@ export class StallServiceImpl {
   );
 
   constructor(
-    @Inject('API_SERVICE') private apiService: ApiService
+    @Inject('API_SERVICE') private apiService: ApiService,
+    private toastController: ToastController
   ) {
     const persistedRatingsMap = localStorage.getItem(PreferenceKeys.ProfileFeedback.RATINGS_MAP);
     const persistedCommentsMap = localStorage.getItem(PreferenceKeys.ProfileFeedback.COMMENTS_MAP);
@@ -236,8 +238,15 @@ export class StallServiceImpl {
     ).toPromise();
   }
 
-  public onExitDetected() {
+  public async onExitDetected() {
     this.exitDetected$.next(true);
     localStorage.setItem(PreferenceKeys.EXIT_DETECTED, 'true');
+
+    const toast = await this.toastController.create({
+      message: 'Thanks for participating in DevCon',
+      duration: 2000
+    });
+
+    toast.present();
   }
 }
