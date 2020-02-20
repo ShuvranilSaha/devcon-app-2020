@@ -3,12 +3,13 @@ import {PreferenceKeys} from '../../config/preference-keys';
 import {QrCodeServiceImpl} from '../services/qr-code.service';
 import {StallServiceImpl} from '../services/stall/stall-service-impl';
 import {SessionPopupComponent} from '../components/session-popup/session-popup.component';
-import {LoadingController, ModalController, PopoverController} from '@ionic/angular';
+import {LoadingController, ModalController, NavController, PopoverController} from '@ionic/angular';
 import {QrcodeDetailsComponent} from '../components/qrcode-details/qrcode-details.component';
 import {Observable} from 'rxjs';
 import {Certificate, ProfileServiceImpl} from '../services/profile/profile-service-impl';
 import {faStar as faRegularStar} from '@fortawesome/free-regular-svg-icons/faStar';
 import {faGem} from '@fortawesome/free-regular-svg-icons/faGem';
+import {faMap} from '@fortawesome/free-solid-svg-icons/faMap';
 import {faStar as faSolidStar} from '@fortawesome/free-solid-svg-icons/faStar';
 import {TelemetryService} from '../services/telemetry/telemetry-service';
 import {PushNotificationService} from '../services/push-notification';
@@ -42,6 +43,7 @@ export class HomePage implements OnInit {
   public readonly faRegularStar = faRegularStar;
   public readonly faSolidStar = faSolidStar;
   public readonly faGem = faGem;
+  public readonly faMap = faMap;
 
   private isSchoolTapCount = 0;
   private isHomeTapCount = 0;
@@ -61,7 +63,8 @@ export class HomePage implements OnInit {
     private profileService: ProfileServiceImpl,
     private loadingCtrl: LoadingController,
     private telemetryService: TelemetryService,
-    private pushNotificationService: PushNotificationService
+    private pushNotificationService: PushNotificationService,
+    private navCtrl: NavController
   ) {
     this.getUserAwardedPoints$ = this.stallService.getUserAwardedPoints();
     this.getProfileCertificates$ = this.profileService.getProfileCertificates();
@@ -178,10 +181,10 @@ export class HomePage implements OnInit {
       console.error(e);
     });
     this.telemetryService.getUserStallExitTelemetry('', '', {
-      type: 'VISITOR_EXIT',
+      type: 'visitor-exit',
       osid,
       code,
-    });
+    }).catch(() => {});
   }
 
   generateTimeCheckDiffClass() {
@@ -253,6 +256,10 @@ export class HomePage implements OnInit {
     }
     this.isHomeTapCount = 0;
     return false;
+  }
+
+  navigateToMapsPage() {
+    this.navCtrl.navigateForward('/map', {animated: true, animationDirection: 'forward'});
   }
 
 }
