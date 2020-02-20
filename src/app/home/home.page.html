@@ -18,27 +18,34 @@
     </div>
   </div>
 
-  <div *ngIf="(getProfileCertificates$ | async) as badges" class="mb-5 p-5 pr-0 pl-0">
-    <h1 class="font-bold text-md mb-5 ml-5">Badges</h1>
-    <div class="overflow-x-scroll overflow-y-hidden whitespace-no-wrap h-24">
+  <div *ngIf="(getProfileCertificates$ | async) as badges" class="mb-5 p-5">
+    <h1 class="font-bold text-md mb-5">Badges</h1>
+    <div>
       <div *ngFor="let badge of badges">
-        <div class="inline-block flex flex-col items-center rounded-full w-16 h-16 mx-3">
-          <ng-container *ngIf="certificateNameMap[badge._source.data.badge.name]">
-            <img [src]="'/assets/badges/' + badge._source.data.badge.name + '.png'">
-            <p style="font-weight: bold; padding-left: 2px;">{{certificateNameMap[badge._source.data.badge.name]}}</p>
-          </ng-container>
-          <ng-container *ngIf="!certificateNameMap[badge._source.data.badge.name]">
-            <img [src]="'/assets/badges/Default.png'">
-            <p>''</p>
-          </ng-container>
+        <div class="flex flex-row mb-4 justify-between items-center p-4 rounded-lg border border-dashed border-black-2">
+          <div class="flex flex-row items-center">
+            <ng-container *ngIf="certificateNameMap[badge._source.data.badge.name]">
+              <img [src]="'/assets/badges/' + badge._source.data.badge.name + '.png'" class="h-16 mx-3">
+              <p style="font-weight: bold; padding-left: 2px;">{{certificateNameMap[badge._source.data.badge.name]}}</p>
+            </ng-container>
+            <ng-container *ngIf="!certificateNameMap[badge._source.data.badge.name]">
+              <img [src]="'/assets/badges/Default.png'" class="rounded-full w-16 h-16 mx-3">
+              <p>''</p>
+            </ng-container>
+          </div>
+
+          <div *ngIf="(hasExit$ | async)">
+            <fa-icon (click)="downloadCertificate(badge._source.pdfUrl)" [icon]="faArrowAltCircleDown"
+                     class="text-red-500" size="2x"></fa-icon>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div *ngFor="let stall of stallList; let stallIndex = index" class="stall-container rounded mb-5 p-5">
-    <h1 class="text-lg font-bold mb-5" style="font-size: 24px" >{{stall.name}}</h1>
-    <div>
+  <div *ngFor="let stall of stallList; let stallIndex = index" class="stall-container mb-5 p-5">
+    <h1 class="text-lg font-bold mb-5" style="font-size: 24px">{{stall.name}}</h1>
+    <div class="rounded-lg overflow-hidden">
       <div>
         <div class='app_inner'>
           <ng-container *ngFor="let idea of stall.ideas; let ideaIndex = index">

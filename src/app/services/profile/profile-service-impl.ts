@@ -1,8 +1,8 @@
 import {ApiService, HttpRequestType, Request, Response, SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {Inject, Injectable} from '@angular/core';
-import {map, mergeMap, tap, timeout, catchError} from 'rxjs/operators';
+import {catchError, map, mergeMap, tap} from 'rxjs/operators';
 import {PreferenceKeys} from 'src/config/preference-keys';
-import {interval, Observable, timer} from 'rxjs';
+import {Observable, timer} from 'rxjs';
 import {StallServiceImpl} from '../stall/stall-service-impl';
 
 export interface Certificate {
@@ -367,7 +367,7 @@ export class ProfileServiceImpl {
     );
   }
 
-  public signProfileCertificateUrl(url: string): Promise<string> {
+  public signProfileCertificateUrl(url: string): Observable<string> {
     const request = new Request.Builder()
       .withType(HttpRequestType.POST)
       .withPath('/api/certreg/v1/certs/download')
@@ -396,6 +396,6 @@ export class ProfileServiceImpl {
 
         throw e;
       })
-    ).toPromise();
+    );
   }
 }
