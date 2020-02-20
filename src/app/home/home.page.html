@@ -1,12 +1,13 @@
 <div class="overflow-y-scroll w-full h-full">
   <div class="flex justify-between mb-5 p-5">
     <div class="flex flex-row justify-center items-center">
-      <img [src]="profilePicURL" class="flex-grow-0 flex-shrink-0 rounded-full w-20 h-20 mr-5">
+      <img [src]="profilePicURL"
+           class="flex-grow-0 flex-shrink-0 rounded-full w-20 h-20 mr-5 border-2 border-green-400">
       <div>
         <p class="flex-grow-0 flex-shrink-0 block font-bold text-lg">{{profileName}}</p>
-        <div class="flex flex-row">
-          <fa-icon class="justify-start items-start" [icon]="faRegularStar" size="1x"></fa-icon>
-          <p class="text-red-500 font-bold justify-end items-end" style="padding-left: 1rem;">{{ getUserAwardedPoints$ | async }}</p>
+        <div class="flex flex-row justify-start">
+          <fa-icon [icon]="faGem" class="text-red-500" size="1x"></fa-icon>
+          <p class="text-red-500 font-bold pl-2">{{ (getUserAwardedPoints$ | async) || 0 }} points</p>
         </div>
       </div>
     </div>
@@ -17,10 +18,10 @@
     </div>
   </div>
 
-  <div class="mb-5 p-5 pr-0 pl-0">
+  <div *ngIf="(getProfileCertificates$ | async) as badges" class="mb-5 p-5 pr-0 pl-0">
     <h1 class="font-bold text-md mb-5 ml-5">Badges</h1>
     <div class="overflow-x-scroll overflow-y-hidden whitespace-no-wrap h-24">
-      <div *ngFor="let badge of (getProfileCertificates$ | async)">
+      <div *ngFor="let badge of badges">
         <div class="inline-block flex flex-col items-center rounded-full w-16 h-16 mx-3">
           <ng-container *ngIf="certificateNameMap[badge._source.data.badge.name]">
             <img [src]="'/assets/badges/' + badge._source.data.badge.name + '.png'">

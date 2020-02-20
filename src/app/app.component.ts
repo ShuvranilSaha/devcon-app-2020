@@ -1,14 +1,15 @@
-import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
-import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { NotificationService as LocalNotification } from './services/notification.service';
-import { PushNotificationService } from './services/push-notification';
-import { NavigationEnd, Router } from '@angular/router';
-import { mergeMap, filter, take, tap } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
-import { ContentUtil } from './services/content.service';
-import { TelemetryAutoSyncService, TelemetryService } from '@project-sunbird/sunbird-sdk';
+import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
+import {Platform} from '@ionic/angular';
+import {SplashScreen} from '@ionic-native/splash-screen/ngx';
+import {StatusBar} from '@ionic-native/status-bar/ngx';
+import {NotificationService as LocalNotification} from './services/notification.service';
+import {PushNotificationService} from './services/push-notification';
+import {NavigationEnd, Router} from '@angular/router';
+import {filter, mergeMap, take, tap} from 'rxjs/operators';
+import {combineLatest} from 'rxjs';
+import {ContentUtil} from './services/content.service';
+import {TelemetryAutoSyncService, TelemetryService} from '@project-sunbird/sunbird-sdk';
+import {StallServiceImpl} from './services/stall/stall-service-impl';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,11 @@ import { TelemetryAutoSyncService, TelemetryService } from '@project-sunbird/sun
 export class AppComponent implements OnInit, AfterViewInit {
 
   private telemetryAutoSync: TelemetryAutoSyncService;
+  public recognizedBSSIDResult?: ScanResult;
+  public recognizedBSSIDResult2?: ScanResult;
+  private wifiManager = window.cordova.plugins.WifiManager;
+  private readonly ourSSID = 'devcon_tracker1';
+  private readonly ourSSID2 = 'ehashed';
 
   constructor(
     @Inject('TELEMETRY_SERVICE') private telemetryService: TelemetryService,
@@ -27,13 +33,38 @@ export class AppComponent implements OnInit, AfterViewInit {
     private notificationSrc: LocalNotification,
     private pushNotificationService: PushNotificationService,
     private conettnUtil: ContentUtil,
-    private router: Router
+    private router: Router,
+    private stallService: StallServiceImpl
   ) {
     this.telemetryAutoSync = this.telemetryService.autoSync;
   }
 
   ngOnInit(): void {
     this.initializeApp();
+
+    this.wifiManager.setWifiEnabled(true, (err, success) => {
+    });
+
+    window.setInterval(() => {
+      this.wifiManager.isWifiEnabled((err, enabled: boolean) => {
+        if (enabled) {
+          this.wifiManager.getScanResults((_, scanResults) => {
+            this.recognizedBSSIDResult = scanResults.find((r) => r.SSID === this.ourSSID);
+            this.recognizedBSSIDResult2 = scanResults.find((r) => r.SSID === this.ourSSID2);
+
+            if (
+              this.recognizedBSSIDResult && this.recognizedBSSIDResult.level > 50 &&
+              this.recognizedBSSIDResult2 && this.recognizedBSSIDResult2.level > 50
+            ) {
+              this.stallService.onExitDetected();
+            }
+
+            this.wifiManager.startScan(() => {
+            });
+          });
+        }
+      });
+    }, 5000);
   }
 
   ngAfterViewInit(): void {

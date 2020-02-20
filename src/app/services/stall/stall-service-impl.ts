@@ -2,8 +2,9 @@ import {ApiService, HttpRequestType, Request, Response} from '@project-sunbird/s
 import {Inject, Injectable} from '@angular/core';
 import {Idea, Stall, VisitorActivity} from './stall-service';
 import {map, mergeMap, tap} from 'rxjs/operators';
-import {interval, Observable} from 'rxjs';
+import {BehaviorSubject, interval, Observable} from 'rxjs';
 import {PreferenceKeys} from 'src/config/preference-keys';
+import {ToastController} from '@ionic/angular';
 
 export interface Vote {
   ideaCode: string;
@@ -19,8 +20,13 @@ export interface Vote {
 })
 export class StallServiceImpl {
 
+  public readonly exitDetected$ = new BehaviorSubject(
+    !!localStorage.getItem(PreferenceKeys.EXIT_DETECTED)
+  );
+
   constructor(
-    @Inject('API_SERVICE') private apiService: ApiService
+    @Inject('API_SERVICE') private apiService: ApiService,
+    private toastController: ToastController
   ) {
     const persistedRatingsMap = localStorage.getItem(PreferenceKeys.ProfileFeedback.RATINGS_MAP);
     const persistedCommentsMap = localStorage.getItem(PreferenceKeys.ProfileFeedback.COMMENTS_MAP);
@@ -230,5 +236,17 @@ export class StallServiceImpl {
         return undefined;
       }),
     ).toPromise();
+  }
+
+  public async onExitDetected() {
+    this.exitDetected$.next(true);
+    localStorage.setItem(PreferenceKeys.EXIT_DETECTED, 'true');
+
+    const toast = await this.toastController.create({
+      message: 'Thanks for participating in DevCon',
+      duration: 2000
+    });
+
+    toast.present();
   }
 }

@@ -8,10 +8,11 @@ import {QrcodeDetailsComponent} from '../components/qrcode-details/qrcode-detail
 import {Observable} from 'rxjs';
 import {Certificate, ProfileServiceImpl} from '../services/profile/profile-service-impl';
 import {faStar as faRegularStar} from '@fortawesome/free-regular-svg-icons/faStar';
+import {faGem} from '@fortawesome/free-regular-svg-icons/faGem';
 import {faStar as faSolidStar} from '@fortawesome/free-solid-svg-icons/faStar';
 import {TelemetryService} from '../services/telemetry/telemetry-service';
-import { PushNotificationService } from '../services/push-notification';
-import { DcPopupComponent } from '../components/dc-popup/dc-popup.component';
+import {PushNotificationService} from '../services/push-notification';
+import {DcPopupComponent} from '../components/dc-popup/dc-popup.component';
 
 interface Stall {
   code: string;
@@ -38,8 +39,9 @@ interface Idea {
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  public faRegularStar = faRegularStar;
-  public faSolidStar = faSolidStar;
+  public readonly faRegularStar = faRegularStar;
+  public readonly faSolidStar = faSolidStar;
+  public readonly faGem = faGem;
 
   private isSchoolTapCount = 0;
   private isHomeTapCount = 0;
