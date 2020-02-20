@@ -71,6 +71,10 @@ const routes: Routes = [
     path: 'player',
     loadChildren: () => import('./player/player.module').then(m => m.PlayerPageModule)
   },
+  {
+    path: 'map',
+    loadChildren: () => import('./map/map.module').then( m => m.MapPageModule)
+  },
 ];
 @NgModule({
   imports: [
