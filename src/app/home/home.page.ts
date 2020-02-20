@@ -10,10 +10,12 @@ import {Certificate, ProfileServiceImpl} from '../services/profile/profile-servi
 import {faStar as faRegularStar} from '@fortawesome/free-regular-svg-icons/faStar';
 import {faGem} from '@fortawesome/free-regular-svg-icons/faGem';
 import {faMap} from '@fortawesome/free-solid-svg-icons/faMap';
+import {faArrowAltCircleDown} from '@fortawesome/free-regular-svg-icons/faArrowAltCircleDown';
 import {faStar as faSolidStar} from '@fortawesome/free-solid-svg-icons/faStar';
 import {TelemetryService} from '../services/telemetry/telemetry-service';
 import {PushNotificationService} from '../services/push-notification';
 import {DcPopupComponent} from '../components/dc-popup/dc-popup.component';
+import {tap} from 'rxjs/operators';
 
 interface Stall {
   code: string;
@@ -44,6 +46,7 @@ export class HomePage implements OnInit {
   public readonly faSolidStar = faSolidStar;
   public readonly faGem = faGem;
   public readonly faMap = faMap;
+  public readonly faArrowAltCircleDown = faArrowAltCircleDown;
 
   private isSchoolTapCount = 0;
   private isHomeTapCount = 0;
@@ -54,21 +57,7 @@ export class HomePage implements OnInit {
   public readonly profileName = localStorage.getItem(PreferenceKeys.ProfileAttributes.NAME_ATTRIBUTE)!;
   savedClassDate: any;
   savedHomeDate: any;
-
-  constructor(
-    private qrcodeService: QrCodeServiceImpl,
-    private stallService: StallServiceImpl,
-    private popCtrl: PopoverController,
-    private modalCtrl: ModalController,
-    private profileService: ProfileServiceImpl,
-    private loadingCtrl: LoadingController,
-    private telemetryService: TelemetryService,
-    private pushNotificationService: PushNotificationService,
-    private navCtrl: NavController
-  ) {
-    this.getUserAwardedPoints$ = this.stallService.getUserAwardedPoints();
-    this.getProfileCertificates$ = this.profileService.getProfileCertificates();
-  }
+  hasExit$: Observable<boolean>;
   qrCode?: string;
   certificateNameMap: {[key: string]: string} = {
     'Super Reader': 'Super Reader',
@@ -88,6 +77,22 @@ export class HomePage implements OnInit {
 
   getUserAwardedPoints$: Observable<number>;
   getProfileCertificates$: Observable<Certificate[]>;
+
+  constructor(
+    private qrcodeService: QrCodeServiceImpl,
+    private stallService: StallServiceImpl,
+    private popCtrl: PopoverController,
+    private modalCtrl: ModalController,
+    private profileService: ProfileServiceImpl,
+    private loadingCtrl: LoadingController,
+    private telemetryService: TelemetryService,
+    private pushNotificationService: PushNotificationService,
+    private navCtrl: NavController
+  ) {
+    this.getUserAwardedPoints$ = this.stallService.getUserAwardedPoints();
+    this.getProfileCertificates$ = this.profileService.getProfileCertificates();
+    this.hasExit$ = this.stallService.exitDetected$;
+  }
 
   arrayGen(size: number): any[] {
     return Array(size);
@@ -175,11 +180,24 @@ export class HomePage implements OnInit {
   async exit() {
     const osid = localStorage.getItem(PreferenceKeys.ProfileAttributes.OSID_ATTRIBUTE)!;
     const code = localStorage.getItem(PreferenceKeys.ProfileAttributes.CODE_ATTRIBUTE)!;
+
+    const loader = await this.loadingCtrl.create({
+      message: 'Loading...',
+      showBackdrop: true,
+      translucent: true,
+      spinner: 'crescent'
+    });
+
+    await loader.present();
+
     await this.profileService.exitRegisteredUser(osid, code).then((data) => {
-     console.log('exit', data);
+      console.log('exit', data);
+      loader.dismiss();
     }).catch((e) => {
+      loader.dismiss();
       console.error(e);
     });
+
     this.telemetryService.getUserStallExitTelemetry('', '', {
       type: 'visitor-exit',
       osid,
@@ -260,6 +278,28 @@ export class HomePage implements OnInit {
 
   navigateToMapsPage() {
     this.navCtrl.navigateForward('/map', {animated: true, animationDirection: 'forward'});
+  }
+
+  public async downloadCertificate(pdfURL: string) {
+    const loader = await this.loadingCtrl.create({
+      message: 'Loading...',
+      showBackdrop: true,
+      translucent: true,
+      spinner: 'crescent'
+    });
+
+    await loader.present();
+
+    try {
+      const url = await this.profileService.signProfileCertificateUrl(pdfURL).pipe(
+        tap((r) => console.log(r))
+      ).toPromise();
+      window.open(url, '_system');
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loader.dismiss();
+    }
   }
 
 }
