@@ -1,8 +1,8 @@
 import {ApiService, HttpRequestType, Request, Response, SharedPreferences} from '@project-sunbird/sunbird-sdk';
 import {Inject, Injectable} from '@angular/core';
-import {map, mergeMap, tap} from 'rxjs/operators';
+import {map, mergeMap, tap, timeout, catchError} from 'rxjs/operators';
 import {PreferenceKeys} from 'src/config/preference-keys';
-import {interval, Observable} from 'rxjs';
+import {interval, Observable, timer} from 'rxjs';
 import {StallServiceImpl} from '../stall/stall-service-impl';
 
 export interface Certificate {
@@ -327,7 +327,7 @@ export class ProfileServiceImpl {
 
 
   public getProfileCertificates(): Observable<Certificate[]> {
-    return interval(10 * 1000).pipe(
+    return timer(0, 10 * 1000).pipe(
       mergeMap(() => {
         const request = new Request.Builder()
           .withType(HttpRequestType.POST)
@@ -365,5 +365,37 @@ export class ProfileServiceImpl {
         );
       })
     );
+  }
+
+  public signProfileCertificateUrl(url: string): Promise<string> {
+    const request = new Request.Builder()
+      .withType(HttpRequestType.POST)
+      .withPath('/api/certreg/v1/certs/download')
+      .withApiToken(true)
+      .withBody({
+        request: {
+          pdfUrl: url
+        }
+      }).build();
+
+    return this.apiService.fetch(request).pipe(
+      map((r: Response<{
+       result: {
+        signedUrl: string
+       }
+      }>) => {
+        if (r.body && r.body.result && r.body.result.signedUrl) {
+          return r.body.result.signedUrl;
+        }
+
+        console.error('UNEXPECTED_ERROR', r, request);
+        throw new Error('UNEXPECTED_ERROR');
+      }),
+      catchError((e) => {
+        console.error(e);
+
+        throw e;
+      })
+    ).toPromise();
   }
 }

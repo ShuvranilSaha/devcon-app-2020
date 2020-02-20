@@ -36,6 +36,8 @@
     "@ionic/angular": "^5.0.0",
     "@project-sunbird/content-player": "2.7.1-alpha-ea50f5d0.0",
     "@project-sunbird/sunbird-sdk": "2.8.4",
+    "com.jjdltc.cordova.plugin.zip": "https://github.com/swayangjit/jjdltc-cordova-plugin-zip.git",
+    "com.virtuoworks.cordova-plugin-canvascamera": "https://github.com/VirtuoWorks/CanvasCameraPlugin.git",
     "cordova-android": "8.1.0",
     "cordova-ios": "^5.1.1",
     "cordova-plugin-advanced-http": "^2.4.0",
@@ -74,9 +76,7 @@
     "tslib": "^1.9.0",
     "uuid": "^3.4.0",
     "x2js": "^3.3.0",
-    "zone.js": "~0.9.1",
-    "com.virtuoworks.cordova-plugin-canvascamera": "https://github.com/VirtuoWorks/CanvasCameraPlugin.git",
-    "com.jjdltc.cordova.plugin.zip": "https://github.com/swayangjit/jjdltc-cordova-plugin-zip.git"
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.20",
@@ -123,7 +123,6 @@
         "ANDROID_SUPPORT_V4_VERSION": "26.+"
       },
       "onesignal-cordova-plugin": {},
-      "cordova-plugin-chathead": {},
       "cordova-plugin-advanced-http": {
         "OKHTTP_VERSION": "3.10.0"
       },
@@ -139,7 +138,8 @@
       "cordova-plugin-screen-orientation": {},
       "com.virtuoworks.cordova-plugin-canvascamera": {
         "CAMERA_USAGE_DESCRIPTION": "Display video preview"
-      }
+      },
+      "cordova-plugin-chathead": {}
     },
     "platforms": [
       "ios",

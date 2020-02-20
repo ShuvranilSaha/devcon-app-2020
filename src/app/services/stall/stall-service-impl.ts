@@ -2,7 +2,7 @@ import {ApiService, HttpRequestType, Request, Response} from '@project-sunbird/s
 import {Inject, Injectable} from '@angular/core';
 import {Idea, Stall, VisitorActivity} from './stall-service';
 import {map, mergeMap, tap} from 'rxjs/operators';
-import {BehaviorSubject, interval, Observable} from 'rxjs';
+import {BehaviorSubject, interval, Observable, timer} from 'rxjs';
 import {PreferenceKeys} from 'src/config/preference-keys';
 import {ToastController} from '@ionic/angular';
 
@@ -146,7 +146,7 @@ export class StallServiceImpl {
     }
 
     public getUserAwardedPoints(): Observable<number> {
-        return interval(10 * 1000).pipe(
+        return timer(0, 10 * 1000).pipe(
             mergeMap(() => {
                 const request = new Request.Builder()
                     .withType(HttpRequestType.POST)
