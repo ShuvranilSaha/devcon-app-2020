@@ -56,16 +56,25 @@
                 </div>
                 <div class='tab_right'>
                   <p class="text-white mb-2">{{idea.description}}</p>
-                  <div *ngIf="ratingsMap[idea.code]">
-                    <fa-icon class="text-white" *ngFor="let i of arrayGen(ratingsMap[idea.code] / 20)" [icon]="faSolidStar"
+                  <div *ngIf="ratingsMap[idea.code]" class="my-4">
+                    <fa-icon class="text-white" *ngFor="let i of arrayGen(ratingsMap[idea.code] / 20)"
+                             [icon]="faSolidStar"
+                             size="2x"></fa-icon>
+                    <fa-icon *ngFor="let i of arrayGen((5 - ratingsMap[idea.code] / 20))" [icon]="faRegularStar"
+                             class="text-white"
                              size="2x"></fa-icon>
                   </div>
-                  <div *ngIf="!ratingsMap[idea.code]">
-                    <fa-icon class="text-white" (click)="postFeedback(1, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
-                    <fa-icon class="text-white" (click)="postFeedback(2, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
-                    <fa-icon class="text-white" (click)="postFeedback(3, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
-                    <fa-icon class="text-white" (click)="postFeedback(4, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
-                    <fa-icon class="text-white" (click)="postFeedback(5, idea.code)" [icon]="faRegularStar" size="2x"></fa-icon>
+                  <div *ngIf="!ratingsMap[idea.code]" class="my-4">
+                    <fa-icon class="text-white" (click)="postFeedback(1, idea.code)" [icon]="faRegularStar"
+                             size="2x"></fa-icon>
+                    <fa-icon class="text-white" (click)="postFeedback(2, idea.code)" [icon]="faRegularStar"
+                             size="2x"></fa-icon>
+                    <fa-icon class="text-white" (click)="postFeedback(3, idea.code)" [icon]="faRegularStar"
+                             size="2x"></fa-icon>
+                    <fa-icon class="text-white" (click)="postFeedback(4, idea.code)" [icon]="faRegularStar"
+                             size="2x"></fa-icon>
+                    <fa-icon class="text-white" (click)="postFeedback(5, idea.code)" [icon]="faRegularStar"
+                             size="2x"></fa-icon>
                   </div>
                 </div>
               </div>
@@ -75,5 +84,6 @@
       </div>
     </div>
   </div>
-  <a class="myButton" (click)="exit()">Exit</a>
+
+  <a (click)="exit()" *ngIf="stallList.length" class="block w-full bg-green-500 p-4 text-white text-center">Exit</a>
 </div>
