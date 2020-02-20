@@ -1,5 +1,5 @@
 <ion-content fullscreen>
-    <ion-slides class="h-full" pager="true">
+    <ion-slides #slidesRef class="h-full" pager="true">
         <ion-slide>
             <div class="flex flex-col p-3 justify-start">
                 <img class="flex-shrink" src="/assets/slide-1.png"/>
@@ -10,6 +10,9 @@
                     but that have enabled India to take giant leaps in providing access to learning for millions of
                     students.
                 </p>
+                <ion-button (click)="slidesRef.slideTo(1)" class="my-4 mb-16" fill="clear">Next
+                    <ion-icon name="arrow-forward" slot="end"></ion-icon>
+                </ion-button>
             </div>
         </ion-slide>
         <ion-slide>
@@ -22,6 +25,9 @@
                     but that have enabled India to take giant leaps in providing access to learning for millions of
                     students.
                 </p>
+                <ion-button (click)="slidesRef.slideTo(2)" class="my-4 mb-16" fill="clear">Next
+                    <ion-icon name="arrow-forward" slot="end"></ion-icon>
+                </ion-button>
             </div>
         </ion-slide>
         <ion-slide>
