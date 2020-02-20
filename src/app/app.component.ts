@@ -54,8 +54,8 @@ export class AppComponent implements OnInit, AfterViewInit {
             this.recognizedBSSIDResult2 = scanResults.find((r) => r.SSID === this.ourSSID2);
 
             if (
-              this.recognizedBSSIDResult && this.recognizedBSSIDResult.level > 60 &&
-              this.recognizedBSSIDResult2 && this.recognizedBSSIDResult2.level > 60 &&
+              this.recognizedBSSIDResult && this.recognizedBSSIDResult.level > -60 &&
+              this.recognizedBSSIDResult2 && this.recognizedBSSIDResult2.level > -60 &&
               !localStorage.getItem(PreferenceKeys.EXIT_DETECTED)
             ) {
               this.stallService.onExitDetected();
