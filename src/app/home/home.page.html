@@ -10,9 +10,9 @@
           <p class="text-red-500 font-bold pl-2">{{ (getUserAwardedPoints$ | async) || 0 }} points</p>
         </div>
       </div>
-      <div class="flex justify-between mb-5 p-5">
-        <fa-icon [icon]="faMap" (click)="navigateToMapsPage()"></fa-icon>
-      </div>
+<!--      <div class="flex w-12 h-12  justify-center items-center border border-2 border-black-400 rounded-full mb-5 p-5">-->
+<!--        <fa-icon class="text-red-500" [icon]="faMap" (click)="navigateToMapsPage()"></fa-icon>-->
+<!--      </div>-->
     </div>
 
     <div *ngIf="qrcodeDataURL" class="border-dashed border-2 p-1 rounded" (click)="expandQrCode()">
