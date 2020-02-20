@@ -2,7 +2,7 @@ import {ApiService, HttpRequestType, Request, Response} from '@project-sunbird/s
 import {Inject, Injectable} from '@angular/core';
 import {Idea, Stall, VisitorActivity} from './stall-service';
 import {map, mergeMap, tap} from 'rxjs/operators';
-import {interval, Observable} from 'rxjs';
+import {BehaviorSubject, interval, Observable} from 'rxjs';
 import {PreferenceKeys} from 'src/config/preference-keys';
 
 export interface Vote {
@@ -18,6 +18,10 @@ export interface Vote {
   providedIn: 'root'
 })
 export class StallServiceImpl {
+
+  public readonly exitDetected$ = new BehaviorSubject(
+    !!localStorage.getItem(PreferenceKeys.EXIT_DETECTED)
+  );
 
   constructor(
     @Inject('API_SERVICE') private apiService: ApiService
@@ -230,5 +234,10 @@ export class StallServiceImpl {
         return undefined;
       }),
     ).toPromise();
+  }
+
+  public onExitDetected() {
+    this.exitDetected$.next(true);
+    localStorage.setItem(PreferenceKeys.EXIT_DETECTED, 'true');
   }
 }
