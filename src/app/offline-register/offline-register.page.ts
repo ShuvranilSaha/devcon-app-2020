@@ -75,7 +75,7 @@ export class OfflineRegisterPage extends ProfileFaceScanPage {
       this.nameControl.value
     ).then(async () => {
       await loader.dismiss();
-      await this.telemetryService.generateRegisterTelemetry({userType: 'offline'});
+      this.telemetryService.generateRegisterTelemetry({userType: 'offline'}).catch(() => {});
       const toast = await this.toastCtrl.create({
         message: 'success',
         duration: 2000
