@@ -18,7 +18,7 @@ export class NotificationService {
                 'title': 'Devcon 2020',
                 'startTime': '2020-02-20T13:25:00',
                 'endTime': '2020-02-20T13:40:00',
-                'msg': 'Learn something new on {{%s}} today!',
+                'msg': 'Can you crack this one?',
                 'identifier': 'do_2129599000490065921103'
             }
         },
@@ -30,7 +30,7 @@ export class NotificationService {
                 'title': 'Devcon 2020',
                 'startTime': '2020-02-20T13:55:00',
                 'endTime': '2020-02-20T14:10:00',
-                'msg': 'Learn something new on {{%s}} today!',
+                'msg': 'Lets see if you have all the answers!',
                 'identifier': 'do_2129599201136558081111'
             }
         },
@@ -42,7 +42,7 @@ export class NotificationService {
                 'title': 'Devcon 2020',
                 'startTime': '2020-02-20T14:25:00',
                 'endTime': '2020-02-20T14:40:00',
-                'msg': 'Learn something new on {{%s}} today!',
+                'msg': 'Do you know the answers?',
                 'identifier': 'do_2129599450151239681116'
             }
         },
@@ -54,7 +54,7 @@ export class NotificationService {
                 'title': 'Devcon 2020',
                 'startTime': '2020-02-20T14:55:00',
                 'endTime': '2020-02-20T15:10:00',
-                'msg': 'Learn something new on {{%s}} today!',
+                'msg': 'Time for another quiz!',
                 'identifier': 'do_2129599565959249921120'
             }
         },
@@ -66,7 +66,7 @@ export class NotificationService {
                 'title': 'Devcon 2020',
                 'startTime': '2020-02-20T15:25:00',
                 'endTime': '2020-02-20T15:40:00',
-                'msg': 'Learn something new on {{%s}} today!',
+                'msg': 'Lets get those braincells moving!',
                 'identifier': 'do_2129604318973870081128'
             }
         },
@@ -78,7 +78,7 @@ export class NotificationService {
                 'title': 'Devcon 2020',
                 'startTime': '2020-02-20T15:55:00',
                 'endTime': '2020-02-20T16:10:00',
-                'msg': 'Learn something new on {{%s}} today!',
+                'msg': 'Take a Quiz break...',
                 'identifier': 'do_2129604418711306241129'
             }
         },
@@ -90,7 +90,7 @@ export class NotificationService {
                 'title': 'Devcon 2020',
                 'startTime': '2020-02-20T16:25:00',
                 'endTime': '2020-02-20T16:40:00',
-                'msg': 'Learn something new on {{%s}} today!',
+                'msg': 'Quiz time! 10 min starts now...',
                 'identifier': 'do_2129604657296261121132'
             }
         },
@@ -102,7 +102,7 @@ export class NotificationService {
                 'title': 'Devcon 2020',
                 'startTime': '2020-02-20T18:55:00',
                 'endTime': '2020-02-20T17:10:00',
-                'msg': 'Learn something new on {{%s}} today!',
+                'msg': 'Do you remember what you learnt at school?',
                 'identifier': 'do_2129604740764958721133'
             }
         },
@@ -114,7 +114,7 @@ export class NotificationService {
                 'title': 'Devcon 2020',
                 'startTime': '2020-02-20T17:25:00',
                 'endTime': '2020-02-20T17:40:00',
-                'msg': 'Learn something new on {{%s}} today!',
+                'msg': 'Test your knowledge!',
                 'identifier': 'do_2129604818587484161136'
             }
         },
@@ -126,7 +126,7 @@ export class NotificationService {
                 'title': 'Devcon 2020',
                 'startTime': '2020-02-20T17:55:00',
                 'endTime': '2020-02-20T18:10:00',
-                'msg': 'Learn something new on {{%s}} today!',
+                'msg': 'Lets get those braincells moving!',
                 'identifier': 'do_2129604931508060161137'
             }
         }
